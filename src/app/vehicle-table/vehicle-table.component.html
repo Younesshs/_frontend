@@ -1,0 +1,108 @@
+<div class="w-full flex justify-center">
+	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+		<table
+			class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+		>
+			<thead
+				class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+			>
+				<tr>
+					<th scope="col" class="px-6 py-3">
+						Plaque d'immatriculation
+					</th>
+					<th scope="col" class="px-6 py-3">Modèle</th>
+					<th scope="col" class="px-6 py-3">État du moteur</th>
+					<th scope="col" class="px-6 py-3">Emplacement actuel</th>
+					<th scope="col" class="px-6 py-3">Employé assigné</th>
+					<th scope="col" class="px-6 py-3">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					*ngFor="let vehicle of vehicles"
+					class="bg-white border-b dark:bg-gray-800 dark:border-gray-200 last:border-b-0"
+				>
+					<th
+						scope="row"
+						class="px-6 py-4 font-medium text-gray-600 whitespace-nowrap"
+					>
+						{{ vehicle.vehicle_informations.license_plate }}
+					</th>
+					<td class="px-6 py-4">
+						{{ vehicle.vehicle_informations.manufacturer }}
+						{{ vehicle.vehicle_informations.car_model }}
+						{{ vehicle.vehicle_informations.year }}
+					</td>
+					<td class="px-6 py-4">
+						<span
+							class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+							[ngClass]="{
+								'bg-green-100 text-green-800':
+									vehicle.vehicle_status.engine_on,
+								'bg-red-100 text-red-800':
+									!vehicle.vehicle_status.engine_on
+							}"
+						>
+							{{
+								vehicle.vehicle_status.engine_on
+									? "Engine ON"
+									: "Engine OFF"
+							}}
+						</span>
+					</td>
+					<td class="px-6 py-4">
+						{{ vehicle.vehicle_status.current_location.latitude }},
+						{{ vehicle.vehicle_status.current_location.longitude }}
+						<br />
+						<span class="text-xs text-gray-400">
+							{{
+								vehicle.vehicle_status.current_location
+									.timestamp | date : "yyyy-MM-dd HH:mm"
+							}}
+						</span>
+					</td>
+					<td class="px-6 py-4">
+						{{ vehicle.assigned_employee.name }} <br />
+						<span class="text-xs text-gray-400">{{
+							vehicle.assigned_employee.role
+						}}</span>
+					</td>
+					<td
+						class="px-6 py-4 flex justify-center items-center relative"
+					>
+						<button
+							id="dropdownMenuButton"
+							class="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+						>
+							...
+						</button>
+						<div
+							id="dropdownMenu"
+							class="hidden absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+						>
+							<ul
+								class="py-2 text-sm text-gray-700 dark:text-gray-200"
+								aria-labelledby="dropdownMenuButton"
+							>
+								<li>
+									<a
+										href="#"
+										class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+										>Modifier</a
+									>
+								</li>
+								<li>
+									<a
+										href="#"
+										class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+										>Archiver</a
+									>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

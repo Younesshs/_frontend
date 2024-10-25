@@ -1,5 +1,6 @@
 export interface LeafletData {
-	layers: [{}];
+	url: string;
+	attribution: string;
 	zoom: number;
 	zoomLevels: number[];
 	lat: number;

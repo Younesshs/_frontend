@@ -10,25 +10,32 @@ import { LeafletData } from '../_models/leaflet-data';
 export class LocationService {
 	private apiUrl = environment.backendUrl;
 
-	leafletData!: any;
+	leafletData!: LeafletData;
 
 	constructor(private http: HttpClient) {}
 
-	getLeafletData(): LeafletData {
-		let data: LeafletData = {
-			layers: [
-				{
-					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-					attribution: 'Open Street Map',
-				},
-			],
-			zoom: 12,
-			zoomLevels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-			lat: 43.604145106074895,
-			lng: -358.5631958860042,
+	_updateLeafletData(
+		url?: string,
+		attribution?: string,
+		zoom?: number,
+		zoomLevels?: number[],
+		lat?: number,
+		lng?: number
+	): void {
+		const updatedData = {
+			url: url ?? this.leafletData.url,
+			attribution: attribution ?? this.leafletData.attribution,
+			zoom: zoom ?? this.leafletData.zoom,
+			zoomLevels: zoomLevels ?? this.leafletData.zoomLevels,
+			lat: lat ?? this.leafletData.lat,
+			lng: lng ?? this.leafletData.lng,
 		};
-		this.leafletData = data;
-		return data;
+
+		this.leafletData = { ...this.leafletData, ...updatedData };
+	}
+
+	_getLeafletData(): LeafletData {
+		return this.leafletData;
 	}
 
 	getLocationsOfAllVehicles(): Observable<any> {

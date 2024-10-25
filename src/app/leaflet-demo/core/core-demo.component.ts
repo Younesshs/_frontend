@@ -2,15 +2,12 @@ import { Component } from '@angular/core';
 import { LocationService } from 'src/app/_services/location.service';
 
 import { latLng, LatLng, tileLayer } from 'leaflet';
-import { LeafletData } from 'src/app/_models/leaflet-data';
 
 @Component({
 	selector: 'leafletCoreDemo',
 	templateUrl: './core-demo.component.html',
 })
 export class LeafletCoreDemoComponent {
-	leafletData!: LeafletData;
-
 	optionsSpec: any = {
 		layers: [
 			{
@@ -42,26 +39,46 @@ export class LeafletCoreDemoComponent {
 
 	constructor(private LocationService: LocationService) {}
 
-	_initData() {
-		let data: any = this.LocationService.getLeafletData();
+	_updateLeafletData(
+		url?: string,
+		attribution?: string,
+		zoom?: number,
+		zoomLevels?: number[],
+		lat?: number,
+		lng?: number
+	) {
+		url = url ?? this.optionsSpec.layers[0].url;
+		attribution = attribution ?? this.optionsSpec.layers[0].attribution;
+		zoom = zoom ?? this.zoom;
+		zoomLevels = zoomLevels ?? this.zoomLevels;
+		lat = lat ?? this.lat;
+		lng = lng ?? this.lng;
+		this.LocationService._updateLeafletData(
+			url,
+			attribution,
+			zoom,
+			zoomLevels,
+			lat,
+			lng
+		);
 	}
 
 	onCenterChange(center: LatLng) {
 		setTimeout(() => {
-			this.lat = center.lat;
-			this.lng = center.lng;
-			this._initData();
+			this._updateLeafletData(
+				null,
+				null,
+				this.zoom,
+				null,
+				center.lat,
+				center.lng
+			);
 		});
 	}
 
 	onZoomChange(zoom: number) {
 		setTimeout(() => {
-			this._initData();
+			this._updateLeafletData(null, null, zoom, null, null, null);
 		});
-	}
-
-	doApply() {
-		this.center = latLng(this.lat, this.lng);
-		this._initData();
 	}
 }

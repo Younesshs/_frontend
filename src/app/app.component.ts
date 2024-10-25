@@ -8,8 +8,8 @@ import { LocationService } from './_services/location.service';
 export class AppComponent {
 	constructor(private LocationService: LocationService) {}
 
-	callGetCurrentPositionAndZoom() {
-		const leafletData = this.LocationService.getLeafletData();
+	_getLeafletData() {
+		const leafletData = this.LocationService._getLeafletData();
 		console.log('Current Leaflet Data:', leafletData);
 	}
 }

@@ -3,3 +3,16 @@
 @tailwind utilities;
 
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+	width: 100%;
+}
+
+body {
+	height: 100vh;
+}
+
+leaflet-demo {
+	z-index: 0 !important; /* S'assurer que la carte reste en arrière-plan */
+}

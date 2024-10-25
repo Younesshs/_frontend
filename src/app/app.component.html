@@ -1,5 +1,11 @@
-<app-vehicle-table></app-vehicle-table>
-<br />
-<hr />
-<br />
-<leaflet-demo></leaflet-demo>
+<div class="w-full h-full relative">
+	<leaflet-demo class="absolute inset-0 z-0"></leaflet-demo>
+
+	<button
+		(click)="callGetCurrentPositionAndZoom()"
+		class="fixed top-5 right-5 p-4 w-15 h-15 flex items-center justify-center bg-bLight shadow-lg rounded-md z-50 hover:opacity-90"
+	>
+		+
+	</button>
+</div>
+<!-- <app-vehicle-table></app-vehicle-table> -->

@@ -5,12 +5,12 @@ import { Component } from '@angular/core';
 	templateUrl: './leaflet-demo.component.html',
 })
 export class LeafletDemoComponent {
-	showDemo = false;
+	show = false;
 
 	ngOnInit() {
 		// Primarily for debugging
 		setTimeout(() => {
-			this.showDemo = true;
+			this.show = true;
 		}, 1000);
 	}
 }

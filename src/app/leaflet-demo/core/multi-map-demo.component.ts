@@ -8,14 +8,18 @@ interface MapSpec {
 
 @Component({
 	selector: 'leafletMultiMapDemo',
-	templateUrl: './multi-map-demo.component.html'
+	templateUrl: './multi-map-demo.component.html',
 })
 export class LeafletMultiMapDemoComponent {
-
 	optionsSpec: any = {
-		layers: [{ url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', attribution: 'Open Street Map' }],
+		layers: [
+			{
+				url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+				attribution: 'Open Street Map',
+			},
+		],
 		zoom: 5,
-		center: [ 46.879966, -121.726909 ]
+		center: [46.879966, -121.726909],
 	};
 
 	maps: MapSpec[] = [];
@@ -31,11 +35,16 @@ export class LeafletMultiMapDemoComponent {
 	private createMapSpec(optionsSpec: any): MapSpec {
 		return {
 			options: {
-				layers: [ tileLayer(optionsSpec.layers[0].url, { attribution: optionsSpec.layers[0].attribution }) ],
+				layers: [
+					tileLayer(optionsSpec.layers[0].url, {
+						attribution: optionsSpec.layers[0].attribution,
+					}),
+				],
 				zoom: optionsSpec.zoom,
-				center: latLng(optionsSpec.center)
-			}
+				center: latLng(optionsSpec.center),
+				minZoom: 3, // Zoom minimum pour éviter le dézoom infini
+				maxZoom: 18, // Zoom maximum pour limiter le zoom
+			},
 		};
 	}
-
 }

@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocationService } from 'src/app/_services/location.service';
 
-import { latLng, LatLng, tileLayer } from 'leaflet';
+import { Icon, latLng, LatLng, marker, tileLayer } from 'leaflet';
 
 @Component({
 	selector: 'leafletCoreDemo',
 	templateUrl: './core-demo.component.html',
 })
-export class LeafletCoreDemoComponent {
+export class LeafletCoreDemoComponent implements OnInit {
+	vehicles: any;
+	markers: any = [];
 	optionsSpec: any = {
 		layers: [
 			{
@@ -38,6 +40,11 @@ export class LeafletCoreDemoComponent {
 	lng = this.center.lng;
 
 	constructor(private LocationService: LocationService) {}
+
+	ngOnInit(): void {
+		// Charger les données des véhicules
+		this.loadVehicleLocations();
+	}
 
 	_updateLeafletData(
 		url?: string,
@@ -80,5 +87,46 @@ export class LeafletCoreDemoComponent {
 		setTimeout(() => {
 			this._updateLeafletData(null, null, zoom, null, null, null);
 		});
+	}
+
+	loadVehicleLocations(): void {
+		this.LocationService.getLocationsOfAllVehicles().subscribe(
+			(data: any[]) => {
+				this.vehicles = data;
+				this.addVehicleMarkers();
+			}
+		);
+	}
+
+	addVehicleMarkers(): void {
+		const customIcon = new Icon({
+			iconUrl: '../../../assets/images/icon/vehicle-default.png',
+			iconSize: [30, 30],
+			iconAnchor: [15, 40],
+			popupAnchor: [0, -40],
+		});
+
+		this.vehicles.forEach((vehicle: any) => {
+			const vehicleMarker = marker(
+				[
+					vehicle.vehicle_status.current_location.latitude,
+					vehicle.vehicle_status.current_location.longitude,
+				],
+				{ icon: customIcon }
+			).bindPopup(this.getVehiclePopupContent(vehicle));
+
+			this.markers.push(vehicleMarker);
+		});
+	}
+
+	getVehiclePopupContent(vehicle: any): string {
+		return `
+      <div>
+        <h3>${vehicle.vehicle_informations.manufacturer} ${vehicle.vehicle_informations.car_model}</h3>
+        <p><strong>Plaque:</strong> ${vehicle.vehicle_informations.license_plate}</p>
+        <p><strong>Conducteur:</strong> ${vehicle.assigned_employee.name}</p>
+        <p><strong>Téléphone:</strong> ${vehicle.assigned_employee.phone_number}</p>
+      </div>
+    `;
 	}
 }

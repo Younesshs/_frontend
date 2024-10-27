@@ -1,11 +1,98 @@
-<div class="w-full h-full relative">
-	<leaflet-demo class="absolute inset-0 z-0"></leaflet-demo>
-
-	<button
-		(click)="_getLeafletData()"
-		class="fixed top-5 right-5 p-4 w-15 h-15 flex items-center justify-center bg-bLight shadow-lg rounded-md z-50 hover:opacity-90"
+<div class="w-full h-full flex flex-row">
+	<!-- map -->
+	<div
+		[ngClass]="{ 'w-4/5': navigationIsOpen, 'w-full': !navigationIsOpen }"
+		class="h-full relative"
 	>
-		+
-	</button>
+		<leaflet-demo class="absolute inset-0 z-0"></leaflet-demo>
+		<button
+			*ngIf="!navigationIsOpen"
+			(click)="toggleNavigation()"
+			class="fixed top-5 right-5 p-4 w-15 h-15 flex items-center justify-center bg-bLight shadow-lg rounded-md z-50 hover:opacity-90"
+		>
+			+
+		</button>
+	</div>
+	<!-- navigation -->
+	<div
+		*ngIf="navigationIsOpen"
+		[ngClass]="{
+			'w-1/5 translate-x-0': navigationIsOpen,
+			'w-0 -translate-x-full': !navigationIsOpen
+		}"
+		class="relative h-full bg-bDark shadow-lg transition-all duration-300 ease-in-out transform text-white"
+	>
+		<span
+			(click)="toggleNavigation()"
+			class="absolute top-3 right-2 text-white cursor-pointer"
+		>
+			<img
+				class="w-4 h-4 cursor-pointer"
+				src="assets/images/icon/croix.png"
+				alt="Fermer"
+			/>
+		</span>
+
+		<nav class="p-5 space-y-6">
+			<h2 class="text-xl font-bold mb-4 flex items-center space-x-2">
+				<img
+					class="w-12 h-12 mr-2 cursor-pointer"
+					src="assets/images/logo.png"
+					alt="Logo"
+				/>
+				Locate Them
+			</h2>
+
+			<hr class="bg-white" />
+
+			<ul class="space-y-4">
+				<li>
+					<a
+						href="#"
+						class="flex items-center space-x-3 text-gray-200 hover:no-underline hover:text-gray-400"
+					>
+						<img
+							src="assets/images/icon/vehicles.png"
+							alt="Explorer"
+							class="w-6 h-6"
+						/>
+						<span>Mes véhicules</span>
+					</a>
+				</li>
+				<li>
+					<a
+						href="#"
+						class="flex items-center space-x-3 text-gray-200 hover:no-underline hover:text-gray-400"
+					>
+						<img
+							src="assets/images/icon/alerte.png"
+							alt="Favoris"
+							class="w-6 h-6"
+						/>
+						<span
+							><span class="line-through">Alertes</span>
+							(Bientôt)</span
+						>
+					</a>
+				</li>
+				<li>
+					<a
+						href="#"
+						class="flex items-center space-x-3 text-gray-200 hover:no-underline hover:text-gray-400"
+					>
+						<img
+							src="assets/images/icon/configuration.png"
+							alt="Aide"
+							class="w-6 h-6"
+						/>
+						<span
+							><span class="line-through">Configuration</span>
+							(Bientôt)</span
+						>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
 </div>
 <!-- <app-vehicle-table></app-vehicle-table> -->

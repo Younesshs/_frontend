@@ -7,7 +7,6 @@ import { LocationService } from '../_services/location.service';
 	standalone: true,
 	imports: [NgFor, NgClass, DatePipe],
 	templateUrl: './vehicle-table.component.html',
-	styleUrl: './vehicle-table.component.scss',
 })
 export class VehicleTableComponent {
 	vehicles: any[] = [];

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VehicleService } from 'src/app/_services/vehicle.service';
 
 import { Icon, latLng, LatLng, marker, tileLayer } from 'leaflet';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
 	selector: 'leafletCoreDemo',
@@ -10,6 +11,8 @@ import { Icon, latLng, LatLng, marker, tileLayer } from 'leaflet';
 export class LeafletCoreDemoComponent implements OnInit {
 	vehicles: any;
 	markers: any = [];
+	updateSubscription: Subscription;
+	autoUpdateEnabled: any;
 	optionsSpec: any = {
 		layers: [
 			{
@@ -42,7 +45,6 @@ export class LeafletCoreDemoComponent implements OnInit {
 	constructor(private VehicleService: VehicleService) {}
 
 	ngOnInit(): void {
-		// Charger les données des véhicules
 		this.loadVehicleLocations();
 	}
 
@@ -118,13 +120,48 @@ export class LeafletCoreDemoComponent implements OnInit {
 	}
 
 	updateVehicleLocations(): void {
-		this.VehicleService.getVehicles().subscribe((data: any[]) => {
-			this.vehicles = data;
+		this.VehicleService.getLocations().subscribe((data: any[]) => {
+			data.forEach((newLocation) => {
+				// Trouver le véhicule correspondant dans la liste this.vehicles
+				const vehicle = this.vehicles.find(
+					(v: { vehicle_id: any }) =>
+						v.vehicle_id === newLocation.vehicle_id
+				);
+
+				if (vehicle) {
+					vehicle.vehicle_status.current_location =
+						newLocation.current_location;
+				}
+			});
 
 			this.markers = [];
-
 			this.addVehicleMarkers();
 		});
+	}
+
+	startAutoUpdate(): void {
+		if (!this.autoUpdateEnabled) {
+			this.autoUpdateEnabled = true;
+			this.updateSubscription = interval(5000).subscribe(() => {
+				this.updateVehicleLocations();
+			});
+		}
+	}
+
+	stopAutoUpdate(): void {
+		if (this.updateSubscription) {
+			this.updateSubscription.unsubscribe();
+			this.updateSubscription = null;
+			this.autoUpdateEnabled = false; // Update the flag when stopped
+		}
+	}
+
+	toggleAutoUpdate(): void {
+		if (this.autoUpdateEnabled) {
+			this.stopAutoUpdate();
+		} else {
+			this.startAutoUpdate();
+		}
 	}
 
 	getVehiclePopupContent(vehicle: any): string {

@@ -7,7 +7,7 @@ import { LeafletData } from '../_models/leaflet-data';
 @Injectable({
 	providedIn: 'root',
 })
-export class LocationService {
+export class VehicleService {
 	private apiUrl = environment.backendUrl;
 
 	leafletData!: LeafletData;
@@ -38,11 +38,19 @@ export class LocationService {
 		return this.leafletData;
 	}
 
-	getLocationsOfAllVehicles(): Observable<any> {
-		return this.http.get(`${this.apiUrl}/location/vehicles`);
+	getVehicles(): Observable<any> {
+		return this.http.get(`${this.apiUrl}/vehicle/all`);
 	}
 
-	getVehicleByCarId(vehicleId: string): Observable<any> {
-		return this.http.get(`${this.apiUrl}/location/${vehicleId}`);
+	getVehicle(vehicleId: any): Observable<any> {
+		return this.http.get(`${this.apiUrl}/vehicle/${vehicleId}`);
+	}
+
+	getLocation(vehicleId: any): Observable<any> {
+		return this.http.get(`${this.apiUrl}/vehicle/${vehicleId}/location`);
+	}
+
+	getLocations(): Observable<any> {
+		return this.http.get(`${this.apiUrl}/vehicle/locations`);
 	}
 }

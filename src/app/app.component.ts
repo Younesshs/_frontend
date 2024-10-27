@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LocationService } from './_services/location.service';
+import { VehicleService } from './_services/vehicle.service';
 
 @Component({
 	selector: 'app-root',
@@ -8,10 +8,10 @@ import { LocationService } from './_services/location.service';
 export class AppComponent {
 	navigationIsOpen: boolean = true;
 
-	constructor(private LocationService: LocationService) {}
+	constructor(private VehicleService: VehicleService) {}
 
 	_getLeafletData() {
-		const leafletData = this.LocationService._getLeafletData();
+		const leafletData = this.VehicleService._getLeafletData();
 		console.log('Current Leaflet Data:', leafletData);
 	}
 

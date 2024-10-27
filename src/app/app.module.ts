@@ -5,7 +5,7 @@ import {
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { LocationService } from './_services/location.service';
+import { VehicleService } from './_services/vehicle.service';
 import { PageLoaderComponent } from './_shared/page-loader/page-loader.component';
 import { AppComponent } from './app.component';
 import { LeafletDemoModule } from './leaflet-demo/leaflet-demo.module';
@@ -19,7 +19,7 @@ import { VehicleTableComponent } from './vehicle-table/vehicle-table.component';
 		VehicleTableComponent,
 		PageLoaderComponent,
 	],
-	providers: [LocationService, provideHttpClient(withInterceptorsFromDi())],
+	providers: [VehicleService, provideHttpClient(withInterceptorsFromDi())],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

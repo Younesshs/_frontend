@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationService } from 'src/app/_services/location.service';
+import { VehicleService } from 'src/app/_services/vehicle.service';
 
 import { Icon, latLng, LatLng, marker, tileLayer } from 'leaflet';
 
@@ -39,7 +39,7 @@ export class LeafletCoreDemoComponent implements OnInit {
 	lat = this.center.lat;
 	lng = this.center.lng;
 
-	constructor(private LocationService: LocationService) {}
+	constructor(private VehicleService: VehicleService) {}
 
 	ngOnInit(): void {
 		// Charger les données des véhicules
@@ -60,7 +60,7 @@ export class LeafletCoreDemoComponent implements OnInit {
 		zoomLevels = zoomLevels ?? this.zoomLevels;
 		lat = lat ?? this.lat;
 		lng = lng ?? this.lng;
-		this.LocationService._updateLeafletData(
+		this.VehicleService._updateLeafletData(
 			url,
 			attribution,
 			zoom,
@@ -90,12 +90,10 @@ export class LeafletCoreDemoComponent implements OnInit {
 	}
 
 	loadVehicleLocations(): void {
-		this.LocationService.getLocationsOfAllVehicles().subscribe(
-			(data: any[]) => {
-				this.vehicles = data;
-				this.addVehicleMarkers();
-			}
-		);
+		this.VehicleService.getVehicles().subscribe((data: any[]) => {
+			this.vehicles = data;
+			this.addVehicleMarkers();
+		});
 	}
 
 	addVehicleMarkers(): void {
@@ -116,6 +114,16 @@ export class LeafletCoreDemoComponent implements OnInit {
 			).bindPopup(this.getVehiclePopupContent(vehicle));
 
 			this.markers.push(vehicleMarker);
+		});
+	}
+
+	updateVehicleLocations(): void {
+		this.VehicleService.getVehicles().subscribe((data: any[]) => {
+			this.vehicles = data;
+
+			this.markers = [];
+
+			this.addVehicleMarkers();
 		});
 	}
 

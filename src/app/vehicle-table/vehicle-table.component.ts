@@ -1,6 +1,6 @@
 import { DatePipe, NgClass, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
-import { LocationService } from '../_services/location.service';
+import { VehicleService } from '../_services/vehicle.service';
 
 @Component({
 	selector: 'app-vehicle-table',
@@ -11,10 +11,10 @@ import { LocationService } from '../_services/location.service';
 export class VehicleTableComponent {
 	vehicles: any[] = [];
 
-	constructor(private locationService: LocationService) {}
+	constructor(private VehicleService: VehicleService) {}
 
 	ngOnInit(): void {
-		this.locationService.getLocationsOfAllVehicles().subscribe({
+		this.VehicleService.getVehicles().subscribe({
 			next: (data: any) => {
 				this.vehicles = data;
 			},

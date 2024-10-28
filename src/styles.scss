@@ -16,3 +16,17 @@ body {
 leaflet-demo {
 	z-index: 0 !important; /* S'assurer que la carte reste en arrière-plan */
 }
+
+/* Styles pour une scrollbar fine et sombre */
+.scrollbar-thin-dark::-webkit-scrollbar {
+	width: 6px;
+}
+
+.scrollbar-thin-dark::-webkit-scrollbar-track {
+	background: #1f2937; /* Couleur du track (ici bg-gray-800) */
+}
+
+.scrollbar-thin-dark::-webkit-scrollbar-thumb {
+	background-color: #4b5563; /* Couleur de la barre (ici bg-gray-600) */
+	border-radius: 4px;
+}

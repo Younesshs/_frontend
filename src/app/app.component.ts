@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 	navigationIsOpen: boolean = true;
 	expanded: boolean = false;
+	autoGpsEnabled = false;
 
 	vehicles = [
 		{
@@ -26,6 +27,9 @@ export class AppComponent {
 				phone_number: '+33 6 00 00 00 00',
 			},
 			showDetails: false,
+			options: {
+				gpsEnabled: false,
+			},
 		},
 		{
 			license_plate: 'VW-057-OL',
@@ -44,8 +48,10 @@ export class AppComponent {
 				phone_number: '+33 6 00 00 00 01',
 			},
 			showDetails: false,
+			options: {
+				autoGpsEnabled: false,
+			},
 		},
-		// Ajoute d'autres véhicules si nécessaire
 	];
 
 	toggleDetails(vehicle: any) {
@@ -54,5 +60,9 @@ export class AppComponent {
 
 	toggleNavigation() {
 		this.navigationIsOpen = !this.navigationIsOpen;
+	}
+
+	toggleGps(vehicle: any) {
+		vehicle.options.autoGpsEnabled = !vehicle.options.autoGpsEnabled;
 	}
 }

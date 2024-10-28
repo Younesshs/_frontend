@@ -33,7 +33,7 @@
 			/>
 		</span>
 
-		<nav class="p-5 space-y-6">
+		<nav class="p-4 space-y-6">
 			<h2 class="text-xl font-bold mb-4 flex items-center space-x-2">
 				<img
 					class="w-12 h-12 mr-2 cursor-pointer"
@@ -53,12 +53,104 @@
 					>
 						<img
 							src="assets/images/icon/vehicles.png"
-							alt="Explorer"
+							alt="Favoris"
 							class="w-6 h-6"
 						/>
 						<span>Mes véhicules</span>
 					</a>
+
+					<div class="w-full mt-2">
+						<div
+							*ngFor="let vehicle of vehicles"
+							(click)="toggleDetails(vehicle)"
+							class="card bg-bLight text-bDark border border-gray-500 rounded-lg cursor-pointer transition-all duration-300 ease-in-out mb-1 h-"
+							[class.h-19]="!vehicle.showDetails"
+							[class.h-auto]="vehicle.showDetails"
+						>
+							<!-- Vue compacte de la card -->
+							<div class="pt-2 pl-2 flex items-center space-x-2">
+								<img
+									[src]="
+										'assets/images/icon/vehicle-' +
+										vehicle.color +
+										'.png'
+									"
+									alt="image de voiture"
+									class="w-5 h-5"
+								/>
+								<h3
+									class="text-sm font-light text-gray-800 ml-4 mt-1"
+								>
+									{{ vehicle.license_plate }}
+								</h3>
+							</div>
+							<div class="pl-2 text-xs text-gray-600">
+								<p class="mb-0">
+									Moteur
+									<span
+										class="uppercase font-bold"
+										[ngClass]="{
+											'text-green-500': vehicle.engine_on,
+											'text-red-500': !vehicle.engine_on
+										}"
+										>{{
+											vehicle.engine_on
+												? "allumé"
+												: "éteint"
+										}}</span
+									>
+								</p>
+								<p class="mb-2">
+									{{ vehicle.assigned_employee.role }} -
+									{{ vehicle.assigned_employee.name }}
+								</p>
+							</div>
+
+							<!-- Détails supplémentaires, affichés si la card est ouverte -->
+							<div
+								*ngIf="vehicle.showDetails"
+								class="p-2 border-t border-gray-300 text-xs text-gray-600 bg-gray-50"
+							>
+								<p
+									class="mb-1 underline underline-offset-2 decoration-solid"
+								>
+									<span class="font-semibold uppercase">
+										{{ vehicle.manufacturer }}
+										{{ vehicle.car_model }}
+									</span>
+									{{ vehicle.year }} | Capacité :
+									{{ vehicle.capacity }}
+								</p>
+								<p class="mb-1"></p>
+								<p class="mb-1">
+									<span class="underline decoration-teal-400"
+										>Couleur</span
+									>
+									:
+									{{ vehicle.color }}
+								</p>
+								<p class="mb-1">
+									<span
+										class="underline decoration-indigo-400"
+										>Localisation</span
+									>
+									:
+									{{ vehicle.current_location.latitude }},
+									{{ vehicle.current_location.longitude }}
+								</p>
+								<p class="mb-1">
+									<span
+										class="underline decoration-purple-400"
+										>Contact</span
+									>
+									:
+									{{ vehicle.assigned_employee.phone_number }}
+								</p>
+							</div>
+						</div>
+					</div>
 				</li>
+
 				<li>
 					<a
 						href="#"

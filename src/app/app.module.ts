@@ -5,6 +5,7 @@ import {
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VehicleService } from './_services/vehicle.service';
 import { PageLoaderComponent } from './_shared/page-loader/page-loader.component';
 import { AppComponent } from './app.component';
@@ -18,6 +19,8 @@ import { VehicleTableComponent } from './vehicle-table/vehicle-table.component';
 		LeafletDemoModule,
 		VehicleTableComponent,
 		PageLoaderComponent,
+		FormsModule,
+		ReactiveFormsModule,
 	],
 	providers: [VehicleService, provideHttpClient(withInterceptorsFromDi())],
 	bootstrap: [AppComponent],

@@ -100,7 +100,7 @@ export class LeafletCoreDemoComponent implements OnInit {
 
 	addVehicleMarkers(): void {
 		const customIcon = new Icon({
-			iconUrl: '../../../assets/images/icon/vehicle-default.png',
+			iconUrl: '../../../assets/images/icon/car_icons/default.png',
 			iconSize: [30, 30],
 			iconAnchor: [15, 40],
 			popupAnchor: [0, -40],

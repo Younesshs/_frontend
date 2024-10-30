@@ -74,168 +74,9 @@
 						</button>
 					</div>
 
-					<!-- Modale pour le formulaire d'ajout de véhicule -->
-					<div
-						*ngIf="isVehicleModalOpen"
-						class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-					>
-						<div
-							class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg"
-						>
-							<!-- En-tête de la modale -->
-							<div
-								class="flex justify-between items-center border-b pb-3"
-							>
-								<h3 class="text-lg text-gray-500 font-semibold">
-									Nouveau véhicule
-								</h3>
-								<button
-									(click)="closeVehicleModal()"
-									class="text-gray-500 hover:text-gray-700"
-								>
-									<span class="text-2xl font-bold"
-										>&times;</span
-									>
-								</button>
-							</div>
-
-							<!-- Formulaire d'ajout de véhicule -->
-							<form (submit)="addVehicle()">
-								<div class="mt-4 space-y-4">
-									<!-- Champ pour la plaque d'immatriculation -->
-									<div>
-										<label
-											class="block text-sm font-medium text-gray-700"
-											>Plaque d'immatriculation</label
-										>
-										<input
-											type="text"
-											[(ngModel)]="
-												newVehicle.vehicle_informations
-													.license_plate
-											"
-											name="license_plate"
-											class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
-											placeholder="Ex: AN-256-CN"
-											required
-										/>
-									</div>
-
-									<!-- Autres champs de saisie du formulaire -->
-									<!-- Ajoutez chaque champ selon vos besoins, par exemple : -->
-									<div>
-										<label
-											class="block text-sm font-medium text-gray-700"
-											>Fabricant</label
-										>
-										<input
-											type="text"
-											[(ngModel)]="
-												newVehicle.vehicle_informations
-													.manufacturer
-											"
-											name="manufacturer"
-											class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
-											placeholder="Ex: Peugeot"
-											required
-										/>
-									</div>
-									<!-- Champ du modèle du véhicule -->
-									<div>
-										<label
-											class="block text-sm font-medium text-gray-700"
-											>Modèle</label
-										>
-										<input
-											type="text"
-											[(ngModel)]="
-												newVehicle.vehicle_informations
-													.car_model
-											"
-											name="car_model"
-											class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
-											placeholder="Ex: 207"
-											required
-										/>
-									</div>
-
-									<!-- Champ pour la couleur du véhicule -->
-									<div>
-										<label
-											class="block text-sm font-medium text-gray-700"
-											>Couleur</label
-										>
-										<input
-											type="text"
-											[(ngModel)]="
-												newVehicle.vehicle_informations
-													.color
-											"
-											name="color"
-											class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
-											placeholder="Ex: Blanc"
-										/>
-									</div>
-
-									<!-- Année et capacité du véhicule -->
-									<div>
-										<label
-											class="block text-sm font-medium text-gray-700"
-											>Année</label
-										>
-										<input
-											type="number"
-											[(ngModel)]="
-												newVehicle.vehicle_informations
-													.year
-											"
-											name="year"
-											class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
-											placeholder="Ex: 2023"
-										/>
-									</div>
-
-									<div>
-										<label
-											class="block text-sm font-medium text-gray-700"
-											>Capacité</label
-										>
-										<input
-											type="number"
-											[(ngModel)]="
-												newVehicle.vehicle_informations
-													.capacity
-											"
-											name="capacity"
-											class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
-											placeholder="Ex: 4"
-										/>
-									</div>
-								</div>
-
-								<!-- Boutons de soumission et d'annulation -->
-								<div class="flex justify-end mt-6">
-									<button
-										type="button"
-										(click)="closeVehicleModal()"
-										class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg mr-3"
-									>
-										Annuler
-									</button>
-									<button
-										type="submit"
-										class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-									>
-										Ajouter
-									</button>
-								</div>
-							</form>
-						</div>
-					</div>
-
 					<div class="w-full mt-2">
 						<div
-							*ngFor="let vehicle of vehicles"
+							*ngFor="let vehicle of vehicles.slice().reverse()"
 							(click)="toggleDetails(vehicle)"
 							class="card bg-bLight text-bDark border border-gray-500 rounded-lg cursor-pointer transition-all duration-300 ease-in-out mb-1 h-"
 							[class.h-19]="!vehicle.showDetails"
@@ -267,8 +108,9 @@
 										[class.text-red-500]="
 											!vehicle.options.autoGpsEnabled
 										"
-										class="uppercase font-bold"
+										class="uppercase font-bold cursor-pointer"
 										style="font-size: 0.5rem"
+										[title]="vehicle.gps_tracker_number"
 										>(Tracked{{
 											vehicle.options.autoGpsEnabled
 												? ""
@@ -360,7 +202,14 @@
 									:
 									{{ vehicle.assigned_employee.phone_number }}
 								</p>
-								<hr />
+								<p
+									style="font-size: 0.5rem"
+									class="mb-0.5 uppercase font-black"
+								>
+									n°gps tracker :
+									{{ vehicle.gps_tracker_number }}
+								</p>
+								<hr class="m-1" />
 								<h3 class="text-xs">Actions véhicules :</h3>
 								<div
 									class="w-full h-30 flex flex-row flex-wrap justify-center"
@@ -377,7 +226,7 @@
 											[class.bg-red-500]="
 												!vehicle.options.autoGpsEnabled
 											"
-											class="flex justify-center ml-2 mt-2 mr-2 items-center w-12 h-12 border rounded-lg border-gray-100 shadow bg-green-500 transition-transform transform hover:scale-110 hover:shadow-lg"
+											class="flex justify-center ml-2 mt-2 mr-2 items-center w-10 h-10 p-2 border rounded-lg border-gray-100 shadow bg-green-500 transition-transform transform hover:scale-110 hover:shadow-lg"
 										>
 											<img
 												src="assets/images/icon/gps.png"
@@ -404,7 +253,7 @@
 													!vehicle.vehicle_status
 														.engine_on
 											}"
-											class="flex justify-center ml-2 mt-2 mr-2 items-center w-12 h-12 border rounded-lg border-gray-100 shadow bg-white transition-transform transform hover:scale-110 hover:shadow-lg"
+											class="flex justify-center ml-2 mt-2 mr-2 items-center w-10 h-10 p-2 border rounded-lg border-gray-100 shadow bg-white transition-transform transform hover:scale-110 hover:shadow-lg"
 										>
 											<img
 												src="assets/images/icon/alerte.png"
@@ -431,7 +280,7 @@
 													!vehicle.vehicle_status
 														.engine_on
 											}"
-											class="flex justify-center ml-2 mt-2 mr-2 items-center w-12 h-12 border rounded-lg border-gray-100 shadow bg-white transition-transform transform hover:scale-110 hover:shadow-lg"
+											class="flex justify-center ml-2 mt-2 mr-2 items-center w-10 h-10 p-2 border rounded-lg border-gray-100 shadow bg-white transition-transform transform hover:scale-110 hover:shadow-lg"
 										>
 											<img
 												src="assets/images/icon/edit.png"
@@ -485,6 +334,168 @@
 				</li>
 			</ul>
 		</nav>
+	</div>
+	<!-- modale ajout de véhicule -->
+	<div
+		*ngIf="isVehicleModalOpen"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+	>
+		<div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+			<!-- En-tête de la modale -->
+			<div class="flex justify-between items-center border-b pb-3">
+				<h3 class="text-lg text-gray-500 font-semibold">
+					Nouveau véhicule
+				</h3>
+				<button
+					(click)="closeVehicleModal()"
+					class="text-gray-500 hover:text-gray-700"
+				>
+					<span class="text-2xl font-bold">&times;</span>
+				</button>
+			</div>
+
+			<!-- Formulaire d'ajout de véhicule -->
+			<form (submit)="addVehicle()">
+				<div class="mt-4">
+					<!-- Champ pour la plaque d'immatriculation -->
+					<div>
+						<label class="block text-sm font-medium text-gray-700"
+							>Plaque d'immatriculation</label
+						>
+						<input
+							type="text"
+							[(ngModel)]="
+								newVehicle.vehicle_informations.license_plate
+							"
+							name="license_plate"
+							class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+							placeholder="Ex: AN-256-CN"
+							required
+						/>
+					</div>
+
+					<!-- Autres champs de saisie du formulaire -->
+					<!-- Ajoutez chaque champ selon vos besoins, par exemple : -->
+					<div>
+						<label class="block text-sm font-medium text-gray-700"
+							>Fabricant</label
+						>
+						<input
+							type="text"
+							[(ngModel)]="
+								newVehicle.vehicle_informations.manufacturer
+							"
+							name="manufacturer"
+							class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+							placeholder="Ex: Peugeot"
+							required
+						/>
+					</div>
+					<!-- Champ du modèle du véhicule -->
+					<div>
+						<label class="block text-sm font-medium text-gray-700"
+							>Modèle</label
+						>
+						<input
+							type="text"
+							[(ngModel)]="
+								newVehicle.vehicle_informations.car_model
+							"
+							name="car_model"
+							class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+							placeholder="Ex: 207"
+							required
+						/>
+					</div>
+
+					<!-- Champ pour la couleur du véhicule -->
+					<div>
+						<label class="block text-sm font-medium text-gray-700"
+							>Couleur</label
+						>
+						<input
+							type="text"
+							[(ngModel)]="newVehicle.vehicle_informations.color"
+							name="color"
+							class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+							placeholder="Ex: Blanc"
+						/>
+					</div>
+
+					<!-- Année et capacité du véhicule -->
+					<div>
+						<label class="block text-sm font-medium text-gray-700"
+							>Année</label
+						>
+						<input
+							type="number"
+							[(ngModel)]="newVehicle.vehicle_informations.year"
+							name="year"
+							class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+							placeholder="Ex: 2023"
+						/>
+					</div>
+
+					<div>
+						<label class="block text-sm font-medium text-gray-700"
+							>Capacité</label
+						>
+						<input
+							type="number"
+							[(ngModel)]="
+								newVehicle.vehicle_informations.capacity
+							"
+							name="capacity"
+							class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+							placeholder="Ex: 4"
+						/>
+					</div>
+				</div>
+
+				<div>
+					<label class="block text-sm font-medium text-gray-700"
+						>Employé</label
+					>
+					<input
+						type="text"
+						[(ngModel)]="newVehicle.assigned_employee.employee_id"
+						name="employee_id"
+						class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+						placeholder=""
+					/>
+				</div>
+
+				<div>
+					<label class="block text-sm font-medium text-gray-700"
+						>N°GPS Tracker</label
+					>
+					<input
+						type="text"
+						[(ngModel)]="newVehicle.gps_tracker_number"
+						name="gps_tracker_number"
+						class="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full text-bDark"
+						placeholder=""
+					/>
+				</div>
+
+				<!-- Boutons de soumission et d'annulation -->
+				<div class="flex justify-end mt-6">
+					<button
+						type="button"
+						(click)="closeVehicleModal()"
+						class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg mr-3"
+					>
+						Annuler
+					</button>
+					<button
+						type="submit"
+						class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+					>
+						Ajouter
+					</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 <!-- <app-vehicle-table></app-vehicle-table> -->

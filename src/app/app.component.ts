@@ -9,28 +9,34 @@ export class AppComponent {
 	autoGpsEnabled: boolean = false;
 	isVehicleModalOpen: boolean = false;
 
+	// FAKE DATA
 	newVehicle = {
+		showDetails: true,
+		options: {
+			autoGpsEnabled: false,
+		},
+		gps_tracker_number: '600000011',
 		vehicle_informations: {
-			license_plate: '',
-			year: null,
-			capacity: null,
-			color: '',
-			manufacturer: '',
-			car_model: '',
+			license_plate: 'OO-000-OO',
+			year: 2022,
+			capacity: 4,
+			color: 'red',
+			manufacturer: 'ford',
+			car_model: 'focus',
 		},
 		assigned_employee: {
-			employee_id: null,
-			name: '',
-			role: '',
-			phone_number: '',
-			email: '',
+			employee_id: 1,
+			name: 'test',
+			role: 'chauffeur',
+			phone_number: '+33600000054',
+			email: 'test.test@locate-them.fr',
 		},
 		vehicle_status: {
 			engine_on: false,
 			current_location: {
-				latitude: null,
-				longitude: null,
-				timestamp: '',
+				latitude: 43.6045,
+				longitude: 1.444,
+				timestamp: '2024-10-29T13:55:00.808Z',
 			},
 		},
 	};
@@ -41,6 +47,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000001',
 			vehicle_informations: {
 				license_plate: 'AB-123-CD',
 				year: 2012,
@@ -70,6 +77,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000002',
 			vehicle_informations: {
 				license_plate: 'XY-456-ZT',
 				year: 2016,
@@ -99,6 +107,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000003',
 			vehicle_informations: {
 				license_plate: 'ZX-789-BY',
 				year: 2020,
@@ -128,6 +137,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000004',
 			vehicle_informations: {
 				license_plate: 'MN-654-RD',
 				year: 2018,
@@ -157,6 +167,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000005',
 			vehicle_informations: {
 				license_plate: 'QR-852-JK',
 				year: 2015,
@@ -186,6 +197,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000006',
 			vehicle_informations: {
 				license_plate: 'LP-963-QW',
 				year: 2014,
@@ -215,6 +227,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000007',
 			vehicle_informations: {
 				license_plate: 'TS-741-GF',
 				year: 2021,
@@ -244,6 +257,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000008',
 			vehicle_informations: {
 				license_plate: 'GH-258-RL',
 				year: 2019,
@@ -273,6 +287,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000009',
 			vehicle_informations: {
 				license_plate: 'BL-369-VC',
 				year: 2017,
@@ -302,6 +317,7 @@ export class AppComponent {
 			options: {
 				autoGpsEnabled: false,
 			},
+			gps_tracker_number: '600000010',
 			vehicle_informations: {
 				license_plate: 'ZR-147-WD',
 				year: 2023,
@@ -346,6 +362,11 @@ export class AppComponent {
 
 	closeVehicleModal() {
 		this.newVehicle = {
+			showDetails: true,
+			options: {
+				autoGpsEnabled: false,
+			},
+			gps_tracker_number: '',
 			vehicle_informations: {
 				license_plate: '',
 				year: null,
@@ -375,6 +396,8 @@ export class AppComponent {
 
 	addVehicle() {
 		console.log('Véhicule ajouté:', this.newVehicle);
+		this.vehicles.push(this.newVehicle);
+		console.log(this.vehicles);
 		this.closeVehicleModal();
 	}
 }

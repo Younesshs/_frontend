@@ -5,7 +5,7 @@ import { Icon, latLng, LatLng, marker, tileLayer } from 'leaflet';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
-	selector: 'leafletCoreDemo',
+	selector: 'app-leaflet-core-demo',
 	templateUrl: './core-demo.component.html',
 })
 export class LeafletCoreDemoComponent implements OnInit {

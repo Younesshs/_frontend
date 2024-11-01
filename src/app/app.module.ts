@@ -4,6 +4,7 @@ import {
 } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 
 import { LeafletModule } from 'projects/ngx-leaflet/src/public-api';
 
@@ -15,7 +16,12 @@ import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 import { NavigationComponent } from './navigation/navigation.component';
 
 @NgModule({
-	declarations: [AppComponent, LeafletMapComponent, NavigationComponent],
+	declarations: [
+		AppComponent,
+		LeafletMapComponent,
+		NavigationComponent,
+		VehicleListComponent,
+	],
 	imports: [
 		LeafletModule,
 		BrowserModule,

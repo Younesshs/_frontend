@@ -4,6 +4,7 @@ import {
 } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { VehicleAddModalComponent } from './vehicle-add-modal/vehicle-add-modal.component';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 
 import { LeafletModule } from 'projects/ngx-leaflet/src/public-api';
@@ -14,6 +15,7 @@ import { PageLoaderComponent } from './_shared/page-loader/page-loader.component
 import { AppComponent } from './app.component';
 import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { VehicleCardComponent } from './vehicle-card/vehicle-card.component';
 
 @NgModule({
 	declarations: [
@@ -21,6 +23,8 @@ import { NavigationComponent } from './navigation/navigation.component';
 		LeafletMapComponent,
 		NavigationComponent,
 		VehicleListComponent,
+		VehicleCardComponent,
+		VehicleAddModalComponent,
 	],
 	imports: [
 		LeafletModule,

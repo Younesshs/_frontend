@@ -4,7 +4,6 @@ import { Component, Input } from '@angular/core';
 	selector: 'app-vehicle-list',
 	standalone: false,
 	templateUrl: './vehicle-list.component.html',
-	styleUrl: './vehicle-list.component.scss',
 })
 export class VehicleListComponent {
 	@Input() vehicles!: any[];
@@ -45,45 +44,41 @@ export class VehicleListComponent {
 		this.isVehicleModalOpen = true;
 	}
 
-	closeVehicleModal() {
-		this.newVehicle = {
-			showDetails: true,
-			options: {
-				autoGpsEnabled: false,
-			},
-			gps_tracker_number: '',
-			vehicle_informations: {
-				license_plate: '',
-				year: null,
-				capacity: null,
-				color: '',
-				manufacturer: '',
-				car_model: '',
-			},
-			assigned_employee: {
-				employee_id: null,
-				name: '',
-				role: '',
-				phone_number: '',
-				email: '',
-			},
-			vehicle_status: {
-				engine_on: false,
-				current_location: {
-					latitude: null,
-					longitude: null,
-					timestamp: '',
-				},
-			},
-		};
-		this.isVehicleModalOpen = false;
-	}
+	// closeVehicleModal() {
+	// 	this.newVehicle = {
+	// 		showDetails: true,
+	// 		options: {
+	// 			autoGpsEnabled: false,
+	// 		},
+	// 		gps_tracker_number: '',
+	// 		vehicle_informations: {
+	// 			license_plate: '',
+	// 			year: null,
+	// 			capacity: null,
+	// 			color: '',
+	// 			manufacturer: '',
+	// 			car_model: '',
+	// 		},
+	// 		assigned_employee: {
+	// 			employee_id: null,
+	// 			name: '',
+	// 			role: '',
+	// 			phone_number: '',
+	// 			email: '',
+	// 		},
+	// 		vehicle_status: {
+	// 			engine_on: false,
+	// 			current_location: {
+	// 				latitude: null,
+	// 				longitude: null,
+	// 				timestamp: '',
+	// 			},
+	// 		},
+	// 	};
+	// 	this.isVehicleModalOpen = false;
+	// }
 
 	toggleDetails(vehicle: any) {
 		vehicle.showDetails = !vehicle.showDetails;
-	}
-
-	toggleGps(vehicle: any) {
-		vehicle.options.autoGpsEnabled = !vehicle.options.autoGpsEnabled;
 	}
 }

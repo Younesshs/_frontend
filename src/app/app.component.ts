@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LoaderService } from './_services/loader.service';
+import { ModalsService } from './_services/modals.service';
 import { NavigationService } from './_services/navigation.service';
 import { VehicleService } from './_services/vehicle.service';
 
@@ -7,8 +9,8 @@ import { VehicleService } from './_services/vehicle.service';
 	templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
+	startLoading: number = 2000;
 	autoGpsEnabled: boolean = false;
-	isVehicleModalOpen: boolean = false;
 
 	// FAKE DATA
 	newVehicle = {
@@ -45,90 +47,49 @@ export class AppComponent implements OnInit {
 	vehicles: any[] = [];
 	show: boolean = false;
 
+	get isPageLoader(): boolean {
+		return this.LoaderService.isPageLoader;
+	}
+
 	get navigationIsOpen(): boolean {
 		return this.NavigationService.navigationIsOpen;
 	}
 
+	get isVehicleAddModalOpen(): boolean {
+		return this.ModalsService.isVehicleAddModalOpen;
+	}
+
 	constructor(
 		private VehicleService: VehicleService,
-		private NavigationService: NavigationService
+		private NavigationService: NavigationService,
+		private LoaderService: LoaderService,
+		private ModalsService: ModalsService
 	) {}
 
 	ngOnInit() {
+		this.LoaderService.loadingPageOn();
 		this.getVehicles();
-		// Système de mise a jour des markers (en récupérer les vehicles ou gps tracker enabled)
 		setTimeout(() => {
 			this.show = true;
-		}, 1000);
+			this.LoaderService.loadingPageOff();
+		}, this.startLoading);
 	}
 
 	getVehicles() {
-		this.VehicleService.getAllVehicles().subscribe(
-			(data: any[]) => {
+		this.VehicleService.getAllVehicles().subscribe({
+			next: (data: any[]) => {
 				this.vehicles = data;
 			},
-			(error) => {
+			error: (error) => {
 				console.error(
 					'Erreur lors de la récupération des véhicules :',
 					error
 				);
-			}
-		);
-	}
-
-	toggleDetails(vehicle: any) {
-		vehicle.showDetails = !vehicle.showDetails;
+			},
+		});
 	}
 
 	toggleNavigation() {
 		this.NavigationService.toggleNavigationIsOpen();
-	}
-
-	toggleGps(vehicle: any) {
-		vehicle.options.autoGpsEnabled = !vehicle.options.autoGpsEnabled;
-	}
-
-	openVehicleModal() {
-		this.isVehicleModalOpen = true;
-	}
-
-	closeVehicleModal() {
-		this.newVehicle = {
-			showDetails: true,
-			options: {
-				autoGpsEnabled: false,
-			},
-			gps_tracker_number: '',
-			vehicle_informations: {
-				license_plate: '',
-				year: null,
-				capacity: null,
-				color: '',
-				manufacturer: '',
-				car_model: '',
-			},
-			assigned_employee: {
-				employee_id: null,
-				name: '',
-				role: '',
-				phone_number: '',
-				email: '',
-			},
-			vehicle_status: {
-				engine_on: false,
-				current_location: {
-					latitude: null,
-					longitude: null,
-					timestamp: '',
-				},
-			},
-		};
-		this.isVehicleModalOpen = false;
-	}
-
-	addVehicle() {
-		console.log('Véhicule ajouté:', this.newVehicle);
-		this.vehicles.push(this.newVehicle);
-		this.closeVehicleModal();
 	}
 }

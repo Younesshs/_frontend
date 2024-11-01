@@ -25,7 +25,40 @@
 <!-- Contenu de la navigation -->
 <nav class="p-4 space-y-6">
 	<hr class="bg-white" />
-	<app-vehicle-list [vehicles]="vehicles"></app-vehicle-list>
+
+	<ul class="space-y-4">
+		<li>
+			<a
+				href="#"
+				class="flex items-center space-x-3 text-gray-200 hover:no-underline hover:text-gray-400"
+			>
+				<img
+					src="assets/images/icon/vehicles.png"
+					alt="Favoris"
+					class="w-6 h-6"
+				/>
+				<span>Mes véhicules</span>
+			</a>
+
+			<!-- Bouton pour ajouter un nouveau véhicule -->
+			<div class="flex justify-center items-center mt-2">
+				<button
+					(click)="openVehicleAddModal()"
+					class="flex items-center px-3 py-1 bg-bLight text-bDark rounded-lg hover:bg-gray-100 transition-colors duration-200 ease-in-out"
+				>
+					<img
+						src="assets/images/icon/plus.png"
+						alt="Ajouter"
+						class="w-4 h-4 mr-3 mt-0.5"
+					/>
+					<span>Ajouter un véhicule</span>
+				</button>
+			</div>
+
+			<app-vehicle-list [vehicles]="vehicles"></app-vehicle-list>
+		</li>
+	</ul>
+
 	<ul class="space-y-4">
 		<li>
 			<a

@@ -337,4 +337,11 @@ export class VehicleService {
 	getAllVehicleLocations(): Observable<any> {
 		return this.http.get(`${this.apiUrl}/locations`);
 	}
+
+	addVehicle(newVehicle: any) {
+		console.log('Véhicule ajouté:', newVehicle);
+		this.vehicles.push(newVehicle);
+		return of({ message: 'véhicule ajouté', result: true });
+		// return this.http.post(`${this.apiUrl}/add`, newVehicle);
+	}
 }

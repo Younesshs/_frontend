@@ -12,9 +12,10 @@ import { VehicleService } from './_services/vehicle.service';
 import { PageLoaderComponent } from './_shared/page-loader/page-loader.component';
 import { AppComponent } from './app.component';
 import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 @NgModule({
-	declarations: [AppComponent, LeafletMapComponent],
+	declarations: [AppComponent, LeafletMapComponent, NavigationComponent],
 	imports: [
 		LeafletModule,
 		BrowserModule,

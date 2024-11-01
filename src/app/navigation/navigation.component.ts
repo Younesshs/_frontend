@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationService } from './_services/navigation.service';
-import { VehicleService } from './_services/vehicle.service';
+import { Component, Input } from '@angular/core';
+import { NavigationService } from '../_services/navigation.service';
 
 @Component({
-	selector: 'app-root',
-	templateUrl: './app.component.html',
+	selector: 'app-navigation',
+	standalone: false,
+	templateUrl: './navigation.component.html',
 })
-export class AppComponent implements OnInit {
-	autoGpsEnabled: boolean = false;
+export class NavigationComponent {
+	@Input() vehicles!: any[];
 	isVehicleModalOpen: boolean = false;
 
-	// FAKE DATA
+	constructor(private NavigationService: NavigationService) {}
+
 	newVehicle = {
 		showDetails: true,
 		options: {
@@ -42,50 +43,16 @@ export class AppComponent implements OnInit {
 		},
 	};
 
-	vehicles: any[] = [];
-	show: boolean = false;
-
-	get navigationIsOpen(): boolean {
-		return this.NavigationService.navigationIsOpen;
-	}
-
-	constructor(
-		private VehicleService: VehicleService,
-		private NavigationService: NavigationService
-	) {}
-
-	ngOnInit() {
-		this.getVehicles();
-		// Système de mise a jour des markers (en récupérer les vehicles ou gps tracker enabled)
-		setTimeout(() => {
-			this.show = true;
-		}, 1000);
-	}
-
-	getVehicles() {
-		this.VehicleService.getAllVehicles().subscribe(
-			(data: any[]) => {
-				this.vehicles = data;
-			},
-			(error) => {
-				console.error(
-					'Erreur lors de la récupération des véhicules :',
-					error
-				);
-			}
-		);
-	}
-
 	toggleDetails(vehicle: any) {
 		vehicle.showDetails = !vehicle.showDetails;
 	}
 
-	toggleNavigation() {
-		this.NavigationService.toggleNavigationIsOpen();
-	}
-
 	toggleGps(vehicle: any) {
 		vehicle.options.autoGpsEnabled = !vehicle.options.autoGpsEnabled;
+	}
+
+	toggleNavigationIsOpen() {
+		this.NavigationService.toggleNavigationIsOpen();
 	}
 
 	openVehicleModal() {
@@ -124,11 +91,5 @@ export class AppComponent implements OnInit {
 			},
 		};
 		this.isVehicleModalOpen = false;
-	}
-
-	addVehicle() {
-		console.log('Véhicule ajouté:', this.newVehicle);
-		this.vehicles.push(this.newVehicle);
-		this.closeVehicleModal();
 	}
 }

@@ -48,18 +48,15 @@ export class AppComponent implements OnInit {
 	constructor(private VehicleService: VehicleService) {}
 
 	ngOnInit() {
-		// Primarily for debugging
+		this.getVehicles();
+		// Système de mise a jour des markers (en récupérer les vehicles ou gps tracker enabled)
 		setTimeout(() => {
 			this.show = true;
-			this.getVehicles();
-			// Input(service no component parent ou faire le changement récupérer uniquement leaflet core et pas le reste) des vehicles vers la map
-			// Système de mise a jour des markers (en récupérer les vehicles ou gps tracker enabled)
-			console.log(this.vehicles);
 		}, 1000);
 	}
 
 	getVehicles() {
-		this.VehicleService.getVehicles().subscribe(
+		this.VehicleService.getAllVehicles().subscribe(
 			(data: any[]) => {
 				this.vehicles = data;
 			},
@@ -125,7 +122,6 @@ export class AppComponent implements OnInit {
 	addVehicle() {
 		console.log('Véhicule ajouté:', this.newVehicle);
 		this.vehicles.push(this.newVehicle);
-		console.log(this.vehicles);
 		this.closeVehicleModal();
 	}
 }

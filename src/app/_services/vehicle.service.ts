@@ -1,16 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { LatLng } from 'leaflet';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LeafletData } from '../_models/leaflet-data';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class VehicleService {
-	private apiUrl = environment.backendUrl;
-
-	leafletData!: LeafletData;
+	private readonly apiUrl = `${environment.backendUrl}/vehicle`;
 
 	vehicles = [
 		{
@@ -37,8 +35,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.6045,
-					longitude: 1.444,
+					latitude: 43.61683968706096,
+					longitude: 1.3959503173828125,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -67,8 +65,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.6037,
-					longitude: 1.452,
+					latitude: 43.61671932350833,
+					longitude: 1.3961327075958254,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -97,8 +95,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.6087,
-					longitude: 1.443,
+					latitude: 43.61652130552657,
+					longitude: 1.396395564079285,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -127,8 +125,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.607,
-					longitude: 1.45,
+					latitude: 43.54995983738993,
+					longitude: 1.384309530258179,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -157,8 +155,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.599,
-					longitude: 1.437,
+					latitude: 43.47184765950205,
+					longitude: 1.3006675243377688,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -187,8 +185,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.612,
-					longitude: 1.448,
+					latitude: 43.471987772819844,
+					longitude: 1.3006675243377688,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -217,8 +215,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.605,
-					longitude: 1.441,
+					latitude: 43.471979988755145,
+					longitude: 1.3008069992065432,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -247,8 +245,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.609,
-					longitude: 1.453,
+					latitude: 43.59120399281036,
+					longitude: 1.45344614982605,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -277,8 +275,8 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.61,
-					longitude: 1.447,
+					latitude: 43.59120787715653,
+					longitude: 1.453365683555603,
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -307,8 +305,9 @@ export class VehicleService {
 			vehicle_status: {
 				engine_on: false,
 				current_location: {
-					latitude: 43.611,
-					longitude: 1.439,
+					latitude: 43.59080390381378,
+					longitude: 1.4540845155715945,
+
 					timestamp: '2024-10-29T13:55:00.808Z',
 				},
 			},
@@ -317,44 +316,25 @@ export class VehicleService {
 
 	constructor(private http: HttpClient) {}
 
-	_updateLeafletData(
-		url?: string,
-		attribution?: string,
-		zoom?: number,
-		zoomLevels?: number[],
-		lat?: number,
-		lng?: number
-	): void {
-		const updatedData = {
-			url: url ?? this.leafletData.url,
-			attribution: attribution ?? this.leafletData.attribution,
-			zoom: zoom ?? this.leafletData.zoom,
-			zoomLevels: zoomLevels ?? this.leafletData.zoomLevels,
-			lat: lat ?? this.leafletData.lat,
-			lng: lng ?? this.leafletData.lng,
-		};
-
-		this.leafletData = { ...this.leafletData, ...updatedData };
+	updateMapData(zoomLevel: number, center: LatLng): void {
+		console.log('Zoom Level:', zoomLevel);
+		console.log('Center:', center);
 	}
 
-	_getLeafletData(): LeafletData {
-		return this.leafletData;
-	}
-
-	getVehicles(): Observable<any> {
+	getAllVehicles(): Observable<any> {
 		return of(this.vehicles);
-		// return this.http.get(`${this.apiUrl}/vehicle/all`);
+		// return this.http.get(`${this.apiUrl}/all`);
 	}
 
-	getVehicle(vehicleId: any): Observable<any> {
-		return this.http.get(`${this.apiUrl}/vehicle/${vehicleId}`);
+	getVehicleById(vehicleId: number): Observable<any> {
+		return this.http.get(`${this.apiUrl}/${vehicleId}`);
 	}
 
-	getLocation(vehicleId: any): Observable<any> {
-		return this.http.get(`${this.apiUrl}/vehicle/${vehicleId}/location`);
+	getVehicleLocation(vehicleId: number): Observable<any> {
+		return this.http.get(`${this.apiUrl}/${vehicleId}/location`);
 	}
 
-	getLocations(): Observable<any> {
-		return this.http.get(`${this.apiUrl}/vehicle/locations`);
+	getAllVehicleLocations(): Observable<any> {
+		return this.http.get(`${this.apiUrl}/locations`);
 	}
 }

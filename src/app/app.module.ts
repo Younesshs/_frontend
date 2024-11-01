@@ -11,15 +11,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VehicleService } from './_services/vehicle.service';
 import { PageLoaderComponent } from './_shared/page-loader/page-loader.component';
 import { AppComponent } from './app.component';
-import { LeafletCoreDemoComponent } from './core-demo/core-demo.component';
+import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 import { VehicleTableComponent } from './vehicle-table/vehicle-table.component';
 
 @NgModule({
-	declarations: [AppComponent, LeafletCoreDemoComponent],
+	declarations: [AppComponent, LeafletMapComponent],
 	imports: [
 		LeafletModule,
 		BrowserModule,
-		// LeafletDemoModule,
 		VehicleTableComponent,
 		PageLoaderComponent,
 		FormsModule,

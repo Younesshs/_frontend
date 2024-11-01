@@ -8,7 +8,7 @@
 			}"
 			class="h-full relative"
 		>
-			<app-leaflet-core-demo></app-leaflet-core-demo>
+			<app-leaflet-map [vehicles]="vehicles"></app-leaflet-map>
 			<button
 				*ngIf="!navigationIsOpen"
 				(click)="toggleNavigation()"

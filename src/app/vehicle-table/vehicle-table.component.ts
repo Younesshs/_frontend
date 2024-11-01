@@ -14,7 +14,7 @@ export class VehicleTableComponent {
 	constructor(private VehicleService: VehicleService) {}
 
 	ngOnInit(): void {
-		this.VehicleService.getVehicles().subscribe({
+		this.VehicleService.getAllVehicles().subscribe({
 			next: (data: any) => {
 				this.vehicles = data;
 			},

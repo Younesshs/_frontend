@@ -49,14 +49,15 @@ export class LeafletMapComponent implements OnInit {
 				iconSize: [25, 41],
 				iconAnchor: [12, 41],
 				popupAnchor: [1, -34],
+				className: 'custom-popup',
 			}),
 		}).bindPopup(`
-			<p><strong>Véhicule:</strong> ${vehicle.vehicleInformations.licensePlate}</p>
-			<p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
-			<p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
+				<p><strong>Véhicule:</strong> ${vehicle.vehicleInformations.licensePlate}</p>
+				<p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
+				<p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
 			vehicle.vehicleInformations.model
 		}</p>
-			<p><strong>Position:</strong> [${latitude.toFixed(6)}, ${longitude.toFixed(
+				<p><strong>Position:</strong> [${latitude.toFixed(6)}, ${longitude.toFixed(
 			6
 		)}]</p>
 		`);

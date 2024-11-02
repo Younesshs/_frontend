@@ -7,4 +7,5 @@
 	[leafletCenter]="currentCenter"
 	(leafletCenterChange)="onMapCenterChange($event)"
 	[leafletLayers]="vehicleMarkers"
+	(leafletMapReady)="onMapReady($event)"
 ></div>

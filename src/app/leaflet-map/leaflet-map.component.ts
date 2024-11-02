@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { VehicleService } from 'src/app/_services/vehicle.service';
+import { MapCommunicationService } from './../_services/map-communication.service';
 
-import { icon, latLng, LatLng, marker, Marker, tileLayer } from 'leaflet';
+import { icon, latLng, LatLng, Map, marker, Marker, tileLayer } from 'leaflet';
 import { Vehicle } from '../_models/vehicle';
 
 @Component({
@@ -11,6 +12,8 @@ import { Vehicle } from '../_models/vehicle';
 export class LeafletMapComponent implements OnInit {
 	@Input() vehicles: Vehicle[] = [];
 	vehicleMarkers: Marker[] = [];
+	private map!: Map;
+	private isNavigatedZoom = false;
 
 	mapOptions = {
 		layers: [
@@ -18,7 +21,7 @@ export class LeafletMapComponent implements OnInit {
 				attribution: 'Open Street Map',
 			}),
 		],
-		zoom: 15,
+		zoom: 12,
 		center: latLng([43.604145106074895, 1.444]),
 	};
 
@@ -26,10 +29,34 @@ export class LeafletMapComponent implements OnInit {
 	currentZoomLevel: number = this.mapOptions.zoom;
 	currentCenter: LatLng = this.mapOptions.center;
 
-	constructor(private vehicleService: VehicleService) {}
+	constructor(
+		private vehicleService: VehicleService,
+		private MapCommunicationService: MapCommunicationService
+	) {}
 
 	ngOnInit(): void {
 		this.initializeVehicleMarkers();
+		this.MapCommunicationService.focusMarker$.subscribe(
+			({ center, zoomLevel }) => {
+				this.isNavigatedZoom = true; // Marqueur de zoom via navigation
+				this.focusOnMap(center, zoomLevel);
+			}
+		);
+	}
+
+	onMapReady(map: Map) {
+		this.map = map;
+	}
+
+	private focusOnMap(center: LatLng, zoomLevel: number): void {
+		if (this.map) {
+			this.map.setView(center, zoomLevel, {
+				animate: true,
+				duration: 2,
+				easeLinearity: 0.1,
+			});
+		}
+		this.isNavigatedZoom = false; // Reset le flag après recentrage
 	}
 
 	private initializeVehicleMarkers(): void {
@@ -43,7 +70,7 @@ export class LeafletMapComponent implements OnInit {
 		const color = vehicle.vehicleInformations.color.toLowerCase();
 		const iconUrl = `../../assets/images/icon/car_icons/${color}.png`;
 
-		return marker([latitude, longitude], {
+		const vehicleMarker = marker([latitude, longitude], {
 			icon: icon({
 				iconUrl: iconUrl,
 				iconSize: [25, 41],
@@ -52,15 +79,27 @@ export class LeafletMapComponent implements OnInit {
 				className: 'custom-popup',
 			}),
 		}).bindPopup(`
-				<p><strong>Véhicule:</strong> ${vehicle.vehicleInformations.licensePlate}</p>
-				<p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
-				<p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
+      <p><strong>Véhicule:</strong> ${
+			vehicle.vehicleInformations.licensePlate
+		}</p>
+      <p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
+      <p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
 			vehicle.vehicleInformations.model
 		}</p>
-				<p><strong>Position:</strong> [${latitude.toFixed(6)}, ${longitude.toFixed(
+      <p><strong>Position:</strong> [${latitude.toFixed(
 			6
-		)}]</p>
-		`);
+		)}, ${longitude.toFixed(6)}]</p>
+    `);
+
+		// Clic sur le marqueur pour centrer et zoomer
+		vehicleMarker.on('click', () => {
+			if (!this.isNavigatedZoom) {
+				// Assure que le clic direct fonctionne
+				this.focusOnMap(vehicleMarker.getLatLng(), 18);
+			}
+		});
+
+		return vehicleMarker;
 	}
 
 	private updateMap(

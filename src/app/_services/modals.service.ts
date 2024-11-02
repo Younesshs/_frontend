@@ -4,15 +4,17 @@ import { Injectable } from '@angular/core';
 	providedIn: 'root',
 })
 export class ModalsService {
-	isVehicleAddModalOpen: boolean = false;
+	private vehicleAddModalOpen: boolean = false;
 
-	constructor() {}
-
-	openVehicleAddModal() {
-		this.isVehicleAddModalOpen = true;
+	get isVehicleAddModalOpen(): boolean {
+		return this.vehicleAddModalOpen;
 	}
 
-	closeVehicleAddModal() {
-		this.isVehicleAddModalOpen = false;
+	openVehicleAddModal(): void {
+		this.vehicleAddModalOpen = true;
+	}
+
+	closeVehicleAddModal(): void {
+		this.vehicleAddModalOpen = false;
 	}
 }

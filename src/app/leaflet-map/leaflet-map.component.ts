@@ -2,15 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { VehicleService } from 'src/app/_services/vehicle.service';
 
 import { icon, latLng, LatLng, marker, Marker, tileLayer } from 'leaflet';
+import { Vehicle } from '../_models/vehicle';
 
 @Component({
 	selector: 'app-leaflet-map',
 	templateUrl: './leaflet-map.component.html',
 })
 export class LeafletMapComponent implements OnInit {
-	@Input() vehicles!: any[];
+	@Input() vehicles: Vehicle[] = [];
 	vehicleMarkers: Marker[] = [];
-	autoUpdateEnabled: boolean = false;
 
 	mapOptions = {
 		layers: [
@@ -18,62 +18,64 @@ export class LeafletMapComponent implements OnInit {
 				attribution: 'Open Street Map',
 			}),
 		],
-		zoom: 12,
+		zoom: 15,
 		center: latLng([43.604145106074895, 1.444]),
 	};
 
-	zoomLevels = Array.from({ length: 14 }, (_, i) => i + 1);
-	currentZoomLevel = this.mapOptions.zoom;
-	currentCenter = this.mapOptions.center;
+	zoomLevels: number[] = Array.from({ length: 14 }, (_, i) => i + 1);
+	currentZoomLevel: number = this.mapOptions.zoom;
+	currentCenter: LatLng = this.mapOptions.center;
 
-	constructor(private VehicleService: VehicleService) {}
+	constructor(private vehicleService: VehicleService) {}
 
-	ngOnInit() {
-		setTimeout(() => {
-			this.placeVehicleMarkers();
-		}, 1000);
+	ngOnInit(): void {
+		this.initializeVehicleMarkers();
 	}
 
-	private placeVehicleMarkers(): void {
-		this.vehicleMarkers = this.vehicles.map((vehicle) => {
-			const { latitude, longitude } =
-				vehicle.vehicle_status.current_location;
-			const color = vehicle.vehicle_informations.color.toLowerCase();
-
-			const iconUrl = `../../assets/images/icon/car_icons/${color}.png`;
-
-			return marker([latitude, longitude], {
-				icon: icon({
-					iconUrl: iconUrl,
-					iconSize: [25, 41],
-					iconAnchor: [12, 41],
-					popupAnchor: [1, -34],
-				}),
-			}).bindPopup(`
-				<p><strong>Véhicule:</strong> ${vehicle.vehicle_informations.license_plate}</p>
-				<p><strong>Chauffeur:</strong> ${vehicle.assigned_employee.name}</p>
-				<p><strong>Modèle:</strong> ${vehicle.vehicle_informations.manufacturer} ${
-				vehicle.vehicle_informations.car_model
-			}</p>
-				<p><strong>Position:</strong> [${latitude.toFixed(6)}, ${longitude.toFixed(
-				6
-			)}]</p>
-			`);
-		});
-	}
-
-	private updateMap(zoomLevel?: number, center?: LatLng): void {
-		this.VehicleService.updateMapData(
-			zoomLevel ?? this.currentZoomLevel,
-			center ?? this.currentCenter
+	private initializeVehicleMarkers(): void {
+		this.vehicleMarkers = this.vehicles.map((vehicle) =>
+			this.createVehicleMarker(vehicle)
 		);
 	}
 
+	private createVehicleMarker(vehicle: Vehicle): Marker {
+		const { latitude, longitude } = vehicle.vehicleStatus.currentLocation;
+		const color = vehicle.vehicleInformations.color.toLowerCase();
+		const iconUrl = `../../assets/images/icon/car_icons/${color}.png`;
+
+		return marker([latitude, longitude], {
+			icon: icon({
+				iconUrl: iconUrl,
+				iconSize: [25, 41],
+				iconAnchor: [12, 41],
+				popupAnchor: [1, -34],
+			}),
+		}).bindPopup(`
+			<p><strong>Véhicule:</strong> ${vehicle.vehicleInformations.licensePlate}</p>
+			<p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
+			<p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
+			vehicle.vehicleInformations.model
+		}</p>
+			<p><strong>Position:</strong> [${latitude.toFixed(6)}, ${longitude.toFixed(
+			6
+		)}]</p>
+		`);
+	}
+
+	private updateMap(
+		zoomLevel: number = this.currentZoomLevel,
+		center: LatLng = this.currentCenter
+	): void {
+		this.vehicleService.updateMapData(zoomLevel, center);
+	}
+
 	onMapCenterChange(newCenter: LatLng): void {
-		this.updateMap(this.currentZoomLevel, newCenter);
+		this.currentCenter = newCenter;
+		this.updateMap();
 	}
 
 	onZoomLevelChange(newZoomLevel: number): void {
-		this.updateMap(newZoomLevel);
+		this.currentZoomLevel = newZoomLevel;
+		this.updateMap();
 	}
 }

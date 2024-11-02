@@ -4,13 +4,16 @@ import { Injectable } from '@angular/core';
 	providedIn: 'root',
 })
 export class LoaderService {
-	isPageLoader: boolean = false;
+	private pageLoaderActive: boolean = false;
 
-	loadingPageOn() {
-		this.isPageLoader = true;
+	get isPageLoading(): boolean {
+		return this.pageLoaderActive;
+	}
+	enablePageLoading(): void {
+		this.pageLoaderActive = true;
 	}
 
-	loadingPageOff() {
-		this.isPageLoader = false;
+	disablePageLoading(): void {
+		this.pageLoaderActive = false;
 	}
 }

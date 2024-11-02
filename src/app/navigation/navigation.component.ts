@@ -15,11 +15,11 @@ export class NavigationComponent {
 		private ModalsService: ModalsService
 	) {}
 
-	toggleNavigationIsOpen() {
-		this.NavigationService.toggleNavigationIsOpen();
+	closeNavigation(): void {
+		this.NavigationService.closeNavigation();
 	}
 
-	openVehicleAddModal() {
+	openVehicleAddModal(): void {
 		this.ModalsService.openVehicleAddModal();
 	}
 }

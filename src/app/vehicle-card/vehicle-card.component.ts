@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Vehicle } from '../_models/vehicle';
 
 @Component({
 	selector: 'app-vehicle-card',
@@ -6,9 +7,10 @@ import { Component, Input } from '@angular/core';
 	templateUrl: './vehicle-card.component.html',
 })
 export class VehicleCardComponent {
-	@Input() vehicle!: any;
+	@Input() vehicle!: Vehicle;
 
-	toggleGps(vehicle: any) {
-		vehicle.options.autoGpsEnabled = !vehicle.options.autoGpsEnabled;
+	toggleGps(): void {
+		this.vehicle.options.autoGpsEnabled =
+			!this.vehicle.options.autoGpsEnabled;
 	}
 }

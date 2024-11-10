@@ -4,8 +4,8 @@
 		*ngFor="let vehicle of vehicles.slice().reverse()"
 		(click)="toggleDetails(vehicle)"
 		class="card bg-bLight text-bDark border border-gray-500 rounded-lg cursor-pointer transition-all duration-300 ease-in-out mb-1"
-		[class.h-19]="!vehicle.showDetails"
-		[class.h-auto]="vehicle.showDetails"
+		[class.h-19]="!vehicle.navigation.showDetails"
+		[class.h-auto]="vehicle.navigation.showDetails"
 	>
 		<app-vehicle-card [vehicle]="vehicle"></app-vehicle-card>
 	</div>

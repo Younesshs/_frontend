@@ -66,11 +66,11 @@ export class LeafletMapComponent implements OnInit {
 	}
 
 	private createVehicleMarker(vehicle: Vehicle): Marker {
-		const { latitude, longitude } = vehicle.vehicleStatus.currentLocation;
+		const { latitude, longitude } = vehicle.gpsTracker.lastLocation;
 		const color = vehicle.vehicleInformations.color.toLowerCase();
 		const iconUrl = `../../assets/images/icon/car_icons/${color}.png`;
 
-		const vehicleMarker = marker([latitude, longitude], {
+		const vehicleMarker = marker([Number(latitude), Number(longitude)], {
 			icon: icon({
 				iconUrl: iconUrl,
 				iconSize: [25, 41],
@@ -86,9 +86,10 @@ export class LeafletMapComponent implements OnInit {
       <p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
 			vehicle.vehicleInformations.model
 		}</p>
-      <p><strong>Position:</strong> [${latitude.toFixed(
-			6
-		)}, ${longitude.toFixed(6)}]</p>
+      <p><strong>Position:</strong> [${latitude.substring(
+			0,
+			7
+		)}, ${longitude.substring(0, 7)}]</p>
     `);
 
 		// Clic sur le marqueur pour centrer et zoomer

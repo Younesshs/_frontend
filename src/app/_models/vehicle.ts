@@ -1,10 +1,22 @@
 export interface Vehicle {
-	vehicleId: number;
-	showDetails: boolean;
+	navigation: {
+		showDetails: boolean;
+	};
 	options: {
 		autoGpsEnabled: boolean;
 	};
-	gpsTrackerNumber: string;
+	gpsTracker: {
+		initialLocation: {
+			latitude: string;
+			longitude: string;
+		};
+		lastLocation: {
+			latitude: string;
+			longitude: string;
+			timestamp: string;
+		};
+		number: string;
+	};
 	vehicleInformations: {
 		licensePlate: string;
 		year: number;
@@ -22,10 +34,5 @@ export interface Vehicle {
 	};
 	vehicleStatus: {
 		engineOn: boolean;
-		currentLocation: {
-			latitude: number;
-			longitude: number;
-			timestamp: string;
-		};
 	};
 }

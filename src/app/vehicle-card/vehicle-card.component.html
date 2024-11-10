@@ -16,7 +16,7 @@
 			[class.text-red-500]="!vehicle.options.autoGpsEnabled"
 			class="uppercase font-bold cursor-pointer"
 			style="font-size: 0.5rem"
-			[title]="vehicle.gpsTrackerNumber"
+			[title]="vehicle.gpsTracker.number"
 			>(Tracked{{ vehicle.options.autoGpsEnabled ? "" : " OFF" }})</span
 		>
 	</h3>
@@ -41,7 +41,7 @@
 
 <!-- Détails supplémentaires, affichés si la card est ouverte -->
 <div
-	*ngIf="vehicle.showDetails"
+	*ngIf="vehicle.navigation.showDetails"
 	class="p-2 border-t border-gray-300 text-xs text-gray-600 bg-gray-50"
 >
 	<p class="mb-1 font-semibold uppercase">
@@ -67,8 +67,8 @@
 	<p class="mb-1">
 		<span class="underline decoration-indigo-400">Localisation</span>
 		:
-		{{ vehicle.vehicleStatus.currentLocation.latitude }},
-		{{ vehicle.vehicleStatus.currentLocation.longitude }}
+		{{ vehicle.gpsTracker.lastLocation.latitude }},
+		{{ vehicle.gpsTracker.lastLocation.longitude }}
 	</p>
 	<p class="mb-1">
 		<span class="underline decoration-purple-400">Contact</span>
@@ -77,7 +77,7 @@
 	</p>
 	<p style="font-size: 0.5rem" class="mb-0.5 uppercase font-black">
 		n°gps tracker :
-		{{ vehicle.gpsTrackerNumber }}
+		{{ vehicle.gpsTracker.number }}
 	</p>
 	<hr class="m-1" />
 	<h3 class="text-xs">Actions véhicules :</h3>

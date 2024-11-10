@@ -11,12 +11,19 @@ import { VehicleService } from './../_services/vehicle.service';
 export class VehicleAddModalComponent {
 	// FAKE DATA COMPLETED
 	newVehicle: Vehicle = {
-		vehicleId: null,
-		showDetails: true,
+		navigation: { showDetails: true },
 		options: {
 			autoGpsEnabled: false,
 		},
-		gpsTrackerNumber: '600000011',
+		gpsTracker: {
+			initialLocation: { latitude: '1111', longitude: '44444' },
+			lastLocation: {
+				latitude: '1111',
+				longitude: '44444',
+				timestamp: '4444',
+			},
+			number: 'teltonika-20',
+		},
 		vehicleInformations: {
 			licensePlate: 'OO-000-OO',
 			year: 2022,
@@ -34,11 +41,6 @@ export class VehicleAddModalComponent {
 		},
 		vehicleStatus: {
 			engineOn: false,
-			currentLocation: {
-				latitude: 43.6045,
-				longitude: 1.444,
-				timestamp: '2024-10-29T13:55:00.808Z',
-			},
 		},
 	};
 
@@ -49,12 +51,24 @@ export class VehicleAddModalComponent {
 
 	resetForm(): void {
 		this.newVehicle = {
-			vehicleId: null,
-			showDetails: true,
+			navigation: {
+				showDetails: true,
+			},
 			options: {
 				autoGpsEnabled: false,
 			},
-			gpsTrackerNumber: '',
+			gpsTracker: {
+				initialLocation: {
+					latitude: '',
+					longitude: '',
+				},
+				lastLocation: {
+					latitude: '',
+					longitude: '',
+					timestamp: '',
+				},
+				number: '',
+			},
 			vehicleInformations: {
 				licensePlate: '',
 				year: null,
@@ -72,11 +86,6 @@ export class VehicleAddModalComponent {
 			},
 			vehicleStatus: {
 				engineOn: false,
-				currentLocation: {
-					latitude: null,
-					longitude: null,
-					timestamp: '',
-				},
 			},
 		};
 	}

@@ -14,9 +14,9 @@ export class VehicleListComponent {
 	constructor(private MapCommunicationService: MapCommunicationService) {}
 
 	toggleDetails(vehicle: Vehicle): void {
-		vehicle.showDetails = !vehicle.showDetails;
-		if (vehicle.showDetails) {
-			this.focusOnVehicle(vehicle.vehicleStatus.currentLocation);
+		vehicle.navigation.showDetails = !vehicle.navigation.showDetails;
+		if (vehicle.navigation.showDetails) {
+			this.focusOnVehicle(vehicle.gpsTracker.lastLocation);
 		}
 	}
 

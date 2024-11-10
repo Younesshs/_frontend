@@ -24,8 +24,12 @@ export class VehicleService {
 		this.vehicles = data;
 	}
 
-	getVehicles(): Observable<Vehicle[]> {
+	getAllVehicles(): Observable<Vehicle[]> {
 		return this.http.get<Vehicle[]>(`${this.apiUrl}/`);
+	}
+
+	getVehicles(vehicleIds: number): Observable<Vehicle> {
+		return this.http.get<Vehicle>(`${this.apiUrl}/list/${vehicleIds}`);
 	}
 
 	getVehicle(vehicleId: number): Observable<Vehicle> {
@@ -33,12 +37,12 @@ export class VehicleService {
 	}
 
 	addVehicle(
-		newVehicle: any
+		newVehicle: Vehicle
 	): Observable<{ message: string; result: boolean }> {
 		console.log('Véhicule ajouté:', newVehicle);
 		this.vehicles.push(newVehicle);
 		return of({ message: 'véhicule ajouté', result: true });
-		// return this.http.post(`${this.apiUrl}/add`, newVehicle);
+		// return this.http.post(`${this.apiUrl}/`, newVehicle);
 	}
 
 	updateVehicle() {}

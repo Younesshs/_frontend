@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 	}
 
 	private loadVehicles(): void {
-		this.VehicleService.getVehicles().subscribe({
+		this.VehicleService.getAllVehicles().subscribe({
 			next: (data: any[]) => {
 				this.vehicles = data;
 				this.VehicleService.setVehicles(data);

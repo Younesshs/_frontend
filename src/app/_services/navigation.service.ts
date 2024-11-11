@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 	providedIn: 'root',
 })
 export class NavigationService {
-	private navigationOpen: boolean = false;
+	private navigationOpen: boolean = true;
 
 	get isNavigationOpen(): boolean {
 		return this.navigationOpen;

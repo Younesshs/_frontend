@@ -15,6 +15,11 @@ export interface Vehicle {
 			longitude: string;
 			timestamp: string;
 		};
+		locationHistory?: {
+			latitude: string;
+			longitude: string;
+			timestamp: string;
+		};
 		number: string;
 	};
 	vehicleInformations: {

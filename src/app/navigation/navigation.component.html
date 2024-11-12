@@ -1,7 +1,7 @@
 <!-- Conteneur pour le logo et l'icône de fermeture -->
 <div class="sticky top-0 z-10 bg-gray-900 p-4">
 	<span
-		(click)="closeNavigation()"
+		(click)="closeNavigationBar()"
 		class="absolute top-3 right-2 text-white cursor-pointer"
 	>
 		<img
@@ -29,6 +29,7 @@
 	<ul class="space-y-4">
 		<li>
 			<a
+				(click)="openNavigation('vehicles')"
 				href="#"
 				class="flex items-center space-x-3 text-gray-200 hover:no-underline hover:text-gray-400"
 			>
@@ -37,25 +38,42 @@
 					alt="Favoris"
 					class="w-6 h-6"
 				/>
-				<span>Mes véhicules</span>
+				<span class="text-gray-800">Mes véhicules</span>
+				<svg
+					class="w-3 h-3 mt-0.5 text-gray-800 dark:text-gray-800"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 14 8"
+				>
+					<path
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"
+					/>
+				</svg>
 			</a>
 
-			<!-- Bouton pour ajouter un nouveau véhicule -->
-			<div class="flex justify-center items-center mt-2">
-				<button
-					(click)="openVehicleAddModal()"
-					class="flex items-center px-3 py-1 bg-bLight text-bDark rounded-lg hover:bg-gray-100 transition-colors duration-200 ease-in-out"
-				>
-					<img
-						src="assets/images/icon/plus.png"
-						alt="Ajouter"
-						class="w-4 h-4 mr-3 mt-0.5"
-					/>
-					<span>Ajouter un véhicule</span>
-				</button>
-			</div>
+			<div *ngIf="navigation.vehicles.isOpen">
+				<!-- Bouton pour ajouter un nouveau véhicule -->
+				<div class="flex justify-center items-center mt-2">
+					<button
+						(click)="openVehicleAddModal()"
+						class="flex items-center px-3 py-1 bg-bLight text-bDark rounded-lg hover:bg-gray-100 transition-colors duration-200 ease-in-out"
+					>
+						<img
+							src="assets/images/icon/plus.png"
+							alt="Ajouter"
+							class="w-4 h-4 mr-3 mt-0.5"
+						/>
+						<span>Ajouter un véhicule</span>
+					</button>
+				</div>
 
-			<app-vehicle-list [vehicles]="vehicles"></app-vehicle-list>
+				<app-vehicle-list [vehicles]="vehicles"></app-vehicle-list>
+			</div>
 		</li>
 	</ul>
 
@@ -71,10 +89,13 @@
 					class="w-6 h-6"
 				/>
 				<span><span class="line-through">Alertes</span> (Bientôt)</span>
+
+				<div *ngIf="navigation.alerts.isOpen"></div>
 			</a>
 		</li>
 		<li>
 			<a
+				(click)="openNavigation('alerts')"
 				href="#"
 				class="flex items-center space-x-3 text-gray-200 hover:no-underline hover:text-gray-400"
 			>
@@ -84,9 +105,11 @@
 					class="w-6 h-6"
 				/>
 				<span
-					><span class="line-through">Configuration</span>
-					(Bientôt)</span
+					><span class="line-through">Configuration</span
+					>(Bientôt)</span
 				>
+
+				<div *ngIf="navigation.vehicles.configurations"></div>
 			</a>
 		</li>
 	</ul>

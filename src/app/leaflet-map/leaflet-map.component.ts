@@ -4,6 +4,7 @@ import { LocationService } from './../_services/location.service';
 import { MapCommunicationService } from './../_services/map-communication.service';
 
 import { icon, latLng, LatLng, Map, marker, Marker, tileLayer } from 'leaflet';
+import { interval, Subscription, switchMap } from 'rxjs';
 import { Vehicle } from '../_models/vehicle';
 
 @Component({
@@ -11,6 +12,7 @@ import { Vehicle } from '../_models/vehicle';
 	templateUrl: './leaflet-map.component.html',
 })
 export class LeafletMapComponent implements OnInit, OnDestroy {
+	private vehicleUpdateSubscription: Subscription;
 	@Input() vehicles: any = [];
 	vehicleMarkers: Marker[] = [];
 	private map!: Map;
@@ -48,25 +50,31 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 			}
 		);
 
-		this.autoGpsUpdate(5000);
+		// Initialiser l'auto mise à jour des véhicules
+		this.updateLocalionVehicles(10000);
 	}
 
-	autoGpsUpdate(timeAutoReload: number) {
-		this.updateListLocalionVehicles();
-		// Lancement de l'intervalle pour mettre à jour les marqueurs de véhicules
-		this.intervalId = setInterval(() => {
-			this.updateVehicleMarker(this.autoGpsEnabledList);
-		}, timeAutoReload);
-	}
-
-	updateListLocalionVehicles() {
-		// Création de gpsTrackerNumberList en filtrant les véhicules selon les conditions
+	updateLocalionVehicles(timeAutoReset: number) {
 		this.autoGpsEnabledList = this.vehicles
 			.filter((vehicle: Vehicle) => vehicle.options.autoGpsEnabled)
 			.map((vehicle: Vehicle) => vehicle.gpsTracker.number)
 			.join(',');
 
-		return this.autoGpsEnabledList;
+		// Mettre à jour avec l'intervalle
+		this.autoGpsUpdate(timeAutoReset, this.autoGpsEnabledList);
+	}
+
+	autoGpsUpdate(timeAutoReload: number, gpsTrackerNumberList: string) {
+		if (this.vehicleUpdateSubscription) {
+			this.vehicleUpdateSubscription.unsubscribe();
+		}
+
+		// Lancer un abonnement pour récupérer et mettre à jour les positions
+		this.vehicleUpdateSubscription = interval(timeAutoReload)
+			.pipe(switchMap(() => this.getLocations(gpsTrackerNumberList)))
+			.subscribe((newLocations) =>
+				this.updateVehicleMarkers(newLocations)
+			);
 	}
 
 	onMapReady(map: Map) {
@@ -128,21 +136,20 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		return vehicleMarker;
 	}
 
-	async updateVehicleMarker(gpsTrackerNumberList: any) {
-		gpsTrackerNumberList = gpsTrackerNumberList.split(',');
-
-		let newLocations = await this.getLocations(gpsTrackerNumberList);
+	async updateVehicleMarkers(newLocations: any) {
+		console.log(newLocations);
 
 		// Tableau temporaire pour stocker les nouveaux marqueurs mis à jour
 		let updatedMarkers: Marker[] = [];
 
-		gpsTrackerNumberList.forEach((number: any) => {
+		newLocations.forEach((gpsTracker: any) => {
 			let existingVehicleIndex = this.vehicles.findIndex(
-				(vehicle: any) => vehicle.gpsTracker.number === number
+				(vehicle: any) =>
+					vehicle.gpsTracker.number === gpsTracker.number
 			);
 
 			let vehicleData = newLocations.find(
-				(data: any) => data.number === number
+				(data: any) => data.number === gpsTracker.number
 			);
 
 			// Mets à jour les informations du véhicule avec les nouvelles données
@@ -178,9 +185,10 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		});
 
 		// Remplace les marqueurs mis à jour dans `vehicleMarkers`
-		gpsTrackerNumberList.forEach((number: any, index: number) => {
+		newLocations.forEach((gpsTracker: any, index: number) => {
 			const existingVehicleIndex = this.vehicles.findIndex(
-				(vehicle: any) => vehicle.gpsTracker.number === number
+				(vehicle: any) =>
+					vehicle.gpsTracker.number === gpsTracker.number
 			);
 			if (existingVehicleIndex !== -1) {
 				this.vehicleMarkers[existingVehicleIndex] =
@@ -222,6 +230,9 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		if (this.intervalId) {
 			clearInterval(this.intervalId);
+		}
+		if (this.vehicleUpdateSubscription) {
+			this.vehicleUpdateSubscription.unsubscribe();
 		}
 	}
 }

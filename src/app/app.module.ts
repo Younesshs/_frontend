@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VehicleService } from './_services/vehicle.service';
 import { PageLoaderComponent } from './_shared/page-loader/page-loader.component';
 import { AppComponent } from './app.component';
+import { FlowbiteComponent } from './flowbite/flowbite.component';
 import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { VehicleCardComponent } from './vehicle-card/vehicle-card.component';
@@ -25,6 +26,7 @@ import { VehicleCardComponent } from './vehicle-card/vehicle-card.component';
 		VehicleListComponent,
 		VehicleCardComponent,
 		VehicleAddModalComponent,
+		FlowbiteComponent,
 	],
 	imports: [
 		LeafletModule,

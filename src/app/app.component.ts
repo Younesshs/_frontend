@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { initFlowbite } from 'flowbite';
 import { LoaderService } from './_services/loader.service';
 import { ModalsService } from './_services/modals.service';
 import { NavigationService } from './_services/navigation.service';
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
+		initFlowbite();
 		this.LoaderService.enablePageLoading();
 		this.loadVehicles();
 		setTimeout(() => {

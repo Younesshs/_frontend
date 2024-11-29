@@ -133,27 +133,4 @@
 			</span>
 		</div>
 	</div>
-
-	<div
-		class="w-full"
-		(click)="$event.stopPropagation()"
-		*ngIf="vehicle.options.autoGpsEnabled"
-	>
-		<label>Temps de rafraiffisememnt</label>
-		<div class="w-full flex flex-row flex-nowrap items-center">
-			<input
-				type="number"
-				class="w-14 mr-2 h-8 p-2 text-center border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
-			/>
-			<select
-				name="time"
-				class="p-2 h-8 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
-			>
-				<option value="seconde">Seconde(s)</option>
-				<option value="minute" selected>Minute(s)</option>
-				<option value="heure">Heure(s)</option>
-				<option value="jour">Jour(s)</option>
-			</select>
-		</div>
-	</div>
 </div>

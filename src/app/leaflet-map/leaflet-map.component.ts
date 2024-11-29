@@ -54,23 +54,23 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		this.updateLocalionVehicles(10000);
 	}
 
-	updateLocalionVehicles(timeAutoReset: number) {
+	updateLocalionVehicles(autoLocationTime: number) {
 		this.autoGpsEnabledList = this.vehicles
 			.filter((vehicle: Vehicle) => vehicle.options.autoGpsEnabled)
 			.map((vehicle: Vehicle) => vehicle.gpsTracker.number)
 			.join(',');
 
 		// Mettre à jour avec l'intervalle
-		this.autoGpsUpdate(timeAutoReset, this.autoGpsEnabledList);
+		this.autoGpsUpdate(autoLocationTime, this.autoGpsEnabledList);
 	}
 
-	autoGpsUpdate(timeAutoReload: number, gpsTrackerNumberList: string) {
+	autoGpsUpdate(autoLocationTime: number, gpsTrackerNumberList: string) {
 		if (this.vehicleUpdateSubscription) {
 			this.vehicleUpdateSubscription.unsubscribe();
 		}
 
 		// Lancer un abonnement pour récupérer et mettre à jour les positions
-		this.vehicleUpdateSubscription = interval(timeAutoReload)
+		this.vehicleUpdateSubscription = interval(autoLocationTime)
 			.pipe(switchMap(() => this.getLocations(gpsTrackerNumberList)))
 			.subscribe((newLocations) =>
 				this.updateVehicleMarkers(newLocations)
@@ -98,6 +98,44 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	// private createVehicleMarker(vehicle: Vehicle): Marker {
+	// 	const { latitude, longitude } = vehicle.gpsTracker.lastLocation;
+	// 	const color = vehicle.vehicleInformations.color.toLowerCase();
+	// 	const iconUrl = `../../assets/images/icon/car_icons/${color}.png`;
+
+	// 	const vehicleMarker = marker([Number(latitude), Number(longitude)], {
+	// 		icon: icon({
+	// 			iconUrl: iconUrl,
+	// 			iconSize: [25, 41],
+	// 			iconAnchor: [12, 41],
+	// 			popupAnchor: [1, -34],
+	// 			className: 'custom-popup',
+	// 		}),
+	// 	}).bindPopup(`
+	//     <p><strong>Véhicule:</strong> ${
+	// 		vehicle.vehicleInformations.licensePlate
+	// 	}</p>
+	//     <p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
+	//     <p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
+	// 		vehicle.vehicleInformations.model
+	// 	}</p>
+	//     <p><strong>Position:</strong> [${latitude.substring(
+	// 		0,
+	// 		7
+	// 	)}, ${longitude.substring(0, 7)}]</p>
+	//   `);
+
+	// 	// Clic sur le marqueur pour centrer et zoomer
+	// 	vehicleMarker.on('click', () => {
+	// 		if (!this.isNavigatedZoom) {
+	// 			// Assure que le clic direct fonctionne
+	// 			this.focusOnMap(vehicleMarker.getLatLng(), 18);
+	// 		}
+	// 	});
+
+	// 	return vehicleMarker;
+	// }
+
 	private createVehicleMarker(vehicle: Vehicle): Marker {
 		const { latitude, longitude } = vehicle.gpsTracker.lastLocation;
 		const color = vehicle.vehicleInformations.color.toLowerCase();
@@ -112,18 +150,32 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 				className: 'custom-popup',
 			}),
 		}).bindPopup(`
-      <p><strong>Véhicule:</strong> ${
-			vehicle.vehicleInformations.licensePlate
-		}</p>
-      <p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
-      <p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
-			vehicle.vehicleInformations.model
-		}</p>
-      <p><strong>Position:</strong> [${latitude.substring(
-			0,
-			7
-		)}, ${longitude.substring(0, 7)}]</p>
-    `);
+			<div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+				<img src="assets/images/icon/car_icons/red.png" alt="image de voiture" class="w-10 h-10"/>
+				<a href="#">
+					<h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+						Véhicule: ${vehicle.vehicleInformations.licensePlate}
+					</h5>
+				</a>
+				<p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Chauffeur: ${
+					vehicle.assignedEmployee.name
+				}</p>
+				<p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Modèle: ${
+					vehicle.vehicleInformations.manufacturer
+				} ${vehicle.vehicleInformations.model}</p>
+				<p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Position: [${latitude.substring(
+					0,
+					7
+				)}, ${longitude.substring(0, 7)}]</p>
+			</div>
+		`);
+
+		// <a href="#" class="inline-flex font-medium items-center text-blue-600 hover:underline">
+		// 			Voir la ligne directrice
+		// 			<svg class="w-3 h-3 ms-2.5 rtl:rotate-[270deg]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+		// 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
+		// 			</svg>
+		// 		</a>
 
 		// Clic sur le marqueur pour centrer et zoomer
 		vehicleMarker.on('click', () => {
@@ -131,6 +183,9 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 				// Assure que le clic direct fonctionne
 				this.focusOnMap(vehicleMarker.getLatLng(), 18);
 			}
+
+			//TODO: FAIRE UN OUTPUT POUR AFFICHER LE VEHICULE SELECTIONNEE DANS LA BARRE DE NAVIGATION
+			console.log('Véhicule data:', vehicle);
 		});
 
 		return vehicleMarker;

@@ -26,12 +26,13 @@ export class NavigationComponent {
 		private ModalsService: ModalsService
 	) {}
 
-	openNavigation(section: string) {
-		this.navigation[section].isOpen = true;
+	toggleNavigation(section: string) {
+		this.navigation[section].isOpen = !this.navigation[section].isOpen;
 	}
 
-	// TODO: FINIR OUVERTURE FERMETURE NAV BAR ET AJOUT LA CONFIG POUR REGLER L'AUTO GPS
+	// TODO: AJOUT LA CONFIG POUR REGLER L'AUTO GPS
 	// TODO: VOIR COMMENT FAIRE POUR ACTIVER ET DESACTIVER DES VEHICLES DU GPS ET MODIFIER LES DONNEES ETC
+	// TODO: QUAND CLICK SUR UN VEHICULE DANS LA CARTE, OUVRIR LA CARD DANS LA BARRE DE NAVIGATION (Avec gestion du slide)
 
 	closeNavigation() {
 		this.navigation.forEach((element: { isOpen: boolean }) => {

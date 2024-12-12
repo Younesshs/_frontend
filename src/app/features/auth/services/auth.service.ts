@@ -23,8 +23,7 @@ export class AuthService {
 			return of({
 				response: true,
 				token: 'fake-jwt-token',
-				expiration: 5000,
-				// expiration: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
+				expiration: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
 			});
 		} else if (!email.includes('@')) {
 			return of({ response: false, errorType: 'format' });

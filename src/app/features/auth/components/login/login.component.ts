@@ -31,7 +31,9 @@ export class LoginComponent implements OnInit {
 		private Router: Router
 	) {}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		// Si déja connecté redirection
+	}
 
 	login() {
 		this.formError = { wrong: false, format: false, bot: false };

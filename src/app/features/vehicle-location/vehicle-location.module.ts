@@ -10,8 +10,10 @@ import { VehicleLocationRoutingModule } from './vehicle-location-routing.module'
 
 import {
 	provideHttpClient,
+	withInterceptors,
 	withInterceptorsFromDi,
 } from '@angular/common/http';
+import { authInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { VehicleCardComponent } from './components/vehicle-card/vehicle-card.component';
 import { VehicleService } from './services/vehicle.service';
 import { VehicleLocationComponent } from './vehicle-location.component';
@@ -32,7 +34,14 @@ import { VehicleLocationComponent } from './vehicle-location.component';
 		FormsModule,
 		ReactiveFormsModule,
 	],
-	providers: [VehicleService, provideHttpClient(withInterceptorsFromDi())],
+	// providers: [VehicleService, provideHttpClient(withInterceptorsFromDi())],
+	providers: [
+		VehicleService,
+		provideHttpClient(
+			withInterceptors([authInterceptor]),
+			withInterceptorsFromDi()
+		),
+	],
 	bootstrap: [VehicleLocationComponent],
 })
 export class VehicleLocationModule {}

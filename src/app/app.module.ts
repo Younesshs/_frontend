@@ -13,14 +13,7 @@ import { PageLoaderComponent } from './shared/components/page-loader/page-loader
 
 @NgModule({
 	declarations: [AppComponent, FlowbiteComponent],
-	imports: [
-		PageLoaderComponent,
-		BrowserModule,
-		AppRoutingModule,
-		// LeafletModule,
-		// FormsModule,
-		// ReactiveFormsModule,
-	],
+	imports: [PageLoaderComponent, BrowserModule, AppRoutingModule],
 	providers: [VehicleService, provideHttpClient(withInterceptorsFromDi())],
 	bootstrap: [AppComponent],
 })

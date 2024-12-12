@@ -32,7 +32,9 @@ export class LoginComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		// Si déja connecté redirection
+		if (this.AuthService.isAuthenticated()) {
+			this.Router.navigate(['/vehicle-location']);
+		}
 	}
 
 	login() {

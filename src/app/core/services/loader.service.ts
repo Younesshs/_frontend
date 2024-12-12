@@ -9,6 +9,7 @@ export class LoaderService {
 	get isPageLoading(): boolean {
 		return this.pageLoaderActive;
 	}
+
 	enablePageLoading(): void {
 		this.pageLoaderActive = true;
 	}

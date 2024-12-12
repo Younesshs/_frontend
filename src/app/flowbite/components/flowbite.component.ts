@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FlowbiteService } from '../_services/flowbite.service';
+import { FlowbiteService } from '../services/flowbite.service';
 
 @Component({
 	selector: 'app-flowbite',

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { latLng } from 'leaflet';
-import { Vehicle } from '../_models/vehicle';
-import { MapCommunicationService } from '../_services/map-communication.service';
+import { Vehicle } from '../../../../shared/models/vehicle';
+import { MapCommunicationService } from '../../services/map-communication.service';
 
 @Component({
 	selector: 'app-vehicle-list',

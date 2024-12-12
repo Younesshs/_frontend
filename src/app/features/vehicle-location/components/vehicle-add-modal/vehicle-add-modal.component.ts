@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Vehicle } from '../_models/vehicle';
-import { ModalsService } from './../_services/modals.service';
-import { VehicleService } from './../_services/vehicle.service';
+import { ModalsService } from '../../../../core/services/modals.service';
+import { Vehicle } from '../../../../shared/models/vehicle';
+import { VehicleService } from '../../services/vehicle.service';
 
 @Component({
 	selector: 'app-vehicle-add-modal',

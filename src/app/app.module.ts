@@ -3,37 +3,23 @@ import {
 	withInterceptorsFromDi,
 } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+
 import { BrowserModule } from '@angular/platform-browser';
-import { VehicleAddModalComponent } from './vehicle-add-modal/vehicle-add-modal.component';
-import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
-
-import { LeafletModule } from 'projects/ngx-leaflet/src/public-api';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { VehicleService } from './_services/vehicle.service';
-import { PageLoaderComponent } from './_shared/page-loader/page-loader.component';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FlowbiteComponent } from './flowbite/flowbite.component';
-import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { VehicleCardComponent } from './vehicle-card/vehicle-card.component';
+import { VehicleService } from './features/vehicle-location/services/vehicle.service';
+import { FlowbiteComponent } from './flowbite/components/flowbite.component';
+import { PageLoaderComponent } from './shared/components/page-loader/page-loader.component';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		LeafletMapComponent,
-		NavigationComponent,
-		VehicleListComponent,
-		VehicleCardComponent,
-		VehicleAddModalComponent,
-		FlowbiteComponent,
-	],
+	declarations: [AppComponent, FlowbiteComponent],
 	imports: [
-		LeafletModule,
-		BrowserModule,
 		PageLoaderComponent,
-		FormsModule,
-		ReactiveFormsModule,
+		BrowserModule,
+		AppRoutingModule,
+		// LeafletModule,
+		// FormsModule,
+		// ReactiveFormsModule,
 	],
 	providers: [VehicleService, provideHttpClient(withInterceptorsFromDi())],
 	bootstrap: [AppComponent],

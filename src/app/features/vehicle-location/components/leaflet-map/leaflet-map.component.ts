@@ -1,11 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { VehicleService } from 'src/app/_services/vehicle.service';
-import { LocationService } from './../_services/location.service';
-import { MapCommunicationService } from './../_services/map-communication.service';
+import { LocationService } from '../../services/location.service';
+import { MapCommunicationService } from '../../services/map-communication.service';
+import { VehicleService } from '../../services/vehicle.service';
 
 import { icon, latLng, LatLng, Map, marker, Marker, tileLayer } from 'leaflet';
 import { interval, Subscription, switchMap } from 'rxjs';
-import { Vehicle } from '../_models/vehicle';
+import { Vehicle } from '../../../../shared/models/vehicle';
 
 @Component({
 	selector: 'app-leaflet-map',
@@ -185,7 +185,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 			}
 
 			//TODO: FAIRE UN OUTPUT POUR AFFICHER LE VEHICULE SELECTIONNEE DANS LA BARRE DE NAVIGATION
-			console.log('Véhicule data:', vehicle);
+			// console.log('Véhicule data:', vehicle);
 		});
 
 		return vehicleMarker;

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { LatLng } from 'leaflet';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Vehicle } from '../_models/vehicle';
+import { Vehicle } from '../../../shared/models/vehicle';
 
 @Injectable({
 	providedIn: 'root',

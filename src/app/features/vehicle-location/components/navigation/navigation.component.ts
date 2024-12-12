@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { NavigationService } from '../_services/navigation.service';
-import { ModalsService } from './../_services/modals.service';
+import { AuthService } from 'src/app/features/auth/services/auth.service';
+import { ModalsService } from '../../../../core/services/modals.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
 	selector: 'app-navigation',
@@ -23,16 +24,13 @@ export class NavigationComponent {
 
 	constructor(
 		private NavigationService: NavigationService,
-		private ModalsService: ModalsService
+		private ModalsService: ModalsService,
+		private AuthService: AuthService
 	) {}
 
 	toggleNavigation(section: string) {
 		this.navigation[section].isOpen = !this.navigation[section].isOpen;
 	}
-
-	// TODO: AJOUT LA CONFIG POUR REGLER L'AUTO GPS
-	// TODO: VOIR COMMENT FAIRE POUR ACTIVER ET DESACTIVER DES VEHICLES DU GPS ET MODIFIER LES DONNEES ETC
-	// TODO: QUAND CLICK SUR UN VEHICULE DANS LA CARTE, OUVRIR LA CARD DANS LA BARRE DE NAVIGATION (Avec gestion du slide)
 
 	closeNavigation() {
 		this.navigation.forEach((element: { isOpen: boolean }) => {
@@ -46,5 +44,9 @@ export class NavigationComponent {
 
 	openVehicleAddModal(): void {
 		this.ModalsService.openVehicleAddModal();
+	}
+
+	logout() {
+		this.AuthService.logout();
 	}
 }

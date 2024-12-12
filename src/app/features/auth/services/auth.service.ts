@@ -23,7 +23,7 @@ export class AuthService {
 			return of({
 				response: true,
 				token: 'fake-jwt-token',
-				expiration: 10000,
+				expiration: 5000,
 				// expiration: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
 			});
 		} else if (!email.includes('@')) {
@@ -59,6 +59,7 @@ export class AuthService {
 		clearTimeout(this.expirationTimer);
 		this.expirationTimer = null;
 		this.Router.navigate(['/auth']);
+		console.info('disconnected...');
 	}
 
 	getToken() {

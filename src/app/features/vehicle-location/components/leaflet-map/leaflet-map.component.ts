@@ -4,7 +4,7 @@ import { MapCommunicationService } from '../../services/map-communication.servic
 import { VehicleService } from '../../services/vehicle.service';
 
 import { icon, latLng, LatLng, Map, marker, Marker, tileLayer } from 'leaflet';
-import { interval, Subscription, switchMap } from 'rxjs';
+import { interval, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
 import { Vehicle } from '../../../../shared/models/vehicle';
 
 @Component({
@@ -12,7 +12,9 @@ import { Vehicle } from '../../../../shared/models/vehicle';
 	templateUrl: './leaflet-map.component.html',
 })
 export class LeafletMapComponent implements OnInit, OnDestroy {
-	private vehicleUpdateSubscription: Subscription;
+	private vehicleUpdateIntervalSubscription: Subscription | null = null;
+	private destroy$ = new Subject<void>();
+
 	@Input() vehicles: any = [];
 	vehicleMarkers: Marker[] = [];
 	private map!: Map;
@@ -39,8 +41,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		private MapCommunicationService: MapCommunicationService
 	) {}
 
-	private intervalId: any;
-
 	ngOnInit(): void {
 		this.initializeVehicleMarkers();
 		this.MapCommunicationService.focusMarker$.subscribe(
@@ -65,16 +65,20 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 	}
 
 	autoGpsUpdate(autoLocationTime: number, gpsTrackerNumberList: string) {
-		if (this.vehicleUpdateSubscription) {
-			this.vehicleUpdateSubscription.unsubscribe();
+		if (this.vehicleUpdateIntervalSubscription) {
+			this.vehicleUpdateIntervalSubscription.unsubscribe();
 		}
 
-		// Lancer un abonnement pour récupérer et mettre à jour les positions
-		this.vehicleUpdateSubscription = interval(autoLocationTime)
-			.pipe(switchMap(() => this.getLocations(gpsTrackerNumberList)))
-			.subscribe((newLocations) =>
-				this.updateVehicleMarkers(newLocations)
-			);
+		this.vehicleUpdateIntervalSubscription = interval(autoLocationTime)
+			.pipe(
+				switchMap(() => this.getLocations(gpsTrackerNumberList)),
+				takeUntil(this.destroy$) // Stopper l'abonnement si le composant est détruit
+			)
+			.subscribe({
+				next: (newLocations) => this.updateVehicleMarkers(newLocations),
+				error: (err) =>
+					console.error('Error updating vehicle markers:', err),
+			});
 	}
 
 	onMapReady(map: Map) {
@@ -97,44 +101,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 			this.createVehicleMarker(vehicle)
 		);
 	}
-
-	// private createVehicleMarker(vehicle: Vehicle): Marker {
-	// 	const { latitude, longitude } = vehicle.gpsTracker.lastLocation;
-	// 	const color = vehicle.vehicleInformations.color.toLowerCase();
-	// 	const iconUrl = `../../assets/images/icon/car_icons/${color}.png`;
-
-	// 	const vehicleMarker = marker([Number(latitude), Number(longitude)], {
-	// 		icon: icon({
-	// 			iconUrl: iconUrl,
-	// 			iconSize: [25, 41],
-	// 			iconAnchor: [12, 41],
-	// 			popupAnchor: [1, -34],
-	// 			className: 'custom-popup',
-	// 		}),
-	// 	}).bindPopup(`
-	//     <p><strong>Véhicule:</strong> ${
-	// 		vehicle.vehicleInformations.licensePlate
-	// 	}</p>
-	//     <p><strong>Chauffeur:</strong> ${vehicle.assignedEmployee.name}</p>
-	//     <p><strong>Modèle:</strong> ${vehicle.vehicleInformations.manufacturer} ${
-	// 		vehicle.vehicleInformations.model
-	// 	}</p>
-	//     <p><strong>Position:</strong> [${latitude.substring(
-	// 		0,
-	// 		7
-	// 	)}, ${longitude.substring(0, 7)}]</p>
-	//   `);
-
-	// 	// Clic sur le marqueur pour centrer et zoomer
-	// 	vehicleMarker.on('click', () => {
-	// 		if (!this.isNavigatedZoom) {
-	// 			// Assure que le clic direct fonctionne
-	// 			this.focusOnMap(vehicleMarker.getLatLng(), 18);
-	// 		}
-	// 	});
-
-	// 	return vehicleMarker;
-	// }
 
 	private createVehicleMarker(vehicle: Vehicle): Marker {
 		const { latitude, longitude } = vehicle.gpsTracker.lastLocation;
@@ -192,10 +158,13 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 	}
 
 	async updateVehicleMarkers(newLocations: any) {
-		console.log(newLocations);
-
 		// Tableau temporaire pour stocker les nouveaux marqueurs mis à jour
 		let updatedMarkers: Marker[] = [];
+
+		if (!Array.isArray(newLocations)) {
+			console.error('Expected an array, but received:', newLocations);
+			return;
+		}
 
 		newLocations.forEach((gpsTracker: any) => {
 			let existingVehicleIndex = this.vehicles.findIndex(
@@ -283,11 +252,10 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		if (this.intervalId) {
-			clearInterval(this.intervalId);
-		}
-		if (this.vehicleUpdateSubscription) {
-			this.vehicleUpdateSubscription.unsubscribe();
+		this.destroy$.next();
+		this.destroy$.complete();
+		if (this.vehicleUpdateIntervalSubscription) {
+			this.vehicleUpdateIntervalSubscription.unsubscribe();
 		}
 	}
 }

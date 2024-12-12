@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { initFlowbite } from 'flowbite';
-import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { LoaderService } from '../../core/services/loader.service';
 import { ModalsService } from '../../core/services/modals.service';
 import { NavigationService } from './services/navigation.service';

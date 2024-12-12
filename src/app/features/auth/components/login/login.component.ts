@@ -45,6 +45,8 @@ export class LoginComponent implements OnInit {
 						this.loginForm.stayLogin
 					);
 
+					console.info('connected...');
+
 					this.Router.navigate(['/vehicle-location']);
 				} else {
 					// Gérer les différentes erreurs

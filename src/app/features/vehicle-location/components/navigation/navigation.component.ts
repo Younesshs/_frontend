@@ -12,6 +12,7 @@ import { UserService } from './../../../../core/services/user.service';
 export class NavigationComponent implements OnInit {
 	@Input() vehicles!: any[];
 	user!: any;
+	isUserCard: boolean = false;
 	currentTime: string = '';
 	navigation: any = {
 		vehicles: {
@@ -70,6 +71,10 @@ export class NavigationComponent implements OnInit {
 
 	openVehicleAddModal(): void {
 		this.ModalsService.openVehicleAddModal();
+	}
+
+	toggleUserCard(): void {
+		this.isUserCard = !this.isUserCard;
 	}
 
 	updateTime(): void {

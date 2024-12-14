@@ -1,156 +1,158 @@
-<!-- Conteneur pour le logo et l'icône de fermeture -->
-<div class="sticky top-0 z-10 bg-gray-900 p-4">
-	<span
-		(click)="closeNavigationBar()"
-		class="absolute top-3 right-2 text-white cursor-pointer"
-	>
-		<img
-			class="w-4 h-4 cursor-pointer"
-			src="assets/images/icon/croix.png"
-			alt="Fermer"
-		/>
-	</span>
-
-	<!-- Logo et titre de la navigation -->
-	<h2 class="text-xl font-bold flex items-center space-x-2">
-		<img
-			class="w-12 h-12 mr-2 cursor-pointer"
-			src="assets/images/logo.png"
-			alt="Logo"
-		/>
-		Locate Them
-	</h2>
-</div>
-
-<!-- Contenu de la navigation -->
-<nav class="p-4 space-y-6">
-	<div class="flex items-start gap-2.5">
-		<div
-			class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-900 rounded-e-xl rounded-es-xl dark:bg-gray-700"
+<div class="select-none">
+	<!-- Conteneur pour le logo et l'icône de fermeture -->
+	<div class="sticky top-0 z-10 bg-gray-900 p-4">
+		<span
+			(click)="closeNavigationBar()"
+			class="absolute top-3 right-2 text-white cursor-pointer"
 		>
-			<div class="flex justify-end">
-				<svg
-					(click)="toggleUserCard()"
-					[class.rotate-[180deg]]="isUserCard"
-					class="w-3 h-3 mt-0.5 text-gray-100 cursor-pointer"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 14 8"
-				>
-					<path
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"
-					/>
-				</svg>
-			</div>
 			<img
-				class="w-8 h-8 rounded-full"
-				src="assets/images/icon/utilisateur.png"
-				alt="Jese image"
+				class="w-4 h-4 cursor-pointer"
+				src="assets/images/icon/croix.png"
+				alt="Fermer"
 			/>
+		</span>
+
+		<!-- Logo et titre de la navigation -->
+		<h2 class="text-xl font-bold flex items-center space-x-2">
+			<img
+				class="w-12 h-12 mr-2 cursor-pointer"
+				src="assets/images/logo.png"
+				alt="Logo"
+			/>
+			Locate Them
+		</h2>
+	</div>
+
+	<!-- Contenu de la navigation -->
+	<nav class="p-4 space-y-6">
+		<div class="flex items-start gap-2.5">
 			<div
-				class="flex justify-between items-center space-x-2 rtl:space-x-reverse"
+				class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-900 rounded-e-xl rounded-es-xl dark:bg-gray-700"
 			>
-				<span class="text-sm font-semibold text-white">{{
-					getUserName()
-				}}</span>
-				<span
-					class="text-[10px] font-normal text-gray-500 dark:text-gray-400"
-					>{{ currentTime }}</span
-				>
-			</div>
-			<span class="text-[10px] text-gray-500 font-semibold uppercase">{{
-				getUserRole()
-			}}</span>
-			<div
-				*ngIf="isUserCard"
-				class="w-full mt-2 inline-flex flex-col group cursor-pointer"
-			>
-				<div class="flex justify-start">
-					<button
-						(click)="logout()"
-						class="flex items-center px-2 py-1 text-sm bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-200"
-						title="Déconnexion"
+				<div class="flex justify-end">
+					<svg
+						(click)="toggleUserCard()"
+						[class.rotate-[180deg]]="isUserCard"
+						class="w-3 h-3 mt-0.5 text-gray-100 cursor-pointer"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 14 8"
 					>
-						<svg
-							class="w-3 h-3 text-white dark:text-white mr-2"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 16 16"
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"
+						/>
+					</svg>
+				</div>
+				<img
+					class="w-8 h-8 rounded-full"
+					src="assets/images/icon/utilisateur.png"
+					alt="Jese image"
+				/>
+				<div
+					class="flex justify-between items-center space-x-2 rtl:space-x-reverse"
+				>
+					<span class="text-sm font-semibold text-white">{{
+						getUserName()
+					}}</span>
+					<span
+						class="text-[10px] font-normal text-gray-500 dark:text-gray-400"
+						>{{ currentTime }}</span
+					>
+				</div>
+				<span
+					class="text-[10px] text-gray-500 font-semibold uppercase"
+					>{{ getUserRole() }}</span
+				>
+				<div
+					*ngIf="isUserCard"
+					class="w-full mt-2 inline-flex flex-col group cursor-pointer"
+				>
+					<div class="flex justify-start">
+						<button
+							(click)="logout()"
+							class="flex items-center px-2 py-1 text-sm bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-200"
+							title="Déconnexion"
 						>
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"
-							/>
-						</svg>
-						<span>Déconnexion</span>
-					</button>
+							<svg
+								class="w-3 h-3 text-white dark:text-white mr-2"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 16 16"
+							>
+								<path
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"
+								/>
+							</svg>
+							<span>Déconnexion</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<hr class="bg-white" />
+		<hr class="bg-white" />
 
-	<ul class="space-y-4">
-		<li>
-			<a
-				(click)="toggleNavigation('vehicles')"
-				class="flex items-center space-x-3 hover:no-underline cursor-pointer"
-			>
-				<img
-					src="assets/images/icon/vehicles.png"
-					alt="Favoris"
-					class="w-6 h-6"
-				/>
-				<span class="text-gray-800">Mes véhicules</span>
-				<svg
-					[class.rotate-[-90deg]]="!navigation.vehicles.isOpen"
-					class="w-3 h-3 mt-0.5 text-gray-800 dark:text-gray-800"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 14 8"
+		<ul class="space-y-4">
+			<li>
+				<a
+					(click)="toggleNavigation('vehicles')"
+					class="flex items-center space-x-3 hover:no-underline cursor-pointer"
 				>
-					<path
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"
+					<img
+						src="assets/images/icon/vehicles.png"
+						alt="Favoris"
+						class="w-6 h-6"
 					/>
-				</svg>
-			</a>
-
-			<div *ngIf="navigation.vehicles.isOpen">
-				<!-- Bouton pour ajouter un nouveau véhicule -->
-				<div class="flex justify-center items-center mt-2">
-					<button
-						(click)="openVehicleAddModal()"
-						class="flex items-center px-3 py-1 bg-bLight text-bDark rounded-lg hover:bg-gray-100 transition-colors duration-200 ease-in-out"
+					<span class="text-gray-800">Mes véhicules</span>
+					<svg
+						[class.rotate-[-90deg]]="!navigation.vehicles.isOpen"
+						class="w-3 h-3 mt-0.5 text-gray-800 dark:text-gray-800"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 14 8"
 					>
-						<img
-							src="assets/images/icon/plus.png"
-							alt="Ajouter"
-							class="w-4 h-4 mr-3 mt-0.5"
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"
 						/>
-						<span>Ajouter un véhicule</span>
-					</button>
+					</svg>
+				</a>
+
+				<div *ngIf="navigation.vehicles.isOpen">
+					<!-- Bouton pour ajouter un nouveau véhicule -->
+					<div class="flex justify-center items-center mt-2">
+						<button
+							(click)="openVehicleAddModal()"
+							class="flex items-center px-3 py-1 bg-bLight text-bDark rounded-lg hover:bg-gray-100 transition-colors duration-200 ease-in-out"
+						>
+							<img
+								src="assets/images/icon/plus.png"
+								alt="Ajouter"
+								class="w-4 h-4 mr-3 mt-0.5"
+							/>
+							<span>Ajouter un véhicule</span>
+						</button>
+					</div>
+
+					<app-vehicle-list [vehicles]="vehicles"></app-vehicle-list>
 				</div>
+			</li>
 
-				<app-vehicle-list [vehicles]="vehicles"></app-vehicle-list>
-			</div>
-		</li>
-
-		<li>
+			<!-- <li>
 			<a
 				(click)="toggleNavigation('configurations')"
 				class="flex items-center space-x-3 hover:no-underline cursor-pointer"
@@ -204,41 +206,68 @@
 					</div>
 				</div>
 			</div>
-		</li>
+		</li> -->
 
-		<li>
-			<a
-				(click)="toggleNavigation('alerts')"
-				class="flex items-center space-x-3 text-gray-800 hover:no-underline"
-			>
-				<img
-					src="assets/images/icon/alerte.png"
-					alt="Alertes"
-					class="w-6 h-6"
-				/>
-				<span><span class="line-through">Alertes</span> (Bientôt)</span>
-
-				<div *ngIf="navigation.alerts.isOpen">ALERTE CONTENT</div>
-			</a>
-		</li>
-
-		<li *ngIf="hasRoleAdmin()">
-			<a
-				(click)="toggleNavigation('users')"
-				class="flex items-center space-x-3 text-gray-800 hover:no-underline"
-			>
-				<img
-					src="assets/images/icon/user-interface.png"
-					alt="Users"
-					class="w-6 h-6"
-				/>
-				<span
-					><span class="line-through">Utilisateurs</span>
-					(Bientôt)</span
+			<li>
+				<a
+					(click)="toggleNavigation('configurations')"
+					class="flex items-center space-x-3 text-gray-800 hover:no-underline"
 				>
+					<img
+						src="assets/images/icon/configuration.png"
+						alt="Alertes"
+						class="w-6 h-6"
+					/>
+					<span
+						><span class="line-through">Configurations</span>
+						(Bientôt)</span
+					>
 
-				<div *ngIf="navigation.users.isOpen">UTILISATEURS CONTENT</div>
-			</a>
-		</li>
-	</ul>
-</nav>
+					<div *ngIf="navigation.configurations.isOpen">
+						Configuration CONTENT
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a
+					(click)="toggleNavigation('alerts')"
+					class="flex items-center space-x-3 text-gray-800 hover:no-underline"
+				>
+					<img
+						src="assets/images/icon/alerte.png"
+						alt="Alertes"
+						class="w-6 h-6"
+					/>
+					<span
+						><span class="line-through">Alertes</span>
+						(Bientôt)</span
+					>
+
+					<div *ngIf="navigation.alerts.isOpen">ALERTE CONTENT</div>
+				</a>
+			</li>
+
+			<li *ngIf="hasRoleAdmin()">
+				<a
+					(click)="toggleNavigation('users')"
+					class="flex items-center space-x-3 text-gray-800 hover:no-underline"
+				>
+					<img
+						src="assets/images/icon/user-interface.png"
+						alt="Users"
+						class="w-6 h-6"
+					/>
+					<span
+						><span class="line-through">Utilisateurs</span>
+						(Bientôt)</span
+					>
+
+					<div *ngIf="navigation.users.isOpen">
+						UTILISATEURS CONTENT
+					</div>
+				</a>
+			</li>
+		</ul>
+	</nav>
+</div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoaderService } from './../../../../core/services/loader.service';
+import { UserService } from './../../../../core/services/user.service';
 import { AuthService } from './../../services/auth.service';
 
 interface formLogin {
@@ -15,8 +16,8 @@ interface formLogin {
 })
 export class LoginComponent implements OnInit {
 	loginForm: formLogin = {
-		email: 'name@locate-them.com',
-		password: 'manager',
+		email: 'user@locate-them.com',
+		password: 'user',
 		stayLogin: false,
 	};
 	formError: any = {
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
 	constructor(
 		public LoaderService: LoaderService,
 		private AuthService: AuthService,
+		private UserService: UserService,
 		private Router: Router
 	) {}
 
@@ -46,8 +48,11 @@ export class LoginComponent implements OnInit {
 					this.AuthService.setToken(
 						data.token,
 						data.expiration,
-						this.loginForm.stayLogin
+						this.loginForm.stayLogin,
+						data.role
 					);
+
+					this.UserService.setUsername(data.username);
 
 					console.info('connected...');
 

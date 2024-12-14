@@ -23,6 +23,9 @@ export class NavigationComponent implements OnInit {
 		configurations: {
 			isOpen: false,
 		},
+		users: {
+			isOpen: false,
+		},
 	};
 
 	constructor(
@@ -49,6 +52,10 @@ export class NavigationComponent implements OnInit {
 
 	toggleNavigation(section: string) {
 		this.navigation[section].isOpen = !this.navigation[section].isOpen;
+	}
+
+	hasRoleAdmin() {
+		return this.AuthService.hasRole('admin');
 	}
 
 	closeNavigation() {

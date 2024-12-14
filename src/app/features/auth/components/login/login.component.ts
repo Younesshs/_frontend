@@ -16,8 +16,8 @@ interface formLogin {
 })
 export class LoginComponent implements OnInit {
 	loginForm: formLogin = {
-		email: 'user@locate-them.com',
-		password: 'user',
+		email: 'admin@locate-them.com',
+		password: 'admin',
 		stayLogin: false,
 	};
 	formError: any = {

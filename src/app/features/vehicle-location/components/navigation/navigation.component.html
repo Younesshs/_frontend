@@ -200,5 +200,24 @@
 				<div *ngIf="navigation.alerts.isOpen">ALERTE CONTENT</div>
 			</a>
 		</li>
+
+		<li *ngIf="hasRoleAdmin()">
+			<a
+				(click)="toggleNavigation('users')"
+				class="flex items-center space-x-3 text-gray-800 hover:no-underline"
+			>
+				<img
+					src="assets/images/icon/user-interface.png"
+					alt="Users"
+					class="w-6 h-6"
+				/>
+				<span
+					><span class="line-through">Utilisateurs</span>
+					(Bientôt)</span
+				>
+
+				<div *ngIf="navigation.users.isOpen">UTILISATEURS CONTENT</div>
+			</a>
+		</li>
 	</ul>
 </nav>

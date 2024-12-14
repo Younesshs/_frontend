@@ -100,13 +100,17 @@ export class AuthService {
 		if (token && expiration > Date.now()) {
 			return true;
 		} else {
-			this.logout();
+			if (token !== null && expiration === 0) {
+				this.logout();
+			} else {
+				this.Router.navigate(['/auth']);
+			}
 			return false;
 		}
 	}
 
 	hasRole(requiredRole: string): boolean {
-		const userRole = this.getRole(); // Récupère le rôle stocké
+		const userRole = this.getRole();
 		return userRole === requiredRole;
 	}
 }

@@ -12,7 +12,7 @@ export const LoginGuard: CanActivateFn = (route, state) => {
 		// TODO: Dans un vrai cas, vérifiez si le token est encore valide
 		return true;
 	} else {
-		router.navigate(['/auth']);
+		authService.logout();
 		return false;
 	}
 };

@@ -16,8 +16,8 @@ export class VehicleService {
 	constructor(private http: HttpClient) {}
 
 	updateMapData(zoomLevel: number, center: LatLng): void {
-		console.info('Location informations:');
-		console.table({ 'Zoom Level': zoomLevel, Center: center });
+		// console.info('Location informations:');
+		// console.table({ 'Zoom Level': zoomLevel, Center: center });
 	}
 
 	setVehicles(data: Vehicle[]): void {

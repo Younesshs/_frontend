@@ -8,7 +8,10 @@
 			}"
 			class="h-full relative z-0"
 		>
-			<app-leaflet-map [vehicles]="vehicles"></app-leaflet-map>
+			<app-leaflet-map
+				[vehicles]="vehicles"
+				(selectedVehicle)="onValueChangeSelectedVehicle($event)"
+			></app-leaflet-map>
 			<button
 				*ngIf="!NavigationService.isNavigationOpen"
 				(click)="toggleNavigation()"

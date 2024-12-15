@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnDestroy,
+	OnInit,
+	Output,
+} from '@angular/core';
 import { LocationService } from '../../services/location.service';
 import { MapCommunicationService } from '../../services/map-communication.service';
 import { VehicleService } from '../../services/vehicle.service';
@@ -16,6 +23,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 
 	@Input() vehicles: any = [];
+	@Output() selectedVehicle = new EventEmitter<any>();
 	vehicleMarkers: Marker[] = [];
 	private map!: Map;
 	private isNavigatedZoom = false;
@@ -150,8 +158,8 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 				this.focusOnMap(vehicleMarker.getLatLng(), 18);
 			}
 
-			//TODO: FAIRE UN OUTPUT POUR AFFICHER LE VEHICULE SELECTIONNEE DANS LA BARRE DE NAVIGATION
-			// console.log('Véhicule data:', vehicle);
+			// Afficher le vehicule dans la barre de navigation
+			this.selectedVehicle.emit(vehicle);
 		});
 
 		return vehicleMarker;

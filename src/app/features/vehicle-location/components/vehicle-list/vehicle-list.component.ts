@@ -1,17 +1,21 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { latLng } from 'leaflet';
 import { Vehicle } from '../../../../shared/models/vehicle';
 import { MapCommunicationService } from '../../services/map-communication.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
 	selector: 'app-vehicle-list',
 	standalone: false,
 	templateUrl: './vehicle-list.component.html',
 })
-export class VehicleListComponent {
+export class VehicleListComponent implements OnInit {
 	@Input() vehicles!: Vehicle[];
 
-	constructor(private MapCommunicationService: MapCommunicationService) {}
+	constructor(
+		private MapCommunicationService: MapCommunicationService,
+		private NavigationService: NavigationService
+	) {}
 
 	toggleDetails(vehicle: Vehicle): void {
 		vehicle.navigation.showDetails = !vehicle.navigation.showDetails;
@@ -25,5 +29,23 @@ export class VehicleListComponent {
 			latLng(location.latitude, location.longitude),
 			16
 		);
+	}
+
+	ngOnInit(): void {
+		this.NavigationService.selectedVehicle$.subscribe((selectedVehicle) => {
+			if (selectedVehicle) {
+				this.highlightSelectedVehicle(selectedVehicle);
+			}
+		});
+	}
+
+	highlightSelectedVehicle(selectedVehicle: Vehicle): void {
+		this.vehicles.forEach((v) => (v.navigation.showDetails = false)); // Fermer toutes les cartes
+		const vehicle = this.vehicles.find(
+			(v) => v.gpsTracker.number === selectedVehicle.gpsTracker.number
+		);
+		if (vehicle) {
+			vehicle.navigation.showDetails = true; // Ouvrir les détails
+		}
 	}
 }

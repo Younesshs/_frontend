@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { initFlowbite } from 'flowbite';
+import { Vehicle } from 'src/app/shared/models/vehicle';
 import { LoaderService } from '../../core/services/loader.service';
 import { ModalsService } from '../../core/services/modals.service';
 import { NavigationService } from './services/navigation.service';
@@ -14,6 +15,7 @@ export class VehicleLocationComponent {
 	// Chargement des données etc TODO: A la fin faire le systeme de loader
 	readonly startLoading: number = 1000;
 	vehicles: any[] = [];
+	vehicleSelected!: any;
 	show: boolean = false;
 
 	constructor(
@@ -35,6 +37,11 @@ export class VehicleLocationComponent {
 		setTimeout(() => {
 			this.show = true;
 		}, this.startLoading);
+	}
+
+	onValueChangeSelectedVehicle(newValue: Vehicle) {
+		this.vehicleSelected = newValue;
+		this.NavigationService.openVehicleDetails(newValue); // Ouvrir les détails dans la navigation
 	}
 
 	private loadVehicles(): void {

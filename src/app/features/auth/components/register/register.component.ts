@@ -5,4 +5,10 @@ import { Component } from '@angular/core';
 	standalone: false,
 	templateUrl: './register.component.html',
 })
-export class RegisterComponent {}
+export class RegisterComponent {
+	// TODO: CREE LA PAGE REGISTER
+	// Entrée un nom d'entreprise ---- Génération d'un lien, Envoi du lien
+	// Client entre ces informations
+	// Redirection page login
+	// Connexion effectué
+}

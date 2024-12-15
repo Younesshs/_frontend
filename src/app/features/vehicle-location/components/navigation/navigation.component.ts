@@ -43,6 +43,16 @@ export class NavigationComponent implements OnInit {
 		}, 60000);
 	}
 
+	toggleNavigation(section: string) {
+		this.navigation[section].isOpen = !this.navigation[section].isOpen;
+	}
+
+	closeNavigation() {
+		this.navigation.forEach((element: { isOpen: boolean }) => {
+			element.isOpen = false;
+		});
+	}
+
 	getUserName(): string {
 		return this.UserService.getUserName() || 'Unknown'; // Récupère le rôle ou affiche "Unknown" si aucun
 	}
@@ -51,18 +61,8 @@ export class NavigationComponent implements OnInit {
 		return this.AuthService.getRole() || 'Unknown'; // Récupère le rôle ou affiche "Unknown" si aucun
 	}
 
-	toggleNavigation(section: string) {
-		this.navigation[section].isOpen = !this.navigation[section].isOpen;
-	}
-
 	hasRoleAdmin() {
 		return this.AuthService.hasRole('admin');
-	}
-
-	closeNavigation() {
-		this.navigation.forEach((element: { isOpen: boolean }) => {
-			element.isOpen = false;
-		});
 	}
 
 	closeNavigationBar(): void {

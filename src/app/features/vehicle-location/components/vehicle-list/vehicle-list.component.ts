@@ -11,6 +11,7 @@ import { NavigationService } from '../../services/navigation.service';
 })
 export class VehicleListComponent implements OnInit {
 	@Input() vehicles!: Vehicle[];
+	private lastOpenedVehicle: Vehicle | null = null;
 
 	constructor(
 		private MapCommunicationService: MapCommunicationService,
@@ -40,12 +41,15 @@ export class VehicleListComponent implements OnInit {
 	}
 
 	highlightSelectedVehicle(selectedVehicle: Vehicle): void {
-		this.vehicles.forEach((v) => (v.navigation.showDetails = false)); // Fermer toutes les cartes
+		if (this.lastOpenedVehicle) {
+			this.lastOpenedVehicle.navigation.showDetails = false;
+		}
 		const vehicle = this.vehicles.find(
 			(v) => v.gpsTracker.number === selectedVehicle.gpsTracker.number
 		);
 		if (vehicle) {
-			vehicle.navigation.showDetails = true; // Ouvrir les détails
+			vehicle.navigation.showDetails = true;
+			this.lastOpenedVehicle = vehicle; // Stocker le dernier véhicule ouvert
 		}
 	}
 }

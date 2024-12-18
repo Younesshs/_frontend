@@ -1,0 +1,58 @@
+<div class="w-full h-screen flex flex-col items-center">
+	<form (ngSubmit)="addNewAccount()">
+		<div class="relative top-[100px]">
+			<!-- Logo centré -->
+			<div class="mb-6">
+				<img
+					src="assets/images/logo.png"
+					alt="Logo"
+					class="w-[300px]"
+				/>
+			</div>
+
+			<!-- Contenu du formulaire -->
+			<div class="w-[300px]">
+				<div class="mb-3">
+					<label
+						for="email"
+						class="block text-sm font-medium text-gray-900 mb-2"
+					>
+						Nom de l'entreprise
+					</label>
+					<input
+						type="text"
+						id="name"
+						name="name"
+						[(ngModel)]="newCompanyForm.name"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-[#111827] focus:border-[#111827] block w-full p-2.5 uppercase"
+						placeholder="Nom de l'entreprise"
+						autocomplete="off"
+						required
+					/>
+				</div>
+				<div class="w-full flex justify-center">
+					<button
+						type="submit"
+						class="text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center items-center"
+					>
+						<span class="mr-3">Créer</span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="size-6 stroke-[#D9F1F6]"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+							/>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

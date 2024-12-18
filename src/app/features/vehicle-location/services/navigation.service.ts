@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 import { Vehicle } from 'src/app/shared/models/vehicle';
 
 @Injectable({
@@ -8,7 +8,14 @@ import { Vehicle } from 'src/app/shared/models/vehicle';
 export class NavigationService {
 	private navigationOpen: boolean = true;
 	private _selectedVehicle = new BehaviorSubject<Vehicle | null>(null);
-	selectedVehicle$ = this._selectedVehicle.asObservable();
+	selectedVehicle$ = this._selectedVehicle
+		.asObservable()
+		.pipe(
+			distinctUntilChanged(
+				(prev, curr) =>
+					prev?.gpsTracker.number === curr?.gpsTracker.number
+			)
+		);
 	get selectedVehicle(): Vehicle | null {
 		return this._selectedVehicle.value;
 	}
@@ -26,7 +33,12 @@ export class NavigationService {
 	}
 
 	openVehicleDetails(vehicle: Vehicle): void {
-		this._selectedVehicle.next(vehicle);
+		if (
+			this.selectedVehicle?.gpsTracker.number !==
+			vehicle.gpsTracker.number
+		) {
+			this._selectedVehicle.next(vehicle);
+		}
 	}
 
 	isVehicleSelected(vehicle: Vehicle): boolean {

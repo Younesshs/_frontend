@@ -21,6 +21,7 @@ import { Vehicle } from '../../../../shared/models/vehicle';
 export class LeafletMapComponent implements OnInit, OnDestroy {
 	private vehicleUpdateIntervalSubscription: Subscription | null = null;
 	private destroy$ = new Subject<void>();
+	private isClickAllowed = true;
 
 	@Input() vehicles: any = [];
 	@Output() selectedVehicle = new EventEmitter<any>();
@@ -50,6 +51,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
+		this.preloadIcons();
 		this.initializeVehicleMarkers();
 		this.MapCommunicationService.focusMarker$.subscribe(
 			({ center, zoomLevel }) => {
@@ -60,6 +62,35 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 
 		// Initialiser l'auto mise à jour des véhicules
 		this.updateLocalionVehicles(10000);
+	}
+
+	private preloadIcons(): void {
+		const colors = [
+			'red',
+			'blue',
+			'green',
+			'amber',
+			'black',
+			'brown',
+			'cyan',
+			'default',
+			'emerald',
+			'fuchshia',
+			'grey',
+			'indigo',
+			'lime',
+			'orange',
+			'pink',
+			'purple',
+			'silver',
+			'teal',
+			'white',
+			'yellow',
+		]; // Ajoutez toutes les couleurs utilisées
+		colors.forEach((color) => {
+			const img = new Image();
+			img.src = `../../assets/images/icon/car_icons/${color}.png`;
+		});
 	}
 
 	updateLocalionVehicles(autoLocationTime: number) {

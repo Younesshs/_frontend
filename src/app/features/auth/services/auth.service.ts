@@ -7,7 +7,6 @@ import { UserService } from './../../../core/services/user.service';
 	providedIn: 'root',
 })
 export class AuthService {
-	private jwt = null; // Simulation d'un token
 	private expirationTimer: any;
 
 	constructor(private Router: Router, private UserService: UserService) {}

@@ -31,7 +31,7 @@ export class NewCompanyComponent {
 				} else if (data.message === 'Entreprise créé avec succès !') {
 					this.successMessage = data.message;
 					this.tempPassword = data.tempPassword;
-					this.generatedLink = `localhost/auth/confirm-company?token=UNIQUE_TOKEN}`;
+					this.generatedLink = `http://localhost:4200/auth/first-connection-company/${this.newCompanyForm.name}`;
 				}
 			},
 			error: (error) => {
@@ -40,4 +40,3 @@ export class NewCompanyComponent {
 		});
 	}
 }
-// TODO: Insérer un compte / crée la page inscr #2 (Ne pas donner accès au tableau sans avoir complétés les infos$)

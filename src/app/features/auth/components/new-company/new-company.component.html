@@ -55,9 +55,13 @@
 			</div>
 
 			<div class="w-[300px]">
-				<!-- Message d'erreur -->
-				<div *ngIf="errorMessage" class="text-red-600 font-medium mt-4">
-					{{ errorMessage }}
+				<div>
+					<p
+						class="text-red-600 font-xs mt-2"
+						*ngIf="newCompanyFormError.exists"
+					>
+						Cette entreprise existe déjà !
+					</p>
 				</div>
 
 				<!-- Message de succès -->

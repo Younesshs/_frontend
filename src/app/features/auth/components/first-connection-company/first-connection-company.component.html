@@ -1,6 +1,6 @@
 <div class="w-full h-screen flex flex-col items-center">
 	<form (ngSubmit)="firstConnectionCompany()">
-		<div class="relative top-[100px]">
+		<div class="relative top-[70px]">
 			<!-- Logo centré -->
 			<div class="">
 				<img
@@ -69,30 +69,32 @@
 				</div>
 			</div>
 
-			<!-- <div class="w-[300px]">
-				<div *ngIf="errorMessage" class="text-red-600 font-medium mt-4">
-					{{ errorMessage }}
-				</div>
-
-				<div *ngIf="successMessage" class="mt-4">
-					<p class="text-green-500 font-medium mt-4">
-						{{ successMessage }}
-					</p>
-					<div class="mt-2">
-						<a
-							[href]="generatedLink"
-							target="_blank"
-							class="text-blue-500 underline"
-							>{{ generatedLink }}</a
-						>
-					</div>
-
-					<p class="text-gray-700 mt-2">
-						Mot de passe temporaire :
-						<strong>{{ tempPassword }}</strong>
-					</p>
-				</div>
-			</div> -->
+			<div>
+				<p
+					class="text-red-600 font-xs mt-1"
+					*ngIf="firstConnectionCompanyFormError.wrong"
+				>
+					Identifiant incorrect !
+				</p>
+				<p
+					class="text-red-600 font-xs mt-1"
+					*ngIf="firstConnectionCompanyFormError.bot"
+				>
+					Connexion suspecte détectée !
+				</p>
+				<p
+					*ngIf="firstConnectionCompanyFormError.format"
+					class="text-red-600 font-xs mt-2"
+				>
+					Format des données invalide !
+				</p>
+				<p
+					*ngIf="firstConnectionCompanyFormError.notFound"
+					class="text-red-600 font-xs mt-2"
+				>
+					Entreprise introuvable !
+				</p>
+			</div>
 		</div>
 	</form>
 </div>

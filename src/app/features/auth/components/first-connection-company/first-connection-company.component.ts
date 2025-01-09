@@ -8,12 +8,17 @@ import { CompanyService } from './../../services/company.service';
 	templateUrl: './first-connection-company.component.html',
 })
 export class FirstConnectionCompanyComponent {
+	// TODO: Gérer l'expiration (inspiration sur login)
+	// TODO: Crée le formulaire de la page confirmCompany
 	firstConnectionCompanyForm: firstConnectionCompanyForm = {
 		name: 'you services',
+		password: 'you services-1736005046',
 	};
 	firstConnectionCompanyFormError: any = {
 		wrong: false,
 		bot: false,
+		format: false,
+		notFound: false,
 	};
 
 	companyName: string | null = null;
@@ -26,7 +31,7 @@ export class FirstConnectionCompanyComponent {
 
 	ngOnInit(): void {
 		if (this.CompanyService.getCompanyToken()) {
-			this.Router.navigate(['/confirm-company']);
+			this.Router.navigate(['auth/confirm-company']);
 		}
 
 		this.route.paramMap.subscribe((params) => {
@@ -38,6 +43,8 @@ export class FirstConnectionCompanyComponent {
 		this.firstConnectionCompanyFormError = {
 			wrong: false,
 			bot: false,
+			format: false,
+			notFound: false,
 		};
 
 		this.CompanyService.firstConnectionCompany(
@@ -54,22 +61,25 @@ export class FirstConnectionCompanyComponent {
 						data.createdAt
 					);
 					console.info('connected...');
-					this.Router.navigate(['/confirm-company']);
+					this.Router.navigate(['auth/confirm-company']);
 				} else {
-					if (data.errorType === 'wrong') {
-						this.firstConnectionCompanyFormError.wrong = true;
-					} else if (data.errorType === 'bot') {
-						this.firstConnectionCompanyFormError.bot = true;
-					}
 				}
 			},
-			error: (error) => {
+			error: (request) => {
 				console.error(
 					'Erreur lors de la connexion "firstConnectionCompany" :',
-					error
+					request
 				);
+				if (request.error.errorType === 'wrong') {
+					this.firstConnectionCompanyFormError.wrong = true;
+				} else if (request.error.errorType === 'bot') {
+					this.firstConnectionCompanyFormError.bot = true;
+				} else if (request.error.errorType === 'missing') {
+					this.firstConnectionCompanyFormError.format = true;
+				} else if (request.error.errorType === 'not_found') {
+					this.firstConnectionCompanyFormError.notFound = true;
+				}
 			},
 		});
 	}
 }
-// TODO: Insérer un compte / crée la page inscr #2 (Ne pas donner accès au tableau sans avoir complétés les infos$)

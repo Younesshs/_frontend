@@ -37,7 +37,20 @@ export class CompanyService {
 			expirationTimestamp.toString()
 		);
 
-		this.startCompanyTokenTimer(expirationTimestamp);
+		this.startCompanyTokenTimer(expiration);
+	}
+
+	startCompanyTokenTimer(duration: number): void {
+		let companyInformations;
+		if (this.expirationTimer) {
+			clearTimeout(this.expirationTimer);
+		}
+
+		this.expirationTimer = setTimeout(() => {
+			// Récupérer les informations de l'entreprise ('name')
+			companyInformations = this.getCompanyInformations();
+			this.companyLogout(companyInformations.name);
+		}, duration);
 	}
 
 	setCompanyInformations(name: string, createdAt: any): void {
@@ -45,18 +58,15 @@ export class CompanyService {
 		localStorage.setItem('companyCreatedAt', createdAt);
 	}
 
-	startCompanyTokenTimer(duration: number): void {
-		if (this.expirationTimer) {
-			clearTimeout(this.expirationTimer);
-		}
-
-		this.expirationTimer = setTimeout(() => {
-			this.companyLogout();
-		}, duration);
-	}
-
 	getCompanyToken() {
 		return localStorage.getItem('companyToken');
+	}
+
+	getCompanyInformations() {
+		return {
+			name: localStorage.getItem('companyName'),
+			createdAt: localStorage.getItem('companyCreatedAt'),
+		};
 	}
 
 	getCompanyExpiration() {
@@ -79,7 +89,7 @@ export class CompanyService {
 		}
 	}
 
-	companyLogout(): void {
+	companyLogout(name: string | null = null): void {
 		clearTimeout(this.expirationTimer);
 		this.expirationTimer = null;
 		localStorage.removeItem('companyToken');
@@ -87,6 +97,10 @@ export class CompanyService {
 		localStorage.removeItem('companyName');
 		localStorage.removeItem('companyCreatedAt');
 		console.info('disconnected...');
-		this.Router.navigate(['/auth']);
+		if (name) {
+			this.Router.navigate(['/auth/first-connection-company/' + name]);
+		} else {
+			this.Router.navigate(['/auth']);
+		}
 	}
 }

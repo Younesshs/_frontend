@@ -6,6 +6,7 @@ import { FirstConnectionCompanyComponent } from './components/first-connection-c
 import { LoginComponent } from './components/login/login.component';
 import { NewCompanyComponent } from './components/new-company/new-company.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ConfirmCompanyComponent } from './components/confirm-company/confirm-company.component';
 
 @NgModule({
 	declarations: [
@@ -13,6 +14,7 @@ import { RegisterComponent } from './components/register/register.component';
 		RegisterComponent,
 		NewCompanyComponent,
 		FirstConnectionCompanyComponent,
+		ConfirmCompanyComponent,
 	],
 	imports: [
 		CommonModule,

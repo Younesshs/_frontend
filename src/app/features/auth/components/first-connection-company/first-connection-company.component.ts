@@ -8,8 +8,6 @@ import { CompanyService } from './../../services/company.service';
 	templateUrl: './first-connection-company.component.html',
 })
 export class FirstConnectionCompanyComponent {
-	// TODO: Gérer l'expiration (inspiration sur login)
-	// TODO: Crée le formulaire de la page confirmCompany
 	firstConnectionCompanyForm: firstConnectionCompanyForm = {
 		name: 'you services',
 		password: 'you services-1736005046',
@@ -20,8 +18,6 @@ export class FirstConnectionCompanyComponent {
 		format: false,
 		notFound: false,
 	};
-
-	companyName: string | null = null;
 
 	constructor(
 		private Router: Router,

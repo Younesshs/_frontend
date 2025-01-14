@@ -40,7 +40,13 @@ export class CompanyService {
 		});
 	}
 
-	setCompanyToken(companyToken: string, expiration: number): void {
+	setCompanyToken(
+		companyToken: string,
+		expiration: number,
+		companyId: string,
+		companyName: string,
+		createdAt: any
+	): void {
 		const expirationTimestamp = Date.now() + expiration;
 
 		localStorage.setItem('companyToken', companyToken);
@@ -48,6 +54,9 @@ export class CompanyService {
 			'companyTokenExpiration',
 			expirationTimestamp.toString()
 		);
+		localStorage.setItem('companyId', companyId);
+		localStorage.setItem('companyName', companyName);
+		localStorage.setItem('companyCreatedAt', createdAt);
 
 		this.startCompanyTokenTimer(expiration);
 	}
@@ -61,13 +70,9 @@ export class CompanyService {
 		this.expirationTimer = setTimeout(() => {
 			// Récupérer les informations de l'entreprise ('name')
 			companyInformations = this.getCompanyInformations();
+
 			this.companyLogout(companyInformations.name);
 		}, duration);
-	}
-
-	setCompanyInformations(name: string, createdAt: any): void {
-		localStorage.setItem('companyName', name);
-		localStorage.setItem('companyCreatedAt', createdAt);
 	}
 
 	getCompanyToken() {
@@ -76,6 +81,7 @@ export class CompanyService {
 
 	getCompanyInformations() {
 		return {
+			companyId: localStorage.getItem('companyId'),
 			name: localStorage.getItem('companyName'),
 			createdAt: localStorage.getItem('companyCreatedAt'),
 		};
@@ -106,6 +112,7 @@ export class CompanyService {
 		this.expirationTimer = null;
 		localStorage.removeItem('companyToken');
 		localStorage.removeItem('companyTokenExpiration');
+		localStorage.removeItem('companyId');
 		localStorage.removeItem('companyName');
 		localStorage.removeItem('companyCreatedAt');
 		console.info('disconnected...');

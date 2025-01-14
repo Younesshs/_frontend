@@ -22,7 +22,6 @@ interface ConfirmCompanyForm {
 	templateUrl: './confirm-company.component.html',
 })
 export class ConfirmCompanyComponent implements OnInit {
-	// TODO: Crée le formulaire de la page confirmCompany
 	confirmCompanyForm: ConfirmCompanyForm = {
 		companyId: '677955b606728b289ded05c1',
 		companyName: 'you services',
@@ -50,6 +49,7 @@ export class ConfirmCompanyComponent implements OnInit {
 
 	confirmCompany() {
 		console.log('confirmCompanyForm', this.confirmCompanyForm);
+		this.confirmCompanyFormError.bot = true;
 	}
 
 	ngOnInit(): void {

@@ -69,7 +69,7 @@
 				</div>
 			</div>
 
-			<div>
+			<div class="cursor-pointer">
 				<p
 					class="text-red-600 font-xs mt-1"
 					*ngIf="firstConnectionCompanyFormError.wrong"
@@ -93,6 +93,19 @@
 					class="text-red-600 font-xs mt-2"
 				>
 					Entreprise introuvable !
+				</p>
+				<p
+					*ngIf="firstConnectionCompanyFormError.companyConfirmed"
+					class="text-red-600 font-xs mt-2"
+				>
+					Entreprise déjà confirmée !
+					<small
+						><a
+							href="auth/login"
+							class="text-gray-900 hover:text-gray-700"
+							>Connectez-vous ici</a
+						></small
+					>
 				</p>
 			</div>
 		</div>

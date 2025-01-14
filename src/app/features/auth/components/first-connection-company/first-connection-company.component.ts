@@ -17,6 +17,7 @@ export class FirstConnectionCompanyComponent {
 		bot: false,
 		format: false,
 		notFound: false,
+		companyConfirmed: false,
 	};
 
 	constructor(
@@ -41,6 +42,7 @@ export class FirstConnectionCompanyComponent {
 			bot: false,
 			format: false,
 			notFound: false,
+			companyConfirmed: false,
 		};
 
 		this.CompanyService.firstConnectionCompany(
@@ -48,17 +50,21 @@ export class FirstConnectionCompanyComponent {
 		).subscribe({
 			next: (data: any) => {
 				if (data.response) {
-					this.CompanyService.setCompanyToken(
-						data.token,
-						data.expiration
-					);
-					this.CompanyService.setCompanyInformations(
-						data.name,
-						data.createdAt
-					);
-					console.info('connected...');
-					this.Router.navigate(['auth/confirm-company']);
-				} else {
+					if (!data.companyIsConfirmed) {
+						this.CompanyService.setCompanyToken(
+							data.companyToken,
+							data.companyExpiration,
+							data.companyId,
+							data.companyName,
+							data.companyCreatedAt
+						);
+						console.info('connected...');
+						this.Router.navigate(['auth/confirm-company']);
+					} else {
+						console.error('Company already confirmed');
+						this.firstConnectionCompanyFormError.companyConfirmed =
+							true;
+					}
 				}
 			},
 			error: (request) => {

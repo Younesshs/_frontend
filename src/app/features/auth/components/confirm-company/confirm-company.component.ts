@@ -47,16 +47,28 @@ export class ConfirmCompanyComponent implements OnInit {
 
 	constructor(private CompanyService: CompanyService) {}
 
+	ngOnInit(): void {
+		this.companyInformations = this.CompanyService.getCompanyInformations();
+		this.getConfirmCompanyForm();
+	}
+
+	getConfirmCompanyForm() {
+		this.CompanyService.getConfirmCompanyForm().subscribe({
+			next: (data) => {
+				console.log('getConfirmCompanyForm', data);
+			},
+			error: (error) => {
+				console.log('getConfirmCompanyForm', error);
+			},
+		});
+	}
+
 	confirmCompany() {
 		console.log('confirmCompanyForm', this.confirmCompanyForm);
 		this.confirmCompanyFormError.bot = true;
 	}
 
-	ngOnInit(): void {
-		this.companyInformations = this.CompanyService.getCompanyInformations();
-	}
-
 	companyLogout() {
-		this.CompanyService.companyLogout(this.companyInformations.name);
+		this.CompanyService.companyLogout(this.companyInformations.companyName);
 	}
 }

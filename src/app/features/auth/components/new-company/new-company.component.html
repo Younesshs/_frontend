@@ -21,10 +21,10 @@
 					</label>
 					<input
 						type="text"
-						id="name"
-						name="name"
-						[(ngModel)]="newCompanyForm.name"
-						class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-[#111827] focus:border-[#111827] block w-full p-2.5 uppercase"
+						id="companyName"
+						name="companyName"
+						[(ngModel)]="newCompanyForm.companyName"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-[#111827] focus:border-[#111827] block w-full p-2.5"
 						placeholder="Nom de l'entreprise"
 						autocomplete="off"
 						required
@@ -52,15 +52,100 @@
 						</svg>
 					</button>
 				</div>
+				<div class="w-full flex justify-start">
+					<button
+						type="button"
+						class="m-2 text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center items-center"
+						(click)="regeneratePassword()"
+					>
+						<span class="mr-3">Régénérer</span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="size-6 stroke-[#D9F1F6]"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+							/>
+						</svg>
+					</button>
+					<button
+						type="button"
+						class="m-2 text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center"
+						(click)="restoreCompany()"
+					>
+						<span class="mr-3">Restorer</span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="size-6 stroke-[#D9F1F6]"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+							/>
+						</svg>
+					</button>
+				</div>
+				<div class="w-full flex justify-end">
+					<button
+						type="button"
+						class="mt-2 text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center items-center"
+						(click)="archiveCompany()"
+					>
+						<span class="mr-3">Archiver</span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="size-6 stroke-[#D9F1F6]"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+							/>
+						</svg>
+					</button>
+				</div>
 			</div>
 
 			<div class="w-[300px]">
 				<div>
 					<p
-						class="text-red-600 font-xs mt-2"
-						*ngIf="newCompanyFormError.exists"
+						class="text-sm font-semibold"
+						*ngIf="newCompanyFormError.missing"
+					>
+						Champs manquants !
+					</p>
+					<p
+						class="text-sm font-semibold"
+						*ngIf="newCompanyFormError.not_found"
+					>
+						Entreprise introuvable !
+					</p>
+					<p
+						class="text-sm font-semibold"
+						*ngIf="newCompanyFormError.exist_company"
 					>
 						Cette entreprise existe déjà !
+					</p>
+					<p
+						class="text-red-600 font-xs mt-2"
+						*ngIf="newCompanyFormError.exist_user"
+					>
+						Utilisateur existe déjà !
 					</p>
 				</div>
 
@@ -69,21 +154,58 @@
 					<p class="text-green-500 font-medium mt-4">
 						{{ successMessage }}
 					</p>
-					<div class="mt-2">
-						<a
-							[href]="generatedLink"
-							target="_blank"
-							class="text-blue-500 underline"
-							>{{ generatedLink }}</a
-						>
-					</div>
+					<div
+						*ngIf="
+							successMessage ===
+								'Entreprise et utilisateur créés avec succès' ||
+							successMessage ===
+								'Mot de passe régénéré avec succès !'
+						"
+					>
+						<div class="mt-2">
+							<a
+								[href]="generatedLink"
+								target="_blank"
+								class="text-blue-500 underline"
+								>{{ generatedLink }}</a
+							>
+						</div>
 
-					<p class="text-gray-700 mt-2">
-						Mot de passe temporaire :
-						<strong>{{ tempPassword }}</strong>
-					</p>
+						<p class="text-gray-700 mt-2">
+							Mot de passe temporaire :
+							<strong>{{ tempPassword }}</strong>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
 	</form>
+</div>
+
+<div class="absolute top-4 right-4 cursor-pointer">
+	<div class="flex justify-start">
+		<button
+			(click)="resetAll()"
+			class="flex items-center px-2 py-1 text-sm bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-200"
+			title="OK !"
+		>
+			<svg
+				class="w-6 h-6 mr-1 text-gray-800 dark:text-white"
+				aria-hidden="true"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="currentColor"
+				viewBox="0 0 20 20"
+			>
+				<path
+					fill="currentColor"
+					d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"
+				/>
+				<path
+					fill="#fff"
+					d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"
+				/>
+			</svg>
+			<span>OK !</span>
+		</button>
+	</div>
 </div>

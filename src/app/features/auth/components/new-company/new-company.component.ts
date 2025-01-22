@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CompanyService } from '../../services/company.service';
 
 interface newCompanyForm {
-	name: string;
+	companyName: string;
 }
 
 @Component({
@@ -11,8 +11,13 @@ interface newCompanyForm {
 	templateUrl: './new-company.component.html',
 })
 export class NewCompanyComponent {
-	newCompanyForm: newCompanyForm = { name: 'you services' };
-	newCompanyFormError = { exists: false };
+	newCompanyForm: newCompanyForm = { companyName: 'test' };
+	newCompanyFormError = {
+		exist_company: false,
+		missing: false,
+		exist_user: false,
+		not_found: false,
+	};
 	successMessage: string | null = null;
 	tempPassword: string | null = null;
 	generatedLink: string | null = null;
@@ -20,23 +25,117 @@ export class NewCompanyComponent {
 	constructor(private CompanyService: CompanyService) {}
 
 	addCompany() {
+		//TODO: Si bug vérifier les données recu et les conditions
+		this.newCompanyFormError = {
+			exist_company: false,
+			missing: false,
+			exist_user: false,
+			not_found: false,
+		}; // Réinitialise le message d'erreur
 		this.CompanyService.addCompany(this.newCompanyForm).subscribe({
 			next: (data: any) => {
-				this.newCompanyFormError = { exists: false }; // Réinitialise le message d'erreur
 				this.successMessage = null; // Réinitialise le message de succès
 
-				if (data.message === 'Entreprise créé avec succès !') {
+				if (
+					data.message ===
+					'Entreprise et utilisateur créés avec succès'
+				) {
 					this.successMessage = data.message;
-					this.tempPassword = data.tempPassword;
-					this.generatedLink = `http://localhost:4200/auth/first-connection-company/${this.newCompanyForm.name}`;
+					this.tempPassword = data.company.password;
+					this.generatedLink = `http://localhost:4200/auth/first-connection-company/${this.newCompanyForm.companyName}`;
 				}
 			},
 			error: (request) => {
 				if (request.error.errorType === 'exist_company') {
-					this.newCompanyFormError.exists = true;
+					this.newCompanyFormError.exist_company = true;
+				} else if (request.error.errorType === 'missing') {
+					this.newCompanyFormError.missing = true;
+				} else if (request.error.exist_user === 'exist_user') {
+					this.newCompanyFormError.exist_user = true;
 				}
 				console.error('Erreur lors de la connexion :', request);
 			},
 		});
+	}
+
+	regeneratePassword() {
+		this.newCompanyFormError = {
+			exist_company: false,
+			missing: false,
+			exist_user: false,
+			not_found: false,
+		};
+		this.CompanyService.regeneratePassword(this.newCompanyForm).subscribe({
+			next: (data: any) => {
+				this.successMessage = data.message;
+				this.tempPassword = data.password;
+				this.generatedLink = `http://localhost:4200/auth/first-connection-company/${this.newCompanyForm.companyName}`;
+			},
+			error: (request) => {
+				if (request.error.errorType === 'not_found') {
+					this.newCompanyFormError.not_found = true;
+				} else if (request.error.errorType === 'missing') {
+					this.newCompanyFormError.missing = true;
+				}
+				console.error('Erreur lors de la connexion :', request);
+			},
+		});
+	}
+
+	archiveCompany() {
+		this.newCompanyFormError = {
+			exist_company: false,
+			missing: false,
+			exist_user: false,
+			not_found: false,
+		};
+		this.CompanyService.archiveCompany(this.newCompanyForm).subscribe({
+			next: (data: any) => {
+				this.successMessage = data.message;
+			},
+			error: (request) => {
+				if (request.error.errorType === 'missing') {
+					this.newCompanyFormError.missing = true;
+				} else if (request.error.errorType === 'not_found') {
+					this.newCompanyFormError.not_found = true;
+				}
+				console.error('Erreur lors de la connexion :', request);
+			},
+		});
+	}
+
+	restoreCompany() {
+		this.newCompanyFormError = {
+			exist_company: false,
+			missing: false,
+			exist_user: false,
+			not_found: false,
+		};
+		this.CompanyService.restoreCompany(this.newCompanyForm).subscribe({
+			next: (data: any) => {
+				this.successMessage = data.message;
+			},
+			error: (request) => {
+				if (request.error.errorType === 'missing') {
+					this.newCompanyFormError.missing = true;
+				} else if (request.error.errorType === 'not_found') {
+					this.newCompanyFormError.not_found = true;
+				}
+				console.error('Erreur lors de la connexion :', request);
+			},
+		});
+	}
+
+	resetAll() {
+		this.newCompanyForm = { companyName: '' };
+		this.successMessage = null;
+		this.tempPassword = null;
+		this.generatedLink = null;
+		this.newCompanyFormError = {
+			exist_company: false,
+			missing: false,
+			exist_user: false,
+			not_found: false,
+		};
 	}
 }

@@ -9,7 +9,7 @@ import { CompanyService } from './../../services/company.service';
 })
 export class FirstConnectionCompanyComponent {
 	firstConnectionCompanyForm: firstConnectionCompanyForm = {
-		name: 'you services',
+		companyName: 'you services',
 		password: 'you services-1736005046',
 	};
 	firstConnectionCompanyFormError: any = {
@@ -32,7 +32,8 @@ export class FirstConnectionCompanyComponent {
 		}
 
 		this.route.paramMap.subscribe((params) => {
-			this.firstConnectionCompanyForm.name = params.get('companyName');
+			this.firstConnectionCompanyForm.companyName =
+				params.get('companyName');
 		});
 	}
 

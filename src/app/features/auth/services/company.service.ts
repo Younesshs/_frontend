@@ -9,28 +9,52 @@ import { firstConnectionCompanyForm } from './../../../shared/models/firstConnec
 	providedIn: 'root',
 })
 export class CompanyService {
-	// you services-1736005046
 	private readonly apiUrl = `${environment.backendUrl}/company`;
 	private expirationTimer: any;
 
 	constructor(private http: HttpClient, private Router: Router) {}
 
-	addCompany(company: any): Observable<any> {
+	addCompany(companyName: any): Observable<any> {
 		return this.http.post<any>(`${this.apiUrl}/`, {
-			company: company.name,
+			companyName: companyName.companyName,
+		});
+	}
+
+	regeneratePassword(companyName: any): Observable<any> {
+		return this.http.post<any>(`${this.apiUrl}/regeneratePassword/`, {
+			companyName: companyName.companyName,
+		});
+	}
+
+	archiveCompany(companyName: any): Observable<any> {
+		return this.http.post<any>(`${this.apiUrl}/archive/`, {
+			companyName: companyName.companyName,
+		});
+	}
+
+	restoreCompany(companyName: any): Observable<any> {
+		return this.http.post<any>(`${this.apiUrl}/restore/`, {
+			companyName: companyName.companyName,
+		});
+	}
+
+	getConfirmCompanyForm(): Observable<any> {
+		const companyId = this.getCompanyInformations().companyId;
+		return this.http.get<any>(`${this.apiUrl}/confirm/form`, {
+			params: { companyId: companyId },
 		});
 	}
 
 	firstConnectionCompany(credentials: firstConnectionCompanyForm) {
 		return this.http.post<any>(`${this.apiUrl}/firstConnection/`, {
-			name: credentials.name,
+			companyName: credentials.companyName,
 			password: credentials.password,
 		});
 	}
 
 	confirmCompany(company: any): Observable<any> {
 		return this.http.post<any>(`${this.apiUrl}/confirm/`, {
-			name: company.name,
+			companyName: company.companyName,
 			email: company.email,
 			phone: company.phone,
 			address: company.address,
@@ -71,7 +95,7 @@ export class CompanyService {
 			// Récupérer les informations de l'entreprise ('name')
 			companyInformations = this.getCompanyInformations();
 
-			this.companyLogout(companyInformations.name);
+			this.companyLogout(companyInformations.companyName);
 		}, duration);
 	}
 
@@ -82,7 +106,7 @@ export class CompanyService {
 	getCompanyInformations() {
 		return {
 			companyId: localStorage.getItem('companyId'),
-			name: localStorage.getItem('companyName'),
+			companyName: localStorage.getItem('companyName'),
 			createdAt: localStorage.getItem('companyCreatedAt'),
 		};
 	}
@@ -107,7 +131,7 @@ export class CompanyService {
 		}
 	}
 
-	companyLogout(name: string | null = null): void {
+	companyLogout(companyName: string | null = null): void {
 		clearTimeout(this.expirationTimer);
 		this.expirationTimer = null;
 		localStorage.removeItem('companyToken');
@@ -116,8 +140,10 @@ export class CompanyService {
 		localStorage.removeItem('companyName');
 		localStorage.removeItem('companyCreatedAt');
 		console.info('disconnected...');
-		if (name) {
-			this.Router.navigate(['/auth/first-connection-company/' + name]);
+		if (companyName) {
+			this.Router.navigate([
+				'/auth/first-connection-company/' + companyName,
+			]);
 		} else {
 			this.Router.navigate(['/auth']);
 		}

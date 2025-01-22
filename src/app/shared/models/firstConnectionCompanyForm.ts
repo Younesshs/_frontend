@@ -1,4 +1,4 @@
 export interface firstConnectionCompanyForm {
-	name: string;
+	companyName: string;
 	password?: string;
 }

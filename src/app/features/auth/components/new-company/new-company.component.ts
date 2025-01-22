@@ -26,12 +26,7 @@ export class NewCompanyComponent {
 
 	addCompany() {
 		//TODO: Si bug vérifier les données recu et les conditions
-		this.newCompanyFormError = {
-			exist_company: false,
-			missing: false,
-			exist_user: false,
-			not_found: false,
-		}; // Réinitialise le message d'erreur
+		this.resetMessage();
 		this.CompanyService.addCompany(this.newCompanyForm).subscribe({
 			next: (data: any) => {
 				this.successMessage = null; // Réinitialise le message de succès
@@ -59,12 +54,7 @@ export class NewCompanyComponent {
 	}
 
 	regeneratePassword() {
-		this.newCompanyFormError = {
-			exist_company: false,
-			missing: false,
-			exist_user: false,
-			not_found: false,
-		};
+		this.resetMessage();
 		this.CompanyService.regeneratePassword(this.newCompanyForm).subscribe({
 			next: (data: any) => {
 				this.successMessage = data.message;
@@ -83,12 +73,7 @@ export class NewCompanyComponent {
 	}
 
 	archiveCompany() {
-		this.newCompanyFormError = {
-			exist_company: false,
-			missing: false,
-			exist_user: false,
-			not_found: false,
-		};
+		this.resetMessage();
 		this.CompanyService.archiveCompany(this.newCompanyForm).subscribe({
 			next: (data: any) => {
 				this.successMessage = data.message;
@@ -105,12 +90,7 @@ export class NewCompanyComponent {
 	}
 
 	restoreCompany() {
-		this.newCompanyFormError = {
-			exist_company: false,
-			missing: false,
-			exist_user: false,
-			not_found: false,
-		};
+		this.resetMessage();
 		this.CompanyService.restoreCompany(this.newCompanyForm).subscribe({
 			next: (data: any) => {
 				this.successMessage = data.message;
@@ -126,8 +106,7 @@ export class NewCompanyComponent {
 		});
 	}
 
-	resetAll() {
-		this.newCompanyForm = { companyName: '' };
+	resetMessage() {
 		this.successMessage = null;
 		this.tempPassword = null;
 		this.generatedLink = null;
@@ -137,5 +116,10 @@ export class NewCompanyComponent {
 			exist_user: false,
 			not_found: false,
 		};
+	}
+
+	reset() {
+		this.newCompanyForm = { companyName: 'test' };
+		this.resetMessage();
 	}
 }

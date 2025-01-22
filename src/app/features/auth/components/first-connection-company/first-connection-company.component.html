@@ -71,32 +71,32 @@
 
 			<div class="cursor-pointer">
 				<p
-					class="text-red-600 font-xs mt-1"
+					class="text-red-600 text-[12px] font-bold uppercase mt-3"
 					*ngIf="firstConnectionCompanyFormError.wrong"
 				>
 					Identifiant incorrect !
 				</p>
 				<p
-					class="text-red-600 font-xs mt-1"
+					class="text-red-600 text-[12px] font-bold uppercase mt-3"
 					*ngIf="firstConnectionCompanyFormError.bot"
 				>
 					Connexion suspecte détectée !
 				</p>
 				<p
 					*ngIf="firstConnectionCompanyFormError.format"
-					class="text-red-600 font-xs mt-2"
+					class="text-red-600 text-[12px] font-bold uppercase mt-3"
 				>
 					Format des données invalide !
 				</p>
 				<p
 					*ngIf="firstConnectionCompanyFormError.notFound"
-					class="text-red-600 font-xs mt-2"
+					class="text-red-600 text-[12px] font-bold uppercase mt-3"
 				>
 					Entreprise introuvable !
 				</p>
 				<p
 					*ngIf="firstConnectionCompanyFormError.companyConfirmed"
-					class="text-red-600 font-xs mt-2"
+					class="text-red-600 text-[12px] font-bold uppercase mt-3"
 				>
 					Entreprise déjà confirmée !
 					<small

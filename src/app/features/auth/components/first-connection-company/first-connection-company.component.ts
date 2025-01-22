@@ -9,8 +9,8 @@ import { CompanyService } from './../../services/company.service';
 })
 export class FirstConnectionCompanyComponent {
 	firstConnectionCompanyForm: firstConnectionCompanyForm = {
-		companyName: 'you services',
-		password: 'you services-1736005046',
+		companyName: '',
+		password: '',
 	};
 	firstConnectionCompanyFormError: any = {
 		wrong: false,

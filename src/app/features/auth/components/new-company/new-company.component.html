@@ -1,6 +1,6 @@
 <div class="w-full h-screen flex flex-col items-center">
 	<form (ngSubmit)="addCompany()">
-		<div class="relative top-[100px]">
+		<div class="relative top-[80px] flex flex-col items-center">
 			<!-- Logo centré -->
 			<div class="mb-6">
 				<img
@@ -10,7 +10,7 @@
 				/>
 			</div>
 
-			<!-- Contenu du formulaire -->
+			<!-- formulaire -->
 			<div *ngIf="!successMessage" class="w-[300px]">
 				<div class="mb-3">
 					<label
@@ -30,7 +30,7 @@
 						required
 					/>
 				</div>
-				<div class="w-full flex justify-center">
+				<div class="flex justify-center">
 					<button
 						type="submit"
 						class="text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center items-center"
@@ -52,129 +52,173 @@
 						</svg>
 					</button>
 				</div>
-				<div class="w-full flex justify-start">
-					<button
-						type="button"
-						class="m-2 text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center items-center"
-						(click)="regeneratePassword()"
-					>
-						<span class="mr-3">Régénérer</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke-width="1.5"
-							stroke="currentColor"
-							class="size-6 stroke-[#D9F1F6]"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-							/>
-						</svg>
-					</button>
-					<button
-						type="button"
-						class="m-2 text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center"
-						(click)="restoreCompany()"
-					>
-						<span class="mr-3">Restorer</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke-width="1.5"
-							stroke="currentColor"
-							class="size-6 stroke-[#D9F1F6]"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-							/>
-						</svg>
-					</button>
+			</div>
+
+			<!-- fonctionnalités supplémentaires -->
+			<div class="w-full text-center">
+				<div *ngIf="successMessage">
+					<h1 class="text-xl font-semibold tracking-wide uppercase">
+						{{ newCompanyForm.companyName }}
+					</h1>
 				</div>
-				<div class="w-full flex justify-end">
-					<button
-						type="button"
-						class="mt-2 text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center text-xs uppercase flex flex-row justify-center items-center"
-						(click)="archiveCompany()"
-					>
-						<span class="mr-3">Archiver</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke-width="1.5"
-							stroke="currentColor"
-							class="size-6 stroke-[#D9F1F6]"
+				<div class="w-full flex flex-row flex-wrap justify-center mt-3">
+					<div class="w-full sm:w-1/2 p-1">
+						<button
+							type="button"
+							class="text-white bg-indigo-700 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full px-2 py-1.5 text-center text-xs uppercase flex flex-row justify-center items-center transition-transform duration-300 transform hover:scale-105"
+							(click)="regeneratePassword()"
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-							/>
-						</svg>
-					</button>
+							<span
+								class="mr-2 text-indigo-200 transition-opacity duration-300 opacity-40 hover:opacity-100"
+								>Régénérer</span
+							>
+							<svg
+								class="size-4 stroke-indigo-200 text-indigo-200"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 22 20"
+							>
+								<path
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M11 16.5A2.493 2.493 0 0 1 6.51 18H6.5a2.468 2.468 0 0 1-2.4-3.154 2.98 2.98 0 0 1-.85-5.274 2.468 2.468 0 0 1 .921-3.182 2.477 2.477 0 0 1 1.875-3.344 2.5 2.5 0 0 1 3.41-1.856A2.5 2.5 0 0 1 11 3.5m0 13v-13m0 13a2.492 2.492 0 0 0 4.49 1.5h.01a2.467 2.467 0 0 0 2.403-3.154 2.98 2.98 0 0 0 .847-5.274 2.468 2.468 0 0 0-.921-3.182 2.479 2.479 0 0 0-1.875-3.344A2.5 2.5 0 0 0 13.5 1 2.5 2.5 0 0 0 11 3.5m-8 5a2.5 2.5 0 0 1 3.48-2.3m-.28 8.551a3 3 0 0 1-2.953-5.185M19 8.5a2.5 2.5 0 0 0-3.481-2.3m.28 8.551a3 3 0 0 0 2.954-5.185"
+								/>
+							</svg>
+						</button>
+					</div>
+					<div class="w-full sm:w-1/2 p-1">
+						<button
+							type="button"
+							class="text-white bg-emerald-700 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full px-2 py-1.5 text-center text-xs uppercase flex flex-row justify-center transition-transform duration-300 transform hover:scale-105"
+							(click)="restoreCompany()"
+						>
+							<span
+								class="mr-2 text-emerald-200 transition-opacity duration-300 opacity-40 hover:opacity-100"
+								>Restorer</span
+							>
+							<svg
+								class="size-4 stroke-slate-200 text-emerald-200"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="currentColor"
+								viewBox="0 0 20 16"
+							>
+								<path
+									d="M19 0H1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1ZM2 6v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6H2Zm11 3a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 2 0h2a1 1 0 0 1 2 0v1Z"
+								/>
+							</svg>
+						</button>
+					</div>
+					<div class="w-full sm:w-1/2 p-1">
+						<button
+							type="button"
+							class="text-white bg-amber-700 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full px-2 py-1.5 text-center text-xs uppercase flex flex-row justify-center items-center transition-transform duration-300 transform hover:scale-105"
+							(click)="archiveCompany()"
+						>
+							<span
+								class="mr-2 text-amber-200 transition-opacity duration-300 opacity-40 hover:opacity-100"
+								>Archiver</span
+							>
+							<svg
+								class="size-4 stroke-amber-200 text-amber-200"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 20 16"
+							>
+								<path
+									stroke="currentColor"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"
+								/>
+							</svg>
+						</button>
+					</div>
 				</div>
 			</div>
 
-			<div class="w-[300px]">
-				<div>
+			<!-- messages d'erreur & succès -->
+			<div class="space-y-4">
+				<!-- Section des erreurs -->
+				<div
+					*ngIf="
+						newCompanyFormError.missing ||
+						newCompanyFormError.not_found ||
+						newCompanyFormError.exist_user ||
+						newCompanyFormError.exist_company
+					"
+					class="text-red-600 p-4 rounded-md"
+				>
 					<p
-						class="text-sm font-semibold"
 						*ngIf="newCompanyFormError.missing"
+						class="text-[12px] font-bold uppercase"
 					>
 						Champs manquants !
 					</p>
 					<p
-						class="text-sm font-semibold"
 						*ngIf="newCompanyFormError.not_found"
+						class="text-[12px] font-bold uppercase"
 					>
 						Entreprise introuvable !
 					</p>
 					<p
-						class="text-sm font-semibold"
 						*ngIf="newCompanyFormError.exist_company"
+						class="text-[12px] font-bold uppercase"
 					>
 						Cette entreprise existe déjà !
 					</p>
 					<p
-						class="text-red-600 font-xs mt-2"
 						*ngIf="newCompanyFormError.exist_user"
+						class="text-[12px] font-bold uppercase"
 					>
 						Utilisateur existe déjà !
 					</p>
 				</div>
 
-				<!-- Message de succès -->
-				<div *ngIf="successMessage" class="mt-4">
-					<p class="text-green-500 font-medium mt-4">
+				<!-- Section des messages de succès -->
+				<div
+					*ngIf="successMessage"
+					class="text-green-700 p-4 rounded-md"
+				>
+					<p class="m-0 text-[12px] font-bold uppercase">
 						{{ successMessage }}
 					</p>
-					<div
-						*ngIf="
-							successMessage ===
-								'Entreprise et utilisateur créés avec succès' ||
-							successMessage ===
-								'Mot de passe régénéré avec succès !'
-						"
-					>
-						<div class="mt-2">
+					<div>
+						<div
+							*ngIf="
+								successMessage ===
+									'Entreprise et utilisateur créés avec succès' ||
+								successMessage ===
+									'Mot de passe régénéré avec succès !'
+							"
+						>
+							<p class="text-[12px] font-bold">
+								<span class="uppercase"
+									>Mot de passe temporaire :
+								</span>
+								<span
+									class="font-extrabold text-[18px] cursor-pointer"
+									>&nbsp;"<span
+										class="font-normal text-[12px]"
+										>{{ tempPassword }}</span
+									>"&nbsp;</span
+								>
+							</p>
+							<p class="m-0 text-[10px] uppercase">
+								Espace de première connexion "COMPANY" :
+							</p>
 							<a
 								[href]="generatedLink"
 								target="_blank"
-								class="text-blue-500 underline"
-								>{{ generatedLink }}</a
+								class="text-gray-700 underline hover:text-gray-900 text-sm"
 							>
+								{{ generatedLink | slice : 0 : 50 }}...
+							</a>
 						</div>
-
-						<p class="text-gray-700 mt-2">
-							Mot de passe temporaire :
-							<strong>{{ tempPassword }}</strong>
-						</p>
 					</div>
 				</div>
 			</div>
@@ -185,7 +229,7 @@
 <div class="absolute top-4 right-4 cursor-pointer">
 	<div class="flex justify-start">
 		<button
-			(click)="resetAll()"
+			(click)="reset()"
 			class="flex items-center px-2 py-1 text-sm bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-200"
 			title="OK !"
 		>

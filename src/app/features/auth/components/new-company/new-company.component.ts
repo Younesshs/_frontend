@@ -11,7 +11,7 @@ interface newCompanyForm {
 	templateUrl: './new-company.component.html',
 })
 export class NewCompanyComponent {
-	newCompanyForm: newCompanyForm = { companyName: 'test' };
+	newCompanyForm: newCompanyForm = { companyName: '' };
 	newCompanyFormError = {
 		exist_company: false,
 		missing: false,
@@ -119,7 +119,7 @@ export class NewCompanyComponent {
 	}
 
 	reset() {
-		this.newCompanyForm = { companyName: 'test' };
+		this.newCompanyForm = { companyName: '' };
 		this.resetMessage();
 	}
 }

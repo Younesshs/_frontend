@@ -52,15 +52,9 @@ export class CompanyService {
 		});
 	}
 
-	confirmCompany(company: any): Observable<any> {
+	confirmCompany(confirmCompanyForm: any): Observable<any> {
 		return this.http.post<any>(`${this.apiUrl}/confirm/`, {
-			companyName: company.companyName,
-			email: company.email,
-			phone: company.phone,
-			address: company.address,
-			siret: company.siret,
-			logo: company.logo,
-			numberOfEmployees: company.numberOfEmployees,
+			confirmCompanyForm: confirmCompanyForm,
 		});
 	}
 

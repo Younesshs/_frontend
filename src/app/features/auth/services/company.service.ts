@@ -63,7 +63,8 @@ export class CompanyService {
 		expiration: number,
 		companyId: string,
 		companyName: string,
-		createdAt: any
+		createdAt: any,
+		updatedAt: any
 	): void {
 		const expirationTimestamp = Date.now() + expiration;
 
@@ -75,6 +76,7 @@ export class CompanyService {
 		localStorage.setItem('companyId', companyId);
 		localStorage.setItem('companyName', companyName);
 		localStorage.setItem('companyCreatedAt', createdAt);
+		localStorage.setItem('companyUpdatedAt', updatedAt);
 
 		this.startCompanyTokenTimer(expiration);
 	}
@@ -133,6 +135,7 @@ export class CompanyService {
 		localStorage.removeItem('companyId');
 		localStorage.removeItem('companyName');
 		localStorage.removeItem('companyCreatedAt');
+		localStorage.removeItem('companyUpdatedAt');
 		console.info('disconnected...');
 		if (companyName) {
 			this.Router.navigate([

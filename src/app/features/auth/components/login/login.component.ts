@@ -25,7 +25,10 @@ export class LoginComponent implements OnInit {
 		format: false,
 		bot: false,
 		user_not_found: false,
+		company_not_found: false,
+		company_not_confirmed: false,
 	};
+	tempCompanyName: string = null;
 
 	constructor(
 		public LoaderService: LoaderService,
@@ -46,41 +49,48 @@ export class LoginComponent implements OnInit {
 			format: false,
 			bot: false,
 			user_not_found: false,
+			company_not_found: false,
+			company_not_confirmed: false,
 		};
 
 		this.AuthService.login(this.loginForm).subscribe({
 			next: (data: any) => {
 				if (data.response) {
-					// Decode the token to get user information
-					const tokenPayload = JSON.parse(
-						atob(data.token.split('.')[1])
-					);
+					if (data.company.companyIsConfirmed) {
+						// Decode the token to get user information
+						const tokenPayload = JSON.parse(
+							atob(data.token.split('.')[1])
+						);
 
-					const userInformations = {
-						userId: tokenPayload.userId,
-						lastname: tokenPayload.lastname,
-						firstname: tokenPayload.firstname,
-						role: tokenPayload.role,
-						createdAt: tokenPayload.createdAt,
-						updatedAt: tokenPayload.updatedAt,
-					};
+						const userInformations = {
+							userId: tokenPayload.userId,
+							lastname: tokenPayload.lastname,
+							firstname: tokenPayload.firstname,
+							role: tokenPayload.role,
+							createdAt: tokenPayload.createdAt,
+							updatedAt: tokenPayload.updatedAt,
+						};
 
-					this.AuthService.setToken(
-						data.token,
-						data.tokenExpiration,
-						this.loginForm.stayLogin,
-						tokenPayload.iat,
-						tokenPayload.exp
-					);
+						this.AuthService.setToken(
+							data.token,
+							data.tokenExpiration,
+							this.loginForm.stayLogin,
+							tokenPayload.iat,
+							tokenPayload.exp
+						);
 
-					this.UserService.setUserInformations(
-						userInformations.lastname,
-						userInformations.firstname,
-						userInformations.role
-					);
+						this.UserService.setUserInformations(
+							userInformations.lastname,
+							userInformations.firstname,
+							userInformations.role
+						);
 
-					console.info('connected...');
-					this.Router.navigate(['/vehicle-location']);
+						console.info('connected...');
+						this.Router.navigate(['/vehicle-location']);
+					} else {
+						this.formError.company_not_confirmed = true;
+						this.tempCompanyName = data.company.companyName;
+					}
 				}
 			},
 			error: (request) => {

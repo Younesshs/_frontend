@@ -52,12 +52,17 @@ export class FirstConnectionCompanyComponent {
 			next: (data: any) => {
 				if (data.response) {
 					if (!data.companyIsConfirmed) {
+						// Decode the token to get company information
+						const companyTokenPayload = JSON.parse(
+							atob(data.companyToken.split('.')[1])
+						);
 						this.CompanyService.setCompanyToken(
 							data.companyToken,
 							data.companyExpiration,
-							data.companyId,
-							data.companyName,
-							data.companyCreatedAt
+							companyTokenPayload.companyId,
+							companyTokenPayload.companyName,
+							companyTokenPayload.companyCreatedAt,
+							companyTokenPayload.companyUpdatedAt
 						);
 						console.info('connected...');
 						this.Router.navigate(['auth/confirm-company']);

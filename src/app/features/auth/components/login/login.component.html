@@ -88,6 +88,28 @@
 			>
 				Utilisateur introuvable !
 			</p>
+			<p
+				*ngIf="formError.company_not_found"
+				class="text-red-600 text-[12px] font-bold uppercase mt-2"
+			>
+				Entreprise introuvable !
+			</p>
+			<p
+				*ngIf="formError.company_not_confirmed"
+				class="text-red-600 text-[12px] font-bold uppercase mt-2"
+			>
+				Entreprise non confimer !
+				<small
+					><a
+						[routerLink]="[
+							'/auth/first-connection-company/',
+							tempCompanyName
+						]"
+						class="text-gray-900 hover:text-gray-700"
+						>Confirmer votre entreprise ici</a
+					></small
+				>
+			</p>
 		</div>
 		<button
 			type="submit"

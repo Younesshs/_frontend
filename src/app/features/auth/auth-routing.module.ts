@@ -10,7 +10,6 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
 const routes: Routes = [
 	{ path: '', redirectTo: 'login', pathMatch: 'full' }, // Par défaut, redirection vers login
 	{ path: 'login', component: LoginComponent },
-	// { path: 'register', component: RegisterComponent },
 	{
 		path: 'new-company',
 		component: NewCompanyComponent,

@@ -21,8 +21,6 @@ interface ConfirmCompanyForm {
 	templateUrl: './confirm-company.component.html',
 })
 export class ConfirmCompanyComponent implements OnInit {
-	// TODO: FAIRE LES MESSAGES DE SUCCESS & ERR, VERIFIER CHAQUE ERREUR DU FORMULAIRE, VERIFIER REDIRECTION ET CONNEXION USER
-	// TODO: FAIRE UN TEST DE TOUT TOUT TOUT
 	confirmCompanyForm: ConfirmCompanyForm = {
 		companyId: null,
 		companyName: null,

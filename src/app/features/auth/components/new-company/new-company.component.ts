@@ -25,7 +25,6 @@ export class NewCompanyComponent {
 	constructor(private CompanyService: CompanyService) {}
 
 	addCompany() {
-		//TODO: Si bug vérifier les données recu et les conditions
 		this.resetMessage();
 		this.CompanyService.addCompany(this.newCompanyForm).subscribe({
 			next: (data: any) => {

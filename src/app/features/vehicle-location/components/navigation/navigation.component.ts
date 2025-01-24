@@ -53,16 +53,16 @@ export class NavigationComponent implements OnInit {
 		});
 	}
 
-	getUserName(): string {
-		return this.UserService.getUserName() || 'Unknown'; // Récupère le rôle ou affiche "Unknown" si aucun
+	getName(): any {
+		return this.UserService.getName() || 'Unknown';
 	}
 
 	getUserRole(): string {
-		return this.AuthService.getRole() || 'Unknown'; // Récupère le rôle ou affiche "Unknown" si aucun
+		return this.UserService.getRole() || 'Unknown'; // Récupère le rôle ou affiche "Unknown" si aucun
 	}
 
 	hasRoleAdmin() {
-		return this.AuthService.hasRole('admin');
+		return this.UserService.hasRole('admin');
 	}
 
 	closeNavigationBar(): void {

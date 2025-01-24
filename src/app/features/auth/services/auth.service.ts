@@ -1,60 +1,45 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { UserService } from './../../../core/services/user.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
+	private readonly apiUrl = `${environment.backendUrl}/user`;
 	private expirationTimer: any;
 
-	constructor(private Router: Router, private UserService: UserService) {}
+	constructor(
+		private http: HttpClient,
+		private Router: Router,
+		private UserService: UserService
+	) {}
 
-	login(credentials: any): Observable<{
-		response: boolean;
-		token?: string;
-		expiration?: number;
-		role?: string;
-		errorType?: string;
-	}> {
-		const { email, password } = credentials;
-
-		if (email === 'admin@locate-them.com' && password === 'admin') {
-			return of({
-				response: true,
-				token: 'fake-jwt-token-admin',
-				expiration: 2 * 60 * 60 * 1000, // 2 heures
-				role: 'admin',
-				username: 'HADDOU Youness',
-			});
-		} else if (email === 'user@locate-them.com' && password === 'user') {
-			return of({
-				response: true,
-				token: 'fake-jwt-token-user',
-				expiration: 2 * 60 * 60 * 1000, // 2 heures
-				role: 'agent',
-				username: 'PORTET Julien',
-			});
-		} else if (!email.includes('@')) {
-			return of({ response: false, errorType: 'format' });
-		} else {
-			return of({ response: false, errorType: 'wrong' });
-		}
+	login(credentials: any): Observable<any> {
+		return this.http.post<any>(`${this.apiUrl}/login`, {
+			email: credentials.email,
+			password: credentials.password,
+			stayLogin: credentials.stayLogin,
+		});
 	}
 
 	setToken(
 		token: string,
 		expiration: number,
 		stayLogin: boolean,
-		role: string
+		iat: number,
+		exp: number
 	): void {
 		const finalExpiration = stayLogin ? 24 * 60 * 60 * 1000 : expiration; // 24 heures ou expiration fournie
 		const expirationTimestamp = Date.now() + finalExpiration;
 
 		localStorage.setItem('token', token);
 		localStorage.setItem('tokenExpiration', expirationTimestamp.toString());
-		localStorage.setItem('userRole', role);
+		localStorage.setItem('iat', iat.toString());
+		localStorage.setItem('exp', exp.toString());
 
 		this.startTokenTimer(finalExpiration);
 	}
@@ -63,6 +48,8 @@ export class AuthService {
 		if (this.expirationTimer) {
 			clearTimeout(this.expirationTimer);
 		}
+
+		console.log(duration);
 
 		this.expirationTimer = setTimeout(() => {
 			this.logout();
@@ -74,8 +61,9 @@ export class AuthService {
 		this.expirationTimer = null;
 		localStorage.removeItem('token');
 		localStorage.removeItem('tokenExpiration');
-		localStorage.removeItem('userRole');
-		this.UserService.deleteUsername();
+		localStorage.removeItem('iat');
+		localStorage.removeItem('exp');
+		this.UserService.deleteUserInformations();
 		console.info('disconnected...');
 		this.Router.navigate(['/auth']);
 	}
@@ -86,10 +74,6 @@ export class AuthService {
 
 	getExpiration() {
 		return localStorage.getItem('tokenExpiration');
-	}
-
-	getRole(): string | null {
-		return localStorage.getItem('userRole');
 	}
 
 	isAuthenticated(): boolean {
@@ -106,10 +90,5 @@ export class AuthService {
 			}
 			return false;
 		}
-	}
-
-	hasRole(requiredRole: string): boolean {
-		const userRole = this.getRole();
-		return userRole === requiredRole;
 	}
 }

@@ -41,7 +41,7 @@
 				name="password"
 				[(ngModel)]="loginForm.password"
 				class="bg-gray-50 border border-gray-300 text-[#111827] text-sm rounded-lg focus:ring-[#111827] focus:border-[#111827] block w-full p-2.5"
-				placeholder="••••••••••••"
+				placeholder="************"
 				autocomplete="off"
 				required
 			/>
@@ -81,6 +81,12 @@
 				class="text-red-600 text-[12px] font-bold uppercase mt-2"
 			>
 				Connexion suspecte détectée !
+			</p>
+			<p
+				*ngIf="formError.user_not_found"
+				class="text-red-600 text-[12px] font-bold uppercase mt-2"
+			>
+				Utilisateur introuvable !
 			</p>
 		</div>
 		<button

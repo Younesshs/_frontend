@@ -11,7 +11,9 @@ export class LocationService {
 
 	constructor(private http: HttpClient) {}
 
-	getLocations(gpsTrackerNumber: string): Observable<any> {
-		return this.http.get<any>(`${this.apiUrl}/list/${gpsTrackerNumber}`);
+	getLocations(gpsTrackerNumberList: string): Observable<any> {
+		return this.http.get<any>(
+			`${this.apiUrl}/list/${gpsTrackerNumberList}`
+		);
 	}
 }

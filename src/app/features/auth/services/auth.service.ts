@@ -63,6 +63,10 @@ export class AuthService {
 		localStorage.removeItem('tokenExpiration');
 		localStorage.removeItem('iat');
 		localStorage.removeItem('exp');
+		localStorage.removeItem('companyId');
+		localStorage.removeItem('companyName');
+		localStorage.removeItem('companyCreatedAt');
+		localStorage.removeItem('companyUpdatedAt');
 		this.UserService.deleteUserInformations();
 		console.info('disconnected...');
 		this.Router.navigate(['/auth']);

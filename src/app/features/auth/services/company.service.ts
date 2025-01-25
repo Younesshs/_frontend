@@ -81,6 +81,18 @@ export class CompanyService {
 		this.startCompanyTokenTimer(expiration);
 	}
 
+	setCompanyInformations(
+		companyName: string,
+		companyId: string,
+		createdAt: any,
+		updatedAt: any
+	) {
+		localStorage.setItem('companyId', companyId);
+		localStorage.setItem('companyName', companyName);
+		localStorage.setItem('companyCreatedAt', createdAt);
+		localStorage.setItem('companyUpdatedAt', updatedAt);
+	}
+
 	startCompanyTokenTimer(duration: number): void {
 		let companyInformations;
 		if (this.expirationTimer) {
@@ -104,6 +116,7 @@ export class CompanyService {
 			companyId: localStorage.getItem('companyId'),
 			companyName: localStorage.getItem('companyName'),
 			createdAt: localStorage.getItem('companyCreatedAt'),
+			updatedAt: localStorage.getItem('companyCreatedAt'),
 		};
 	}
 

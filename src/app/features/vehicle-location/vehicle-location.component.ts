@@ -3,6 +3,7 @@ import { initFlowbite } from 'flowbite';
 import { Vehicle } from 'src/app/shared/models/vehicle';
 import { LoaderService } from '../../core/services/loader.service';
 import { ModalsService } from '../../core/services/modals.service';
+import { CompanyService } from '../auth/services/company.service';
 import { NavigationService } from './services/navigation.service';
 import { VehicleService } from './services/vehicle.service';
 
@@ -22,6 +23,7 @@ export class VehicleLocationComponent {
 		private VehicleService: VehicleService,
 		public NavigationService: NavigationService,
 		public LoaderService: LoaderService,
+		public CompanyService: CompanyService,
 		public ModalsService: ModalsService
 	) {}
 
@@ -45,7 +47,11 @@ export class VehicleLocationComponent {
 	}
 
 	private loadVehicles(): void {
-		this.VehicleService.getAllVehicles().subscribe({
+		const companyInformations =
+			this.CompanyService.getCompanyInformations();
+		this.VehicleService.getAllVehicles(
+			companyInformations.companyId
+		).subscribe({
 			next: (data: any[]) => {
 				this.vehicles = data;
 				this.VehicleService.setVehicles(data);

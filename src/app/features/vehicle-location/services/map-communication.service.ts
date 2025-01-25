@@ -6,6 +6,11 @@ import { Subject } from 'rxjs';
 	providedIn: 'root',
 })
 export class MapCommunicationService {
+	updateMapData(zoomLevel: number, center: LatLng): void {
+		// console.info('Location informations:');
+		// console.table({ 'Zoom Level': zoomLevel, Center: center });
+	}
+
 	private focusMarkerSubject = new Subject<{
 		center: LatLng;
 		zoomLevel: number;

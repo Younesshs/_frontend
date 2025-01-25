@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompanyService } from 'src/app/features/auth/services/company.service';
 import { LoaderService } from './../../../../core/services/loader.service';
 import { UserService } from './../../../../core/services/user.service';
 import { AuthService } from './../../services/auth.service';
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
 		public LoaderService: LoaderService,
 		private AuthService: AuthService,
 		private UserService: UserService,
+		private CompanyService: CompanyService,
 		private Router: Router
 	) {}
 
@@ -83,6 +85,13 @@ export class LoginComponent implements OnInit {
 							userInformations.lastname,
 							userInformations.firstname,
 							userInformations.role
+						);
+
+						this.CompanyService.setCompanyInformations(
+							data.company.companyName,
+							data.company.companyId,
+							data.company.createdAt,
+							data.company.updatedAt
 						);
 
 						console.info('connected...');

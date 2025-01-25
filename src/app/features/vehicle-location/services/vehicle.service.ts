@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LatLng } from 'leaflet';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Vehicle } from '../../../shared/models/vehicle';
@@ -15,27 +14,21 @@ export class VehicleService {
 
 	constructor(private http: HttpClient) {}
 
-	updateMapData(zoomLevel: number, center: LatLng): void {
-		// console.info('Location informations:');
-		// console.table({ 'Zoom Level': zoomLevel, Center: center });
+	getAllVehicles(companyId: string): Observable<Vehicle[]> {
+		return this.http.get<Vehicle[]>(
+			`${this.apiUrl}?companyId=${companyId}`
+		);
 	}
 
 	setVehicles(data: Vehicle[]): void {
 		this.vehicles = data;
 	}
 
-	getAllVehicles(): Observable<Vehicle[]> {
-		return this.http.get<Vehicle[]>(`${this.apiUrl}/`);
-	}
-
-	getVehicles(vehicleIds: number): Observable<Vehicle> {
-		return this.http.get<Vehicle>(`${this.apiUrl}/list/${vehicleIds}`);
-	}
-
 	getVehicle(vehicleId: number): Observable<Vehicle> {
 		return this.http.get<Vehicle>(`${this.apiUrl}/${vehicleId}`);
 	}
 
+	// TODO: Finir la fonctionnalité & backend
 	addVehicle(
 		newVehicle: Vehicle
 	): Observable<{ message: string; result: boolean }> {
@@ -44,8 +37,4 @@ export class VehicleService {
 		return of({ message: 'véhicule ajouté', result: true });
 		// return this.http.post(`${this.apiUrl}/`, newVehicle);
 	}
-
-	updateVehicle() {}
-
-	deleteVehicle() {}
 }

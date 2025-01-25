@@ -61,7 +61,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		);
 
 		// Initialiser l'auto mise à jour des véhicules
-		this.updateLocalionVehicles(10000);
+		this.updateLocationVehicles(10000);
 	}
 
 	private preloadIcons(): void {
@@ -93,7 +93,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	updateLocalionVehicles(autoLocationTime: number) {
+	updateLocationVehicles(autoLocationTime: number) {
 		this.autoGpsEnabledList = this.vehicles
 			.filter((vehicle: Vehicle) => vehicle.options.autoGpsEnabled)
 			.map((vehicle: Vehicle) => vehicle.gpsTracker.number)
@@ -106,6 +106,13 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 	autoGpsUpdate(autoLocationTime: number, gpsTrackerNumberList: string) {
 		if (this.vehicleUpdateIntervalSubscription) {
 			this.vehicleUpdateIntervalSubscription.unsubscribe();
+		}
+
+		if (!gpsTrackerNumberList) {
+			console.info(
+				'[AUTORELOAD VEHICLE OFF] - Liste des vehicules à mettre à jours vide !'
+			);
+			return;
 		}
 
 		this.vehicleUpdateIntervalSubscription = interval(autoLocationTime)
@@ -277,7 +284,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 		zoomLevel: number = this.currentZoomLevel,
 		center: LatLng = this.currentCenter
 	): void {
-		this.VehicleService.updateMapData(zoomLevel, center);
+		this.MapCommunicationService.updateMapData(zoomLevel, center);
 	}
 
 	onMapCenterChange(newCenter: LatLng): void {

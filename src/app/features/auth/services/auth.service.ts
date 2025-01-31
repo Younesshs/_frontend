@@ -49,8 +49,6 @@ export class AuthService {
 			clearTimeout(this.expirationTimer);
 		}
 
-		console.log(duration);
-
 		this.expirationTimer = setTimeout(() => {
 			this.logout();
 		}, duration);

@@ -1,12 +1,12 @@
 {
-  "name": "ngx-leaflet",
+  "name": "locate-them",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "demo": "ng serve ngx-leaflet-demo",
-    "build": "ng build ngx-leaflet --configuration production && copyfiles README.md LICENSE CHANGES.md ./dist/ngx-leaflet",
-    "watch": "ng build ngx-leaflet --watch --configuration development",
-    "test": "ng test ngx-leaflet"
+    "demo": "ng serve locate-them-demo",
+    "build": "ng build locate-them --configuration production && copyfiles README.md LICENSE CHANGES.md ./dist/locate-them",
+    "watch": "ng build locate-them --watch --configuration development",
+    "test": "ng test locate-them"
   },
   "private": true,
   "dependencies": {

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-leaflet-demo": {
+    "locate-them": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-leaflet-demo",
+            "outputPath": "dist/locate-them",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -79,10 +79,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ngx-leaflet-demo:build:production"
+              "buildTarget": "locate-them:build:production"
             },
             "development": {
-              "buildTarget": "ngx-leaflet-demo:build:development"
+              "buildTarget": "locate-them:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -90,7 +90,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ngx-leaflet-demo:build"
+            "buildTarget": "locate-them:build"
           }
         },
         "test": {

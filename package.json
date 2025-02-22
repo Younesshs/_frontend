@@ -3,10 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "demo": "ng serve locate-them-demo",
-    "build": "ng build locate-them --configuration production && copyfiles README.md LICENSE CHANGES.md ./dist/locate-them",
-    "watch": "ng build locate-them --watch --configuration development",
-    "test": "ng test locate-them"
+    "build": "ng build locate-them --configuration production",
+    "watch": "ng build locate-them --watch --configuration development"
   },
   "private": true,
   "dependencies": {

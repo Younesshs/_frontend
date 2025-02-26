@@ -22,6 +22,7 @@ export class NewCompanyComponent {
 	successMessage: string | null = null;
 	tempPassword: string | null = null;
 	generatedLink: string | null = null;
+	environment = environment;
 
 	constructor(private CompanyService: CompanyService) {}
 

@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build locate-them --configuration production",
-    "watch": "ng build locate-them --watch --configuration development"
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {

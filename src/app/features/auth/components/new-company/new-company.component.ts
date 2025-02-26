@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { CompanyService } from '../../services/company.service';
 
 interface newCompanyForm {
@@ -36,7 +37,7 @@ export class NewCompanyComponent {
 				) {
 					this.successMessage = data.message;
 					this.tempPassword = data.company.password;
-					this.generatedLink = `http://localhost:4200/auth/first-connection-company/${this.newCompanyForm.companyName}`;
+					this.generatedLink = `${environment.url}/auth/first-connection-company/${this.newCompanyForm.companyName}`;
 				}
 			},
 			error: (request) => {
@@ -58,7 +59,7 @@ export class NewCompanyComponent {
 			next: (data: any) => {
 				this.successMessage = data.message;
 				this.tempPassword = data.password;
-				this.generatedLink = `http://localhost:4200/auth/first-connection-company/${this.newCompanyForm.companyName}`;
+				this.generatedLink = `${environment.url}/auth/first-connection-company/${this.newCompanyForm.companyName}`;
 			},
 			error: (request) => {
 				if (request.error.errorType === 'not_found') {

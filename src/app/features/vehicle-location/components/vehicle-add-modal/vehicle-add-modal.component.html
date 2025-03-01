@@ -16,7 +16,7 @@
 				for="number"
 				class="block text-xs uppercase font-medium text-gray-900 mb-2"
 			>
-				Numéro du tracker *
+				Numéro du tracker <span class="text-red-600">*</span>
 			</label>
 			<input
 				type="text"
@@ -32,7 +32,7 @@
 				*ngIf="addVehicleformError.format.number"
 				class="text-[12px] font-bold uppercase text-red-600 p-2 rounded-md"
 			>
-				Le numéro du tracker et requis !
+				Le numéro du tracker est requis !
 			</p>
 		</div>
 	</div>
@@ -45,7 +45,7 @@
 					for="licensePlate"
 					class="block text-xs uppercase font-medium text-gray-900 mb-2"
 				>
-					Plaque d'immatriculation *
+					Plaque d'immatriculation <span class="text-red-600">*</span>
 				</label>
 				<input
 					type="text"
@@ -59,6 +59,12 @@
 					autocomplete="off"
 					required
 				/>
+				<p
+					*ngIf="addVehicleformError.format.licensePlate"
+					class="mb-[10px] text-[12px] font-bold uppercase text-red-600 p-2 rounded-md"
+				>
+					La plaque d'immatriculation est requise !
+				</p>
 			</div>
 			<div class="col-span-2 mb-2">
 				<label
@@ -190,32 +196,53 @@
 
 	<div *ngIf="currentStep === 4">
 		<h3 class="text-xl font-bold mb-4">Finalisation</h3>
-		<p class="text-[12px] font-bold uppercase rounded-md">
-			Configurations de la navigation...
+
+		<p
+			[class]="loader.finally.company ? 'text-green-600' : 'text-red-600'"
+			class="text-[12px] font-bold uppercase rounded-md"
+		>
+			<span *ngIf="loader.finally.company">✅</span> Configurations
+			[company account]...
 		</p>
-		<p class="text-[12px] font-bold uppercase rounded-md">
-			Configurations des options...
+		<p
+			[class]="
+				loader.finally.engineVehicle ? 'text-green-600' : 'text-red-600'
+			"
+			class="text-[12px] font-bold uppercase rounded-md"
+		>
+			<span *ngIf="loader.finally.engineVehicle">✅</span> Récupération
+			des informations du calculateur...
 		</p>
-		<p class="text-[12px] font-bold uppercase rounded-md">
-			Configurations de la navigation...
+		<p
+			[class]="
+				loader.finally.navigation ? 'text-green-600' : 'text-red-600'
+			"
+			class="text-[12px] font-bold uppercase rounded-md"
+		>
+			<span *ngIf="loader.finally.navigation">✅</span> Configurations de
+			la navigation...
 		</p>
-		<p class="text-[12px] font-bold uppercase rounded-md">
-			Récupération de la localisation initiale...
+		<p
+			[class]="loader.finally.options ? 'text-green-600' : 'text-red-600'"
+			class="text-[12px] font-bold uppercase rounded-md"
+		>
+			<span *ngIf="loader.finally.options">✅</span> Configurations des
+			options...
 		</p>
-		<p class="text-[12px] font-bold uppercase rounded-md">
-			Récupération de la localisation initiale...
-		</p>
-		<p class="text-[12px] font-bold uppercase rounded-md">
-			Récupération du statut véhicule...
-		</p>
-		<p class="text-[12px] font-bold uppercase rounded-md">
-			Configurations [company account]...
+		<p
+			[class]="
+				loader.finally.location ? 'text-green-600' : 'text-red-600'
+			"
+			class="text-[12px] font-bold uppercase rounded-md"
+		>
+			<span *ngIf="loader.finally.location">✅</span> Récupération de la
+			localisation initiale...
 		</p>
 	</div>
 
 	<div class="flex justify-between mt-4">
 		<button
-			*ngIf="currentStep > 1"
+			*ngIf="currentStep > 1 && currentStep < 4"
 			(click)="prevStep()"
 			type="submit"
 			class="text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-4 py-2 text-center text-xs uppercase flex flex-row justify-center items-center"
@@ -259,7 +286,7 @@
 			</svg>
 		</button>
 		<button
-			(click)="nextStep(4)"
+			(click)="submitForm()"
 			*ngIf="currentStep === 3"
 			type="submit"
 			class="text-white bg-gray-900 hover:opacity-90 focus:ring-4 focus:outline-none font-medium rounded-lg w-full sm:w-auto px-4 py-2 text-center text-xs uppercase flex flex-row justify-center items-center"

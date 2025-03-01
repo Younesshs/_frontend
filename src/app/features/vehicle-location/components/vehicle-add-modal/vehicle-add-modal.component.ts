@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { CompanyService } from 'src/app/features/auth/services/company.service';
 import { ModalsService } from '../../../../core/services/modals.service';
 import { VehicleService } from '../../services/vehicle.service';
+import { TrackerService } from './../../services/tracker.service';
 
 @Component({
 	selector: 'app-vehicle-add-modal',
@@ -18,12 +20,12 @@ export class VehicleAddModalComponent implements OnInit {
 			autoGpsTrackerEnabled: true, // Default // Auto
 		},
 		gpsTracker: {
-			number: null, // Champs requis // User
+			number: 869706060803154, // Champs requis // User
 			initialLocation: null, // Champs requis // Auto
 			lastLocation: null, // Champs requis // Auto
 		},
 		vehicleInformations: {
-			licensePlate: null, // Champs requis // User
+			licensePlate: 'an-256-cn', // Champs requis // User
 			year: null, // User
 			capacity: null, // User
 			color: null, // User
@@ -42,6 +44,7 @@ export class VehicleAddModalComponent implements OnInit {
 			id: null, // Champs requis // Auto
 		},
 	};
+
 	addVehicleformError = {
 		missing: false,
 		format: {
@@ -51,12 +54,25 @@ export class VehicleAddModalComponent implements OnInit {
 			location: false,
 		},
 	};
+
 	successMessage: string | null = null;
 
 	employees: any[] = [];
 
+	loader: any = {
+		finally: {
+			navigation: false,
+			options: false,
+			location: false,
+			engineVehicle: false,
+			company: false,
+		},
+	};
+
 	constructor(
 		private ModalsService: ModalsService,
+		private CompanyService: CompanyService,
+		private TrackerService: TrackerService,
 		private VehicleService: VehicleService
 	) {}
 
@@ -68,6 +84,43 @@ export class VehicleAddModalComponent implements OnInit {
 		// TODO: SERVICES RECUPERER LES EMPLOYEEES PAR RAPPORT COMPANY
 	}
 
+	getCompany() {
+		const companyInformations =
+			this.CompanyService.getCompanyInformations();
+		this.addVehicleform.companyInformations.id =
+			companyInformations.companyId;
+		this.loader.finally.company = true;
+	}
+
+	getDataOfTracker(number: number) {
+		this.TrackerService.getInitialLocation(number).subscribe({
+			next: (data) => {
+				console.log('data:', data);
+				this.addVehicleform.gpsTracker.initialLocation =
+					data.initialLocation;
+				this.addVehicleform.gpsTracker.lastLocation =
+					data.initialLocation;
+				this.loader.finally.location = true;
+				this.addVehicleform.vehicleStatus.engineOn = data.engineOn;
+				this.loader.finally.engineVehicle = true;
+			},
+			error: (error) => {
+				console.error('error:', error);
+			},
+		});
+	}
+
+	setDefaultData() {
+		setTimeout(() => {
+			this.addVehicleform.navigation.showDetails = false;
+			this.loader.finally.navigation = true;
+			setTimeout(() => {
+				this.addVehicleform.options.autoGpsTrackerEnabled = true;
+				this.loader.finally.options = true;
+			}, 1500);
+		}, 1000);
+	}
+
 	nextStep(step: number = null) {
 		if (!step) {
 			if (this.currentStep < 4) {
@@ -75,6 +128,12 @@ export class VehicleAddModalComponent implements OnInit {
 			}
 		} else {
 			this.currentStep = step;
+		}
+	}
+
+	prevStep() {
+		if (this.currentStep > 1) {
+			this.currentStep--;
 		}
 	}
 
@@ -91,14 +150,21 @@ export class VehicleAddModalComponent implements OnInit {
 		this.successMessage = null;
 	}
 
-	prevStep() {
-		if (this.currentStep > 1) {
-			this.currentStep--;
-		}
+	resetLoaders() {
+		this.loader = {
+			finally: {
+				navigation: false,
+				options: false,
+				location: false,
+				vehicle: false,
+				company: false,
+			},
+		};
 	}
 
 	validForm(): boolean {
 		this.resetErrors();
+		this.nextStep(4);
 
 		const gpsTracker = this.addVehicleform.gpsTracker;
 		const vehicleInfo = this.addVehicleform.vehicleInformations;
@@ -111,13 +177,14 @@ export class VehicleAddModalComponent implements OnInit {
 			this.addVehicleformError.format.id = true;
 			this.currentStep = 4;
 			isValid = false;
-			console.log('here1');
+		} else {
+			this.loader.finally.company = true;
 		}
+
 		if (!gpsTracker.initialLocation || !gpsTracker.lastLocation) {
 			this.addVehicleformError.format.location = true;
 			this.currentStep = 4;
 			isValid = false;
-			console.log('here2');
 		}
 
 		// Étape 3 - Employé assigné
@@ -128,7 +195,6 @@ export class VehicleAddModalComponent implements OnInit {
 			this.addVehicleformError.format.licensePlate = true;
 			this.currentStep = 2;
 			isValid = false;
-			console.log('here3');
 		}
 
 		// Étape 1 - GPS Tracker
@@ -136,13 +202,17 @@ export class VehicleAddModalComponent implements OnInit {
 			this.addVehicleformError.format.number = true;
 			this.currentStep = 1;
 			isValid = false;
-			console.log('here4');
 		}
 
 		return isValid;
 	}
 
 	submitForm() {
+		this.resetLoaders();
+		this.nextStep(4);
+		this.setDefaultData();
+		this.getCompany();
+		this.getDataOfTracker(this.addVehicleform.gpsTracker.number);
 		if (this.validForm()) {
 			console.log('addVehicleform Data:', this.addVehicleform);
 			this.successMessage = 'Le véhicule a été ajouté avec succès !';
